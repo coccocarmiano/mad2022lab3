@@ -6,12 +6,11 @@
     <item
         android:id="@+id/optionsMenuButton"
         android:icon="@drawable/pencil"
-        android:title="Hello"
         app:showAsAction="always">
         <menu>
             <item
                 android:id="@+id/optionsMenuEditProfile"
-                android:title="Edit Button"
+                android:title="@string/editProfileButtonText"
                 />
 
         </menu>

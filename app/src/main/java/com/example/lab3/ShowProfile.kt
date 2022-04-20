@@ -1,5 +1,6 @@
 package com.example.lab3
 
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment

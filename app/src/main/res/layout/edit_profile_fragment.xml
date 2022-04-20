@@ -20,16 +20,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/profile_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="2"
-            android:src="@drawable/default_pfp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/default_pfp" />
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_weight="2">
+           <ImageView
+               android:id="@+id/profileImage"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:src="@drawable/default_pfp"
+               android:scaleType="centerInside" />
+
+           <ImageButton
+               android:id="@+id/editProfileImageButton"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:background="#00FFFFFF"
+               android:scaleType="centerInside"
+               android:scaleX="0.5"
+               android:scaleY="0.5"
+               android:src="@drawable/camera" />
+       </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

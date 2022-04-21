@@ -22,7 +22,7 @@
         android:padding="16dp">
 
         <ImageView
-            android:id="@+id/profile_image"
+            android:id="@+id/profileImageShowProfile"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"

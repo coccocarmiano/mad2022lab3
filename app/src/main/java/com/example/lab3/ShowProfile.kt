@@ -1,6 +1,5 @@
 package com.example.lab3
 
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -24,8 +23,7 @@ class ShowProfile : Fragment() {
         view.emailTV.text = userViewModel.mail.value
         view.locationTV.text = userViewModel.location.value
         view.usernameTV.text = userViewModel.username.value
-
-
+        view.profileImageShowProfile.setImageBitmap(userViewModel.profilePictureBitmap.value)
         return view
     }
 

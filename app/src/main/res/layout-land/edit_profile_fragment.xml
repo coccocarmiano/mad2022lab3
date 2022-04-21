@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:layout_weight="2">
             <ImageView
-                android:id="@+id/profileImage"
+                android:id="@+id/profileImageEditProfile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/default_pfp"

@@ -63,6 +63,13 @@
                 android:text="Location"
                 android:textSize="32sp" />
 
+            <TextView
+                android:id="@+id/skillsTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No Skills"
+                android:textSize="32sp" />
+
 
         </LinearLayout>
     </LinearLayout>

@@ -5,10 +5,34 @@
     android:layout_height="match_parent"
     tools:context=".EditSkills" >
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/skillsListRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical">
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/skillsListRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/saveSkillButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_weight="5"
+        android:text="@string/editSkillsFragmentBackButton"/>
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

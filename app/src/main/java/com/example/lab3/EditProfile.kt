@@ -27,6 +27,9 @@ class EditProfile : Fragment() {
         view.usernameET.setText(userViewModel.username.value)
         view.profileImageEditProfile.setImageBitmap(userViewModel.profilePictureBitmap.value)
 
+        userViewModel.profilePictureBitmap.observe(viewLifecycleOwner) {
+            view.profileImageEditProfile.setImageBitmap(it)
+        }
 
         view.editProfileManageSkillsButton.setOnClickListener {
             findNavController().navigate(R.id.action_editProfile_to_editSkills)
@@ -41,15 +44,10 @@ class EditProfile : Fragment() {
             val galleryIntent = Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT)
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             val chooserIntent = Intent.createChooser(galleryIntent, "Upload an Image").run { putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent)) }
-
             activity?.startActivityForResult(chooserIntent, (activity as MainActivity).requestPhotoForProfileEdit)
         }
 
         return view
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
 }

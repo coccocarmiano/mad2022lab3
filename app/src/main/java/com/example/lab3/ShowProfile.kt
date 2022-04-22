@@ -24,6 +24,7 @@ class ShowProfile : Fragment() {
         view.locationTV.text = userViewModel.location.value
         view.usernameTV.text = userViewModel.username.value
         view.profileImageShowProfile.setImageBitmap(userViewModel.profilePictureBitmap.value)
+        view.skillsTV.text = userViewModel.skills.value?.joinToString(", ") ?: getString(R.string.no_skills)
         return view
     }
 

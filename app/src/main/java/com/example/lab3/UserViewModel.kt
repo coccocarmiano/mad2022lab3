@@ -2,7 +2,6 @@ package com.example.lab3
 
 import android.app.Application
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -12,20 +11,17 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.android.synthetic.main.edit_profile_fragment.view.*
 import org.json.JSONObject
 import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
 
 
 class UserViewModel(private val app: Application) : AndroidViewModel(app) {
 
-
-    // How to retrieve resources without context?
     val fullname = MutableLiveData<String>()
     val username = MutableLiveData<String>()
     val location = MutableLiveData<String>()
     val mail = MutableLiveData<String>()
     val profilePictureBitmap = MutableLiveData<Bitmap>()
-    val profilePictureFileName = "profilePicture.png"
+    private val profilePictureFileName = "profilePicture.png"
+    val skills = MutableLiveData<MutableList<String>>()
 
     init {
         val jsonString = app.getSharedPreferences("user", Context.MODE_PRIVATE).getString("user", "{}") ?: "{}"
@@ -36,20 +32,27 @@ class UserViewModel(private val app: Application) : AndroidViewModel(app) {
             username.value = optString("username", app.getString(R.string.username_placeholder_text))
             location.value = optString("location", app.getString(R.string.location_placeholder_text))
             mail.value = optString("mail", app.getString(R.string.email_placeholder_text))
-            // Skills...
+            skills.value = optString("skills", "").let {
+                when (it) {
+                    "" -> mutableListOf()
+                    else -> it.split(",").toMutableList()
+                }
+            }
         }
+
+
 
         loadProfilePicture()
     }
 
-    fun save() {
+    private fun save() {
         JSONObject()
             .apply {
                 put("fullname", fullname.value)
                 put("username", username.value)
                 put("location", location.value)
                 put("mail", mail.value)
-                // Skills..?
+                put("skills", skills.value?.joinToString(",") ?: "")
             }.toString()
             .run {
                  app
@@ -59,20 +62,18 @@ class UserViewModel(private val app: Application) : AndroidViewModel(app) {
                 .apply()
             }
 
-        // TODO This has to be changed
-        profilePictureBitmap.value?.let { storeProfilePicture(it) }
     }
 
-    // TODO This has to be removed when methods below are implemented
-    private fun storeProfilePicture(bmp : Bitmap) {
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, app.openFileOutput("profile.png", Context.MODE_PRIVATE))
+    fun storeProfilePicture(bmp : Bitmap) {
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, app.openFileOutput(profilePictureFileName, Context.MODE_PRIVATE))
+        loadProfilePicture()
     }
 
     private fun loadProfilePicture() : Bitmap {
-        return File(profilePictureFileName)
+        return File(app.filesDir, profilePictureFileName)
             .run {
                 when (exists()) {
-                    true -> BitmapFactory.decodeFile(this.absolutePath)
+                    true -> BitmapFactory.decodeFile(File(app.filesDir, profilePictureFileName).absolutePath)
                     false -> BitmapFactory.decodeResource(app.resources, R.drawable.default_pfp)
                 }
             }.also {
@@ -89,16 +90,15 @@ class UserViewModel(private val app: Application) : AndroidViewModel(app) {
         save()
     }
 
-    // This should be deleted...
-    fun updateProfilePictureFromImage() {
-        // TODO Implement, possibly not from Bitmap
-    }
 
-    // Not tested
     fun updateProfilePictureFromURI(uri : Uri) {
-        val inFile = FileInputStream(uri.path)
-        val outFile = FileOutputStream(profilePictureFileName)
-        inFile.copyTo(outFile)
-    }
+        val inStream = app.contentResolver.openInputStream(uri)
+        val outStream = File(app.filesDir, profilePictureFileName).outputStream()
+        inStream?.also {
+            it.copyTo(outStream)
+        }
+        loadProfilePicture()
+        }
 
 }
+

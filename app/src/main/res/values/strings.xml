@@ -5,4 +5,6 @@
     <string name="fullname_placeholder_text">Full Name</string>
     <string name="email_placeholder_text">Email</string>
     <string name="editProfileButtonText">Edit Profile</string>
+    <string name="no_skills">No Skills</string>
+    <string name="editSkillsFragmentBackButton">Back</string>
 </resources>

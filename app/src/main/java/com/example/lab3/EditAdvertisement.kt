@@ -8,20 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.edit_time_slot_details_fragment.view.*
 import java.util.*
 
-class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+class EditAdvertisement : Fragment() {
 
     private val advertisementViewModel: AdvertisementViewModel by activityViewModels()
-    var day = 0
-    var month = 0
-    var year = 0
-    var hour = 0
-    var minute = 0
+
     var savedDay = 0
     var savedMonth = 0
     var savedYear = 0
@@ -39,53 +36,71 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         view.descriptionAdvertisementET.setText(advertisementViewModel.description.value)
         view.locationAdvertisementET.setText(advertisementViewModel.location.value)
         view.durationAdvertisementET.setText(advertisementViewModel.duration.value)
-        getDateTimeCalendar()
-        view.dateAdvertisementEditTV.setText(dateTimeToString(day,month,year,hour,minute) )
+        view.dateAdvertisementEditTV.setText(advertisementViewModel.date.value )
 
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    advertisementViewModel.updateFromEditAdvertisement(view)
+                    findNavController().popBackStack()
+                }
+            })
 
+        fun refresh(){
+            view.dateAdvertisementEditTV.setText(dateTimeToString(savedDay,savedMonth,savedYear,savedHour,savedMinute))
+
+        }
+
+        val timePicker = TimePickerDialog.OnTimeSetListener{view,hour,minute->
+            savedHour=hour
+            savedMinute=minute
+            refresh()
+
+        }
+        val datePicker=DatePickerDialog.OnDateSetListener{view,year,month,day->
+            savedDay=day
+            savedYear=year
+            savedMonth=month
+            println("ciao"+savedDay + " "+ savedYear+ " "+ savedMonth )
+            TimePickerDialog(this.requireContext(),timePicker,savedHour,savedMinute,true).show()
+        }
 
         view.editDateAdvertisement.setOnClickListener {
             getDateTimeCalendar()
-            DatePickerDialog( this.requireContext(), this, year, month, day).show()
-            //TODO questo aggiornamento non funziona bene
-            view.dateAdvertisementEditTV.setText(dateTimeToString(savedDay,savedMonth,savedYear,savedHour,savedMinute) )
-            }
+            DatePickerDialog(this.requireContext(),datePicker,savedYear,savedMonth,savedDay).show()
+        }
 
         view.editAdvertisementSaveButton.setOnClickListener {
             advertisementViewModel.updateFromEditAdvertisement(view)
             findNavController().popBackStack()
-
         }
-
 
         return view
 
     }
 
 
-    private fun dateTimeToString(day: Int, month: Int, year: Int, hour: Int, minute: Int): String{
-        val dataString = "" + day + "/" + month + "/" + year + " at "+ hour + ":" + minute
+
+    private fun dateTimeToString(day: Int, month: Int, year: Int,hour:Int, minute:Int): String{
+        //soluzione veloce al problema del minuto <10 essendo intero
+        var dataString= ""
+        if(minute<10)
+            dataString = "" + day + "/" + month + "/" + year + " at " + hour + ":0" + minute
+        else
+            dataString = "" + day + "/" + month + "/" + year + " at " + hour + ":" + minute
         return dataString
     }
     private fun getDateTimeCalendar(){
+
         val cal = Calendar.getInstance()
-        day= cal.get(Calendar.DAY_OF_MONTH)
-        month= cal.get(Calendar.MONTH)
-        year= cal.get(Calendar.YEAR)
-        hour= cal.get(Calendar.HOUR)
-        minute= cal.get(Calendar.MINUTE)
+        savedDay= cal.get(Calendar.DAY_OF_MONTH)
+        savedMonth= cal.get(Calendar.MONTH)
+        savedYear= cal.get(Calendar.YEAR)
+        savedHour= cal.get(Calendar.HOUR)
+        savedMinute= cal.get(Calendar.MINUTE)
     }
 
-    override fun onDateSet(p0: DatePicker?, year: Int, month: Int, day: Int) {
-        savedDay= day
-        savedMonth= month
-        savedYear = year
-        getDateTimeCalendar()
-        TimePickerDialog(this.requireContext(),this, hour, minute, true).show()
-    }
 
-    override fun onTimeSet(p0: TimePicker?, hour: Int, minute: Int) {
-        savedHour = hour
-        savedMinute = minute
-    }
+
 }

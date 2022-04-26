@@ -7,4 +7,12 @@
     <string name="editProfileButtonText">Edit Profile</string>
     <string name="no_skills">No Skills</string>
     <string name="editSkillsFragmentBackButton">Back</string>
+
+    <string name="title_advertisement_placeholder_text">Title</string>
+    <string name="description_advertisement_placeholder_text">Description</string>
+    <string name="data_advertisement_placeholder_text">Date, time</string>
+    <string name="duration_advertisement_placeholder_text">Duration</string>
+    <string name="location_advertisement_placeholder_text">Location</string>
+    <string name="editAdvertisementButtonText">Edit Advertisement</string>
+    <string name="showAdvertisementButtonText">Show Advertisement</string>
 </resources>

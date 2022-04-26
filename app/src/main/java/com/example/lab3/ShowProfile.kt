@@ -39,6 +39,9 @@ class ShowProfile : Fragment() {
             R.id.optionsMenuEditProfile -> {
                 findNavController().navigate(R.id.action_showProfile_to_editProfile)
             }
+            R.id.optionsMenuShowAdvertisement-> {
+                findNavController().navigate(R.id.action_showProfile_to_show_advertisement)
+            }
             else -> {
 
             }

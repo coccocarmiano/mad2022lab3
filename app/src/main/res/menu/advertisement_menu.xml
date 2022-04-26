@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/advertisementMenuButton"
+        android:icon="@drawable/pencil"
+        app:showAsAction="always"
+        android:title="Advertisement">
+        <menu>
+            <item
+                android:id="@+id/advertisementMenuEditAdvertisement"
+                android:title="@string/editAdvertisementButtonText"
+                />
+
+        </menu>
+    </item>
+
+
+
+</menu>

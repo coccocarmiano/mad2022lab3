@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 class MainActivity : AppCompatActivity() {
 
     private val userViewModel: UserViewModel by viewModels()
+    private val advertisementViewModel:AdvertisementViewModel by viewModels()
     val requestPhotoForProfileEdit = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,5 +1,21 @@
 <resources>
     <string name="app_name">TimeBank</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">TimeBank</string>
+    <string name="nav_header_subtitle"></string>
+    <string name="nav_header_desc"></string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_show_profile">User Profile</string>
+    <string name="menu_edit_profile">Edit Profile</string>
+    <string name="menu_edit_skills">Edit Skills</string>
+    <string name="menu_show_adv">User Advertisement</string>
+    <string name="menu_edit_adv">Edit Advertisement</string>
+    <string name="menu_show_adv_list">Advertisement List</string>
+
     <string name="location_placeholder_text">Location</string>
     <string name="username_placeholder_text">Username</string>
     <string name="fullname_placeholder_text">Full Name</string>
@@ -10,9 +26,11 @@
 
     <string name="title_advertisement_placeholder_text">Title</string>
     <string name="description_advertisement_placeholder_text">Description</string>
-    <string name="data_advertisement_placeholder_text">Date, time</string>
+    <string name="date_advertisement_placeholder_text">Date, time</string>
     <string name="duration_advertisement_placeholder_text">Duration</string>
     <string name="location_advertisement_placeholder_text">Location</string>
     <string name="editAdvertisementButtonText">Edit Advertisement</string>
     <string name="showAdvertisementButtonText">Show Advertisement</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

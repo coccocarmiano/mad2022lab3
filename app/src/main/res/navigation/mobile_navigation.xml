@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/nav_adv_list">
+
+    <fragment
+        android:id="@+id/nav_show_profile"
+        android:name="com.example.drawerexample.ui.ShowProfile"
+        android:label="@string/menu_show_profile"
+        tools:layout="@layout/show_profile_fragment" >
+        <action
+            android:id="@+id/action_nav_show_profile_to_nav_edit_profile"
+            app:destination="@id/nav_edit_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_edit_profile"
+        android:name="com.example.drawerexample.ui.EditProfile"
+        android:label="@string/menu_edit_profile"
+        tools:layout="@layout/edit_profile_fragment" >
+        <action
+            android:id="@+id/action_nav_edit_profile_to_nav_edit_skills"
+            app:destination="@id/nav_edit_skills" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_edit_skills"
+        android:name="com.example.drawerexample.ui.EditSkills"
+        android:label="@string/menu_edit_skills"
+        tools:layout="@layout/edit_skills_fragment" />
+
+    <fragment
+        android:id="@+id/nav_adv_list"
+        android:name="com.example.drawerexample.ui.AdvListFragment"
+        android:label="@string/menu_show_adv_list"
+        tools:layout="@layout/fragment_adv_list" >
+        <action
+            android:id="@+id/action_nav_adv_list_to_nav_show_adv"
+            app:destination="@id/nav_show_adv" />
+        <action
+            android:id="@+id/action_nav_adv_list_to_nav_edit_adv"
+            app:destination="@id/nav_edit_adv" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_show_adv"
+        android:name="com.example.drawerexample.ui.ShowAdvertisement"
+        android:label="@string/menu_show_adv"
+        tools:layout="@layout/show_time_slot_details_fragment" >
+        <action
+            android:id="@+id/action_nav_show_adv_to_nav_edit_adv"
+            app:destination="@id/nav_edit_adv" />
+        <argument
+            android:name="adv_index"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_edit_adv"
+        android:name="com.example.drawerexample.ui.EditAdvertisement"
+        android:label="@string/menu_edit_adv"
+        tools:layout="@layout/edit_time_slot_details_fragment" >
+        <argument
+            android:name="adv_index"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+</navigation>

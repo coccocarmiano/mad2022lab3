@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val userViewModel: UserViewModel by viewModels()
-    private val advertisementViewModel: AdvertisementViewModel by viewModels()
     val requestPhotoForProfileEdit = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -30,10 +30,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/dateAdvertisementEditTV"
+            <EditText
+                android:id="@+id/dateAdvertisementEditET"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:clickable="false"
+                android:editable="false"
                 android:text="Date, time"
                 android:textSize="32sp" />
 

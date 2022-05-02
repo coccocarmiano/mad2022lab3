@@ -32,14 +32,14 @@
                 android:id="@+id/titleAdvertisementET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Title"
+                android:hint="Title"
                 android:textSize="32sp" />
 
             <EditText
                 android:id="@+id/descriptionAdvertisementET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Description"
+                android:hint="Description"
                 android:textSize="32sp" />
 
             <EditText
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:editable="false"
-                android:text="Date, time"
+                android:hint="Date, time"
                 android:textSize="32sp" />
 
             <Button
@@ -61,7 +61,7 @@
                 android:id="@+id/durationAdvertisementET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Duration"
+                android:hint="Duration"
                 android:textSize="32sp" />
 
 
@@ -69,7 +69,7 @@
                 android:id="@+id/locationAdvertisementET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location"
+                android:hint="Location"
                 android:textSize="32sp" />
 
 

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
@@ -25,7 +26,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
     private var _binding: EditTimeSlotDetailsFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private var adv_index : Int? = null
+    private var advIndex : Int? = null
 
     var savedDay = 0
     var savedMonth = 0
@@ -41,16 +42,18 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         _binding = EditTimeSlotDetailsFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        adv_index = arguments?.getInt("adv_index", -1)
-        if (adv_index != null && adv_index != -1) {
-            val adv = advertisementViewModel.liveAdvList.value?.get(adv_index!!)
+        setHasOptionsMenu(true)
+
+        advIndex = arguments?.getInt("adv_index", -1)
+        if (advIndex != null && advIndex != -1) {
+            val adv = advertisementViewModel.liveAdvList.value?.get(advIndex!!)
 
             adv.apply {
                 binding.titleAdvertisementET.setText(adv?.title)
                 binding.descriptionAdvertisementET.setText(adv?.description)
                 binding.locationAdvertisementET.setText(adv?.location)
                 binding.durationAdvertisementET.setText(adv?.duration)
-                binding.dateAdvertisementEditTV.setText(adv?.date)
+                binding.dateAdvertisementEditTV.text = adv?.date
             }
         }
 
@@ -83,10 +86,10 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         adv.duration = binding.durationAdvertisementET.text.toString()
         adv.date = binding.dateAdvertisementEditTV.text.toString()
 
-        if (adv_index == null || adv_index == -1) {
+        if (advIndex == null || advIndex == -1) {
             advertisementViewModel.liveAdvList.value?.add(adv)
         } else {
-            advertisementViewModel.liveAdvList.value?.set(adv_index!!, adv)
+            advertisementViewModel.liveAdvList.value?.set(advIndex!!, adv)
         }
         advertisementViewModel.liveAdvList.value = advertisementViewModel.liveAdvList.value
 
@@ -127,5 +130,9 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         binding.dateAdvertisementEditTV.text = dateTimeToString(savedDay,savedMonth,savedYear,savedHour,savedMinute)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        save()
+        return true
+    }
 
 }

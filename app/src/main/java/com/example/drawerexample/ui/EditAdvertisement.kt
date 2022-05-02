@@ -53,7 +53,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                 binding.descriptionAdvertisementET.setText(adv?.description)
                 binding.locationAdvertisementET.setText(adv?.location)
                 binding.durationAdvertisementET.setText(adv?.duration)
-                binding.dateAdvertisementEditTV.text = adv?.date
+                binding.dateAdvertisementEditET.setText(adv?.date)
             }
         }
 
@@ -84,7 +84,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         adv.description = binding.descriptionAdvertisementET.text.toString()
         adv.location = binding.locationAdvertisementET.text.toString()
         adv.duration = binding.durationAdvertisementET.text.toString()
-        adv.date = binding.dateAdvertisementEditTV.text.toString()
+        adv.date = binding.dateAdvertisementEditET.text.toString()
 
         if (advIndex == null || advIndex == -1) {
             advertisementViewModel.liveAdvList.value?.add(adv)
@@ -127,7 +127,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         savedHour=p1
         savedMinute=p2
 
-        binding.dateAdvertisementEditTV.text = dateTimeToString(savedDay,savedMonth,savedYear,savedHour,savedMinute)
+        binding.dateAdvertisementEditET.setText(dateTimeToString(savedDay,savedMonth,savedYear,savedHour,savedMinute))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

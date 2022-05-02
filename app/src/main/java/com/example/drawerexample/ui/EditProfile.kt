@@ -5,9 +5,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.drawerexample.MainActivity
@@ -32,6 +33,8 @@ class EditProfile : Fragment() {
         _binding = EditProfileFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        setHasOptionsMenu(true)
+
         val user = userViewModel.liveUser.value!!
 
         binding.fullNameET.setText(user.fullname)
@@ -49,15 +52,7 @@ class EditProfile : Fragment() {
         }
 
         binding.editProfileSaveButton.setOnClickListener {
-            val user = UserProfile()
-
-            user.fullname = binding.fullNameET.text.toString()
-            user.mail = binding.emailET.text.toString()
-            user.location = binding.locationET.text.toString()
-            user.username = binding.usernameET.text.toString()
-
-            userViewModel.liveUser.value = user
-            findNavController().popBackStack()
+            saveAndExit()
         }
 
         binding.editProfileImageButton.setOnClickListener {
@@ -67,12 +62,37 @@ class EditProfile : Fragment() {
             activity?.startActivityForResult(chooserIntent, (activity as MainActivity).requestPhotoForProfileEdit)
         }
 
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    saveAndExit()
+                }
+            })
+
         return root
+    }
+
+    fun saveAndExit() {
+        val user = UserProfile()
+
+        user.fullname = binding.fullNameET.text.toString()
+        user.mail = binding.emailET.text.toString()
+        user.location = binding.locationET.text.toString()
+        user.username = binding.usernameET.text.toString()
+
+        userViewModel.liveUser.value = user
+        findNavController().popBackStack()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        saveAndExit()
+        return true
     }
 
 }

@@ -26,11 +26,9 @@
 
     <string name="title_advertisement_placeholder_text">Title</string>
     <string name="description_advertisement_placeholder_text">Description</string>
-    <string name="date_advertisement_placeholder_text">Date, time</string>
-    <string name="duration_advertisement_placeholder_text">Duration</string>
+    <string name="date_advertisement_placeholder_text">Date and Time</string>
+    <string name="duration_advertisement_placeholder_text">Duration (Min)</string>
     <string name="location_advertisement_placeholder_text">Location</string>
     <string name="editAdvertisementButtonText">Edit Advertisement</string>
     <string name="showAdvertisementButtonText">Show Advertisement</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

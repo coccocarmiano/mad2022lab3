@@ -62,7 +62,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    save()
+                    saveAndExit()
                 }
             })
 
@@ -72,13 +72,13 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         }
 
         binding.editAdvertisementSaveButton.setOnClickListener {
-            save()
+            saveAndExit()
         }
 
         return root
     }
 
-    fun save() {
+    fun saveAndExit() {
         val adv = Advertisement()
         adv.title = binding.titleAdvertisementET.text.toString()
         adv.description = binding.descriptionAdvertisementET.text.toString()
@@ -131,7 +131,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        save()
+        saveAndExit()
         return true
     }
 

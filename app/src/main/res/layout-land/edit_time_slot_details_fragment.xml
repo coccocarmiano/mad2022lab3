@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -15,66 +17,85 @@
             android:id="@+id/titleAdvertisementET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/title_advertisement_placeholder_text"
             android:textSize="32sp" />
 
         <EditText
             android:id="@+id/descriptionAdvertisementET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description"
+            android:hint="@string/description_advertisement_placeholder_text"
             android:textSize="32sp" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/dateAdvertisementEditET"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:clickable="false"
                 android:editable="false"
-                android:hint="Date, time"
-                android:textSize="32sp" />
+                android:hint="@string/date_advertisement_placeholder_text"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/editDateAdvertisement"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="spread_inside"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/editDateAdvertisement"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:insetLeft="30dp"
-                android:text="Choose date and time" />
-        </LinearLayout>
+                android:text="Choose date and time"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/dateAdvertisementEditET"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/durationAdvertisementET"
-                android:layout_width="match_parent"
+                android:id="@+id/locationAdvertisementET"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Duration"
-                android:textSize="32sp" />
+                android:hint="@string/location_advertisement_placeholder_text"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/durationAdvertisementET"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/locationAdvertisementET"
+                android:id="@+id/durationAdvertisementET"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:hint="Location"
-                android:textSize="32sp" />
-        </LinearLayout>
+                android:hint="@string/duration_advertisement_placeholder_text"
+                android:inputType="number"
+                android:textSize="32sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/locationAdvertisementET"
+                app:layout_constraintTop_toTopOf="parent" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/editAdvertisementSaveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save Changes" />
-
-
-    </LinearLayout>>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:text="Save Changes"
+            android:layout_marginBottom="8dp"/>
+    </LinearLayout>
+</ScrollView>

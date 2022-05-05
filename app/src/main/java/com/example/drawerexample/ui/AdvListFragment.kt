@@ -45,6 +45,10 @@ class AdvListFragment : Fragment() {
             findNavController().navigate(R.id.action_nav_adv_list_to_nav_edit_adv)
         }
 
+        binding.noAdvTV.apply {
+            visibility = if (advViewModel.liveAdvList.value.isNullOrEmpty()) View.VISIBLE else View.GONE
+        }
+
         return root
     }
 

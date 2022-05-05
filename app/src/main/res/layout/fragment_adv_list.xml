@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.AdvListFragment">
 
+    <TextView
+        android:id="@+id/noAdvTV"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="No Advertisements Present"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingTop="30sp"
+        android:textSize="30sp"
+        app:layout_constraintBaseline_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/adv_list_rv"
         android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.example.drawerexample.ui
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import com.example.drawerexample.R
 import com.example.drawerexample.UserProfile
 import com.example.drawerexample.databinding.EditProfileFragmentBinding
 import com.example.drawerexample.viewmodel.UserViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class EditProfile : Fragment() {
 
@@ -73,16 +75,32 @@ class EditProfile : Fragment() {
         return root
     }
 
+    fun checkSave(): Boolean {
+        var check = true
+        if( binding.fullNameET.text.toString().length==0||
+            binding.emailET.text.toString().length==0||
+            binding.locationET.text.toString().length==0||
+            binding.usernameET.text.toString().length==0   )
+            check = false
+        return check
+    }
+
     fun saveAndExit() {
-        val user = UserProfile()
+        if(!checkSave()){
+            Snackbar
+                .make(binding.root, "Please complete the form", Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.RED)
+                .show()
+        }else {
+            val user = UserProfile()
+            user.fullname = binding.fullNameET.text.toString()
+            user.mail = binding.emailET.text.toString()
+            user.location = binding.locationET.text.toString()
+            user.username = binding.usernameET.text.toString()
+            userViewModel.liveUser.value = user
 
-        user.fullname = binding.fullNameET.text.toString()
-        user.mail = binding.emailET.text.toString()
-        user.location = binding.locationET.text.toString()
-        user.username = binding.usernameET.text.toString()
-
-        userViewModel.liveUser.value = user
-        findNavController().popBackStack()
+            findNavController().popBackStack()
+        }
     }
 
     override fun onDestroyView() {

@@ -54,28 +54,28 @@
                 android:id="@+id/fullNameET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fullname"
+                android:hint="Full name"
                 android:textSize="32sp" />
 
             <EditText
                 android:id="@+id/usernameET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Username"
+                android:hint="User name"
                 android:textSize="32sp" />
 
             <EditText
                 android:id="@+id/emailET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="e-Mail"
+                android:hint="e-Mail"
                 android:textSize="32sp" />
 
             <EditText
                 android:id="@+id/locationET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location"
+                android:hint="Location"
                 android:textSize="32sp" />
 
             <Button

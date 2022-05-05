@@ -2,6 +2,7 @@ package com.example.drawerexample.ui
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -14,8 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.drawerexample.Advertisement
+import com.example.drawerexample.R
 import com.example.drawerexample.databinding.EditTimeSlotDetailsFragmentBinding
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
+import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -78,22 +81,40 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         return root
     }
 
+    fun checkSave(): Boolean {
+        var check = true
+        if( binding.titleAdvertisementET.text.toString().length==0||
+            binding.descriptionAdvertisementET.text.toString().length==0||
+            binding.locationAdvertisementET.text.toString().length==0||
+            binding.durationAdvertisementET.text.toString().length==0||
+            binding.dateAdvertisementEditET.text.toString().length==0    )
+        check = false
+        return check
+    }
+
     fun saveAndExit() {
-        val adv = Advertisement()
-        adv.title = binding.titleAdvertisementET.text.toString()
-        adv.description = binding.descriptionAdvertisementET.text.toString()
-        adv.location = binding.locationAdvertisementET.text.toString()
-        adv.duration = binding.durationAdvertisementET.text.toString()
-        adv.date = binding.dateAdvertisementEditET.text.toString()
+        if(!checkSave())
+            Snackbar
+                .make(binding.root, "Please complete the form", Snackbar.LENGTH_SHORT)
+                .setBackgroundTint(Color.RED)
+                .show()
+        else {
+            val adv = Advertisement()
+            adv.title = binding.titleAdvertisementET.text.toString()
+            adv.description = binding.descriptionAdvertisementET.text.toString()
+            adv.location = binding.locationAdvertisementET.text.toString()
+            adv.duration = binding.durationAdvertisementET.text.toString()
+            adv.date = binding.dateAdvertisementEditET.text.toString()
 
-        if (advIndex == null || advIndex == -1) {
-            advertisementViewModel.liveAdvList.value?.add(adv)
-        } else {
-            advertisementViewModel.liveAdvList.value?.set(advIndex!!, adv)
+            if (advIndex == null || advIndex == -1) {
+                advertisementViewModel.liveAdvList.value?.add(adv)
+            } else {
+                advertisementViewModel.liveAdvList.value?.set(advIndex!!, adv)
+            }
+            advertisementViewModel.liveAdvList.value = advertisementViewModel.liveAdvList.value
+
+            findNavController().popBackStack()
         }
-        advertisementViewModel.liveAdvList.value = advertisementViewModel.liveAdvList.value
-
-        findNavController().popBackStack()
     }
 
     private fun dateTimeToString(day: Int, month: Int, year: Int,hour:Int, minute:Int): String{

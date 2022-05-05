@@ -92,8 +92,20 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         return check
     }
 
+    private fun allEmpty() : Boolean {
+        return binding.titleAdvertisementET.text.toString().isEmpty() &&
+                binding.descriptionAdvertisementET.text.toString().isEmpty() &&
+                binding.locationAdvertisementET.text.toString().isEmpty() &&
+                binding.durationAdvertisementET.text.toString().isEmpty() &&
+                binding.dateAdvertisementEditET.text.toString().isEmpty()
+    }
+
     fun saveAndExit() {
-        if(!checkSave())
+        if (allEmpty()) {
+            // Used to allow to go back on unintentional FAB presses
+            findNavController().popBackStack()
+        }
+        else if(!checkSave())
             Snackbar
                 .make(binding.root, "Please complete the form", Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(Color.RED)

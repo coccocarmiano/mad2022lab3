@@ -86,9 +86,12 @@ class EditProfile : Fragment() {
     }
 
     fun saveAndExit() {
+        // Basically the SnackBar works better when there's a ScrollView
+        // So I added an empty ScrollView and cast it to View
+        // ...and it worked????
         if(!checkSave()){
             Snackbar
-                .make(binding.root, "Please complete the form", Snackbar.LENGTH_SHORT)
+                .make(binding.what as View, "Please complete the form", Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(Color.RED)
                 .show()
         }else {

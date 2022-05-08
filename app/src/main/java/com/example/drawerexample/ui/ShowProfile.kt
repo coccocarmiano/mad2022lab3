@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.drawerexample.R
 import com.example.drawerexample.databinding.ShowProfileFragmentBinding
@@ -29,21 +28,23 @@ class ShowProfile : Fragment() {
         _binding = ShowProfileFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        userViewModel.liveUser.observe(viewLifecycleOwner, Observer {
+        userViewModel.liveUser.observe(viewLifecycleOwner) {
             binding.fullNameTV.text = it.fullname
             binding.emailTV.text = it.mail
             binding.locationTV.text = it.location
-            binding.usernameTV.text = it.username })
+            binding.usernameTV.text = it.username
+        }
 
-        userViewModel.liveSkills.observe(viewLifecycleOwner, Observer {
+        userViewModel.liveSkills.observe(viewLifecycleOwner) {
             if (it.isEmpty())
                 binding.skillsTV.text = getString(R.string.no_skills)
             else
-                binding.skillsTV.text = it.joinToString(", ")})
+                binding.skillsTV.text = it.joinToString(", ")
+        }
 
-        userViewModel.livePicture.observe(viewLifecycleOwner, Observer {
+        userViewModel.livePicture.observe(viewLifecycleOwner) {
             binding.profileImageShowProfile.setImageBitmap(it)
-        })
+        }
         return root
     }
 

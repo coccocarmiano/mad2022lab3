@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.drawerexample.Advertisement
-import com.example.drawerexample.R
 import com.example.drawerexample.databinding.EditTimeSlotDetailsFragmentBinding
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -31,16 +30,16 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
 
     private var advIndex : Int? = null
 
-    var savedDay = 0
-    var savedMonth = 0
-    var savedYear = 0
-    var savedHour = 0
-    var savedMinute = 0
+    private var savedDay = 0
+    private var savedMonth = 0
+    private var savedYear = 0
+    private var savedHour = 0
+    private var savedMinute = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = EditTimeSlotDetailsFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -81,13 +80,14 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         return root
     }
 
-    fun checkSave(): Boolean {
+    private fun checkSave(): Boolean {
         var check = true
-        if( binding.titleAdvertisementET.text.toString().length==0||
-            binding.descriptionAdvertisementET.text.toString().length==0||
-            binding.locationAdvertisementET.text.toString().length==0||
-            binding.durationAdvertisementET.text.toString().length==0||
-            binding.dateAdvertisementEditET.text.toString().length==0    )
+        if( binding.titleAdvertisementET.text.toString().isEmpty() ||
+            binding.descriptionAdvertisementET.text.toString().isEmpty() ||
+            binding.locationAdvertisementET.text.toString().isEmpty() ||
+            binding.durationAdvertisementET.text.toString().isEmpty() ||
+            binding.dateAdvertisementEditET.text.toString().isEmpty()
+        )
         check = false
         return check
     }

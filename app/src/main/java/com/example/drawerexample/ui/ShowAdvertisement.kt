@@ -5,7 +5,6 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.databinding.ShowTimeSlotDetailsFragmentBinding
@@ -17,21 +16,21 @@ class ShowAdvertisement : Fragment() {
     private var _binding: ShowTimeSlotDetailsFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private var adv_index : Int? = null
+    private var advIndex : Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         setHasOptionsMenu(true)
 
         _binding = ShowTimeSlotDetailsFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        adv_index = arguments?.getInt("adv_index", -1)
-        if (adv_index != null && adv_index != -1) {
-            val adv = advertisementViewModel.liveAdvList.value?.get(adv_index!!)
+        advIndex = arguments?.getInt("adv_index", -1)
+        if (advIndex != null && advIndex != -1) {
+            val adv = advertisementViewModel.liveAdvList.value?.get(advIndex!!)
 
             adv.apply {
                 binding.titleAdvertisementTV.text = adv?.title
@@ -54,7 +53,7 @@ class ShowAdvertisement : Fragment() {
         when (item.itemId) {
             R.id.menu_edit -> {
                 val bundle = Bundle()
-                adv_index?.let { bundle.putInt("adv_index", it) }
+                advIndex?.let { bundle.putInt("adv_index", it) }
                 findNavController().navigate(R.id.action_nav_show_adv_to_nav_edit_adv, bundle)
             }
             else -> {

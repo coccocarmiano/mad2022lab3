@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -14,14 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
 
-class AdvertisementsAdapter(val parentFragment : Fragment) : RecyclerView.Adapter<AdvertisementsAdapter.AdvViewHolder>() {
+class AdvertisementsAdapter(private val parentFragment : Fragment) : RecyclerView.Adapter<AdvertisementsAdapter.AdvViewHolder>() {
 
     var data = mutableListOf<Advertisement>()
 
     class AdvViewHolder(view: View, parentFragment: Fragment) : RecyclerView.ViewHolder(view) {
-        val advTitleTv : TextView = view.findViewById<TextView>(R.id.adv_title)
-        val advDateTv : TextView = view.findViewById<TextView>(R.id.adv_date)
-        val advLocationTv : TextView = view.findViewById<TextView>(R.id.adv_location)
+        val advTitleTv : TextView = view.findViewById(R.id.adv_title)
+        val advDateTv : TextView = view.findViewById(R.id.adv_date)
+        val advLocationTv : TextView = view.findViewById(R.id.adv_location)
 
         init {
             view.findViewById<ImageButton>(R.id.adv_edit).setOnClickListener {

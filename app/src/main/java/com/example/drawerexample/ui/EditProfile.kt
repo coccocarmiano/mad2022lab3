@@ -61,6 +61,7 @@ class EditProfile : Fragment() {
             val galleryIntent = Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT)
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             val chooserIntent = Intent.createChooser(galleryIntent, "Upload an Image").run { putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent)) }
+            @Suppress("DEPRECATION")
             activity?.startActivityForResult(chooserIntent, (activity as MainActivity).requestPhotoForProfileEdit)
         }
 
@@ -75,12 +76,13 @@ class EditProfile : Fragment() {
         return root
     }
 
-    fun checkSave(): Boolean {
+    private fun checkSave(): Boolean {
         var check = true
-        if( binding.fullNameET.text.toString().length==0||
-            binding.emailET.text.toString().length==0||
-            binding.locationET.text.toString().length==0||
-            binding.usernameET.text.toString().length==0   )
+        if( binding.fullNameET.text.toString().isEmpty() ||
+            binding.emailET.text.toString().isEmpty() ||
+            binding.locationET.text.toString().isEmpty() ||
+            binding.usernameET.text.toString().isEmpty()
+        )
             check = false
         return check
     }

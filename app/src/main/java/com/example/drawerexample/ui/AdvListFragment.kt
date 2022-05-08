@@ -23,7 +23,7 @@ class AdvListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentAdvListBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -36,10 +36,10 @@ class AdvListFragment : Fragment() {
             layoutManager = LinearLayoutManager(container?.context)
         }
 
-        advViewModel.liveAdvList.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        advViewModel.liveAdvList.observe(viewLifecycleOwner) {
             advAdapter.data = it
             advAdapter.notifyDataSetChanged()
-        })
+        }
 
         binding.advAddFb.setOnClickListener {
             findNavController().navigate(R.id.action_nav_adv_list_to_nav_edit_adv)

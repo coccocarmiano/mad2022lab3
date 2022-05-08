@@ -6,5 +6,5 @@ class UserProfile {
     var location = ""
     var mail = ""
 
-    val PROFILE_PITCTURE_FILENAME = "profile_picture.png"
+    val profilePictureFilename = "profile_picture.png"
 }

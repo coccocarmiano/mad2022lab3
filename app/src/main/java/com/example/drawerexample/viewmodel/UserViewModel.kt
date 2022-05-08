@@ -39,7 +39,7 @@ class UserViewModel(private val app: Application) : AndroidViewModel(app) {
                 }
             }
         }
-        livePicture.value = loadProfilePicture(user.PROFILE_PITCTURE_FILENAME);
+        livePicture.value = loadProfilePicture(user.profilePictureFilename);
         liveUser.value = user
 
         observer = Observer { save(it) }
@@ -68,8 +68,8 @@ class UserViewModel(private val app: Application) : AndroidViewModel(app) {
     fun storeProfilePicture(bmp : Bitmap) {
         val user = liveUser.value!!
 
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, app.openFileOutput(user.PROFILE_PITCTURE_FILENAME, Context.MODE_PRIVATE))
-        livePicture.value = loadProfilePicture(user.PROFILE_PITCTURE_FILENAME)
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, app.openFileOutput(user.profilePictureFilename, Context.MODE_PRIVATE))
+        livePicture.value = loadProfilePicture(user.profilePictureFilename)
     }
 
     private fun loadProfilePicture(profilePictureFileName : String) : Bitmap {
@@ -87,11 +87,11 @@ class UserViewModel(private val app: Application) : AndroidViewModel(app) {
         val user = liveUser.value!!
 
         val inStream = app.contentResolver.openInputStream(uri)
-        val outStream = File(app.filesDir, user.PROFILE_PITCTURE_FILENAME).outputStream()
+        val outStream = File(app.filesDir, user.profilePictureFilename).outputStream()
         inStream?.also {
             it.copyTo(outStream)
         }
-        livePicture.value = loadProfilePicture(user.PROFILE_PITCTURE_FILENAME)
+        livePicture.value = loadProfilePicture(user.profilePictureFilename)
     }
 
     override fun onCleared() {

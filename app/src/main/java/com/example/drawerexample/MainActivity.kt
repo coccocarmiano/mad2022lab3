@@ -13,7 +13,6 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.drawerexample.databinding.ActivityMainBinding
-import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -51,6 +50,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        @Suppress("DEPRECATION")
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == requestPhotoForProfileEdit) {
             when (resultCode) {

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1003173012370",
+    "project_id": "mad-2022-group-42",
+    "storage_bucket": "mad-2022-group-42.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1003173012370:android:cb86d1ef607e1aa061174b",
+        "android_client_info": {
+          "package_name": "com.example.drawerexample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1003173012370-01id4jr51kdqt07trng2dknpnk8n8c51.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDls7-l-Y4poJm5xpd2QGdR9NXY6QAtsr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1003173012370-01id4jr51kdqt07trng2dknpnk8n8c51.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

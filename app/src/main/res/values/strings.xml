@@ -31,4 +31,6 @@
     <string name="location_advertisement_placeholder_text">Location</string>
     <string name="editAdvertisementButtonText">Edit Advertisement</string>
     <string name="showAdvertisementButtonText">Show Advertisement</string>
+
+    <string name="save_changes">Save Changes</string>
 </resources>

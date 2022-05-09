@@ -17,7 +17,7 @@ class ShowAdvertisement : Fragment() {
     private var _binding: ShowTimeSlotDetailsFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private var adv_index : Int? = null
+    private var advIndex : Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,20 +29,32 @@ class ShowAdvertisement : Fragment() {
         _binding = ShowTimeSlotDetailsFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        adv_index = arguments?.getInt("adv_index", -1)
-        if (adv_index != null && adv_index != -1) {
-            val adv = advertisementViewModel.liveAdvList.value?.get(adv_index!!)
+        advIndex = arguments?.getInt("adv_index", -1)
+        if (advIndex != null && advIndex != -1) {
+            val adv = advertisementViewModel.liveAdvList.value?.get(advIndex!!)
 
-            adv.apply {
-                binding.titleAdvertisementTV.text = adv?.title
-                binding.descriptionAdvertisementTV.text= adv?.description
-                binding.dateAdvertisementTV.text= adv?.date
-                binding.durationAdvertisementTV.text= adv?.duration
-                binding.locationAdvertisementTV.text=adv?.location
+            refreshUI(adv)
+        }
+
+        advertisementViewModel.liveAdvList.observe(viewLifecycleOwner) {
+            if (advIndex != null && advIndex != -1) {
+                val adv = advertisementViewModel.liveAdvList.value?.get(advIndex!!)
+
+                refreshUI(adv)
             }
         }
 
         return root
+    }
+
+    private fun refreshUI(adv : Advertisement?) {
+        adv.apply {
+            binding.textTitle.setText(adv?.title)
+            binding.textDescription.setText(adv?.description)
+            binding.textDuration.setText(adv?.duration)
+            binding.textLocation.setText(adv?.location)
+            binding.textDate.setText(adv?.date)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -54,7 +66,7 @@ class ShowAdvertisement : Fragment() {
         when (item.itemId) {
             R.id.menu_edit -> {
                 val bundle = Bundle()
-                adv_index?.let { bundle.putInt("adv_index", it) }
+                advIndex?.let { bundle.putInt("adv_index", it) }
                 findNavController().navigate(R.id.action_nav_show_adv_to_nav_edit_adv, bundle)
             }
             else -> {

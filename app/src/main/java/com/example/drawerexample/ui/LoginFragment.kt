@@ -38,6 +38,8 @@ class LoginFragment : Fragment() {
             }
         }
 
+        requireActivity().actionBar?.title = "Login with Google"
+
         return binding.root
     }
 

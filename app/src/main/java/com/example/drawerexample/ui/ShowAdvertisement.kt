@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.databinding.ShowTimeSlotDetailsFragmentBinding

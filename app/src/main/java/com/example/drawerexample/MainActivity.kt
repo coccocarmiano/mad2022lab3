@@ -15,15 +15,10 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.drawerexample.databinding.ActivityMainBinding
 import com.example.drawerexample.viewmodel.UserViewModel
 import com.google.android.gms.auth.api.identity.Identity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.snackbar.SnackbarContentLayout
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.ktx.app
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 

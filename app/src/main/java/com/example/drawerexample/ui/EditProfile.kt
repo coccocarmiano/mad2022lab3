@@ -39,10 +39,10 @@ class EditProfile : Fragment() {
 
         val user = userViewModel.liveUser.value!!
 
-        binding.fullNameET.setText(user.fullname)
-        binding.emailET.setText(user.mail)
-        binding.locationET.setText(user.location)
-        binding.usernameET.setText(user.username)
+        binding.textInputEditFullName.setText(user.fullname)
+        binding.textInputEditMail.setText(user.mail)
+        binding.textInputEditUserLocation.setText(user.location)
+        binding.textInputEditUserName.setText(user.username)
         binding.profileImageEditProfile.setImageBitmap(userViewModel.livePicture.value)
 
         userViewModel.livePicture.observe(viewLifecycleOwner) {
@@ -78,30 +78,27 @@ class EditProfile : Fragment() {
 
     private fun checkSave(): Boolean {
         var check = true
-        if( binding.fullNameET.text.toString().isEmpty() ||
-            binding.emailET.text.toString().isEmpty() ||
-            binding.locationET.text.toString().isEmpty() ||
-            binding.usernameET.text.toString().isEmpty()
+        if( binding.textInputEditFullName.text.toString().isEmpty() ||
+            binding.textInputEditMail.text.toString().isEmpty() ||
+            binding.textInputEditUserLocation.text.toString().isEmpty() ||
+            binding.textInputEditUserName.text.toString().isEmpty()
         )
             check = false
         return check
     }
 
     fun saveAndExit() {
-        // Basically the SnackBar works better when there's a ScrollView
-        // So I added an empty ScrollView and cast it to View
-        // ...and it worked????
         if(!checkSave()){
             Snackbar
-                .make(binding.what as View, "Please complete the form", Snackbar.LENGTH_SHORT)
+                .make(binding.mainScrollView as View, "Please complete the form", Snackbar.LENGTH_SHORT)
                 .setBackgroundTint(Color.RED)
                 .show()
         }else {
             val user = UserProfile()
-            user.fullname = binding.fullNameET.text.toString()
-            user.mail = binding.emailET.text.toString()
-            user.location = binding.locationET.text.toString()
-            user.username = binding.usernameET.text.toString()
+            user.fullname = binding.textInputEditFullName.text.toString()
+            user.mail = binding.textInputEditMail.text.toString()
+            user.location = binding.textInputEditUserLocation.text.toString()
+            user.username = binding.textInputEditUserName.text.toString()
             userViewModel.liveUser.value = user
 
             findNavController().popBackStack()

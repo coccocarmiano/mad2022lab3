@@ -32,16 +32,28 @@ class ShowAdvertisement : Fragment() {
         if (advIndex != null && advIndex != -1) {
             val adv = advertisementViewModel.liveAdvList.value?.get(advIndex!!)
 
-            adv.apply {
-                binding.titleAdvertisementTV.text = adv?.title
-                binding.descriptionAdvertisementTV.text= adv?.description
-                binding.dateAdvertisementTV.text= adv?.date
-                binding.durationAdvertisementTV.text= adv?.duration
-                binding.locationAdvertisementTV.text=adv?.location
+            refreshUI(adv)
+        }
+
+        advertisementViewModel.liveAdvList.observe(viewLifecycleOwner) {
+            if (advIndex != null && advIndex != -1) {
+                val adv = advertisementViewModel.liveAdvList.value?.get(advIndex!!)
+
+                refreshUI(adv)
             }
         }
 
         return root
+    }
+
+    private fun refreshUI(adv : Advertisement?) {
+        adv.apply {
+            binding.textTitle.setText(adv?.title)
+            binding.textDescription.setText(adv?.description)
+            binding.textDuration.setText(adv?.duration)
+            binding.textLocation.setText(adv?.location)
+            binding.textDate.setText(adv?.date)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

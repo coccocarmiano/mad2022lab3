@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,57 +12,100 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/titleAdvertisementET"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/title_advertisement_placeholder_text"
-            android:textSize="32sp" />
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginVertical="5dp">
 
-        <EditText
-            android:id="@+id/descriptionAdvertisementET"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/description_advertisement_placeholder_text"
-            android:textSize="32sp" />
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginVertical="5dp">
 
-        <EditText
-            android:id="@+id/dateAdvertisementEditET"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:editable="false"
-            android:hint="@string/date_advertisement_placeholder_text"
-            android:textSize="32sp" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/editDateAdvertisement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choose date and time" />
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/durationAdvertisementET"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutDuration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/duration_advertisement_placeholder_text"
-            android:inputType="number"
-            android:textSize="32sp" />
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginVertical="5dp">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number">
 
-        <EditText
-            android:id="@+id/locationAdvertisementET"
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/location_advertisement_placeholder_text"
-            android:textSize="32sp" />
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginVertical="5dp">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/date_advertisement_placeholder_text"
+            app:startIconDrawable="@drawable/calendar"
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginVertical="5dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/editAdvertisementSaveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save Changes" />
+            android:text="@string/save_changes"
+            android:layout_marginVertical="5dp"/>
 
     </LinearLayout>
 

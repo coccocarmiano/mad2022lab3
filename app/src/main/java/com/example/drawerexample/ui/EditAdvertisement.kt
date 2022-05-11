@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -51,11 +52,11 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
             val adv = advertisementViewModel.liveAdvList.value?.get(advIndex!!)
 
             adv.apply {
-                binding.titleAdvertisementET.setText(adv?.title)
-                binding.descriptionAdvertisementET.setText(adv?.description)
-                binding.locationAdvertisementET.setText(adv?.location)
-                binding.durationAdvertisementET.setText(adv?.duration)
-                binding.dateAdvertisementEditET.setText(adv?.date)
+                binding.textInputEditTitle.setText(adv?.title)
+                binding.textInputEditDescription.setText(adv?.description)
+                binding.textInputEditLocation.setText(adv?.location)
+                binding.textInputEditDuration.setText(adv?.duration)
+                binding.textInputEditDate.setText(adv?.date)
             }
         }
 
@@ -68,7 +69,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                 }
             })
 
-        binding.editDateAdvertisement.setOnClickListener {
+        binding.textInputEditDate?.setOnClickListener {
             getDateTimeCalendar()
             DatePickerDialog(this.requireContext(),this,savedYear,savedMonth,savedDay).show()
         }
@@ -82,22 +83,22 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
 
     private fun checkSave(): Boolean {
         var check = true
-        if( binding.titleAdvertisementET.text.toString().isEmpty() ||
-            binding.descriptionAdvertisementET.text.toString().isEmpty() ||
-            binding.locationAdvertisementET.text.toString().isEmpty() ||
-            binding.durationAdvertisementET.text.toString().isEmpty() ||
-            binding.dateAdvertisementEditET.text.toString().isEmpty()
+        if( binding.textInputEditTitle.text.toString().isEmpty() ||
+            binding.textInputEditDescription.text.toString().isEmpty() ||
+            binding.textInputEditLocation.text.toString().isEmpty() ||
+            binding.textInputEditDuration.text.toString().isEmpty() ||
+            binding.textInputEditDate.text.toString().isEmpty()
         )
         check = false
         return check
     }
 
     private fun allEmpty() : Boolean {
-        return binding.titleAdvertisementET.text.toString().isEmpty() &&
-                binding.descriptionAdvertisementET.text.toString().isEmpty() &&
-                binding.locationAdvertisementET.text.toString().isEmpty() &&
-                binding.durationAdvertisementET.text.toString().isEmpty() &&
-                binding.dateAdvertisementEditET.text.toString().isEmpty()
+        return binding.textInputEditTitle.text.toString().isEmpty() &&
+                binding.textInputEditDescription.text.toString().isEmpty() &&
+                binding.textInputEditLocation.text.toString().isEmpty() &&
+                binding.textInputEditDuration.text.toString().isEmpty() &&
+                binding.textInputEditDate.text.toString().isEmpty()
     }
 
     fun saveAndExit() {
@@ -112,11 +113,12 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                 .show()
         else {
             val adv = Advertisement()
-            adv.title = binding.titleAdvertisementET.text.toString()
-            adv.description = binding.descriptionAdvertisementET.text.toString()
-            adv.location = binding.locationAdvertisementET.text.toString()
-            adv.duration = binding.durationAdvertisementET.text.toString()
-            adv.date = binding.dateAdvertisementEditET.text.toString()
+
+            adv.title = binding.textInputEditTitle.text.toString()
+            adv.description = binding.textInputEditDescription.text.toString()
+            adv.location = binding.textInputEditLocation.text.toString()
+            adv.duration = binding.textInputEditDuration.text.toString()
+            adv.date = binding.textInputEditDate.text.toString()
 
             if (advIndex == null || advIndex == -1) {
                 advertisementViewModel.liveAdvList.value?.add(adv)
@@ -160,7 +162,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         savedHour=p1
         savedMinute=p2
 
-        binding.dateAdvertisementEditET.setText(dateTimeToString(savedDay,savedMonth,savedYear,savedHour,savedMinute))
+        binding.textInputEditDate.setText(dateTimeToString(savedDay,savedMonth,savedYear,savedHour,savedMinute))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

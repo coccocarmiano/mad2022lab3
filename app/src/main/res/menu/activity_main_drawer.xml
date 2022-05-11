@@ -5,8 +5,12 @@
     tools:showIn="navigation_view">
     <item
         android:id="@+id/nav_show_profile"
-        android:title="@string/menu_show_profile" />
+        android:icon="@drawable/user"
+        android:title="@string/menu_show_profile"
+        app:showAsAction="withText" />
     <item
         android:id="@+id/nav_adv_list"
-        android:title="@string/menu_show_adv_list" />
+        android:icon="@drawable/list"
+        android:title="@string/menu_show_adv_list"
+        app:showAsAction="withText" />
 </menu>

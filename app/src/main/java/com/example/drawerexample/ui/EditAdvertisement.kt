@@ -18,8 +18,10 @@ import com.example.drawerexample.Advertisement
 import com.example.drawerexample.databinding.EditTimeSlotDetailsFragmentBinding
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
@@ -111,6 +113,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                 .setBackgroundTint(Color.RED)
                 .show()
         else {
+
             val adv = Advertisement()
             adv.title = binding.titleAdvertisementET.text.toString()
             adv.description = binding.descriptionAdvertisementET.text.toString()
@@ -120,10 +123,13 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
 
             if (advIndex == null || advIndex == -1) {
                 advertisementViewModel.liveAdvList.value?.add(adv)
+                advertisementViewModel.save(adv)
             } else {
+
                 advertisementViewModel.liveAdvList.value?.set(advIndex!!, adv)
+                advertisementViewModel.save(adv)
             }
-            advertisementViewModel.liveAdvList.value = advertisementViewModel.liveAdvList.value
+
 
             findNavController().popBackStack()
         }
@@ -165,6 +171,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         saveAndExit()
+
         return true
     }
 

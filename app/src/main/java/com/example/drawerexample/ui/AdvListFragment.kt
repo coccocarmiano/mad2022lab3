@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
 import com.example.drawerexample.adapter.AdvertisementsAdapter
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
@@ -37,7 +38,7 @@ class AdvListFragment : Fragment() {
         }
 
         advViewModel.liveAdvList.observe(viewLifecycleOwner) {
-            advAdapter.data = it
+            advAdapter.data = it as MutableList<Advertisement>
             advAdapter.notifyDataSetChanged()
         }
 

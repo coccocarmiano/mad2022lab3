@@ -1,9 +1,9 @@
 package com.example.drawerexample
 
-class Advertisement {
-    var title = ""
-    var description = ""
-    var date = ""
-    var duration = ""
-    var location = ""
-}
+class Advertisement (
+    var title :String= "",
+    var description :String= "",
+    var date :String= "",
+    var duration :String= "",
+    var location :String= ""
+)

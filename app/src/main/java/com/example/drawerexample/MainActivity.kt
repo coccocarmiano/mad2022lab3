@@ -3,6 +3,7 @@ package com.example.drawerexample
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -13,6 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.drawerexample.databinding.ActivityMainBinding
+import com.example.drawerexample.databinding.NavHeaderMainBinding
 import com.example.drawerexample.viewmodel.UserViewModel
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.material.snackbar.Snackbar
@@ -48,6 +50,23 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+
+        firebaseAuth.addAuthStateListener {
+            if ( it.currentUser == null ) {
+                binding.navView.menu.findItem(R.id.nav_logout).isVisible = false
+                navController.navigate(R.id.loginFragment)
+            } else {
+                binding.navView.menu.findItem(R.id.nav_logout).isVisible = true
+            }
+        }
+
+        binding.navView.menu
+            .findItem(R.id.nav_logout)
+            .setOnMenuItemClickListener {
+                firebaseAuth.signOut()
+                navController.navigate(R.id.loginFragment)
+                true
+            }
     }
 
     override fun onSupportNavigateUp(): Boolean {

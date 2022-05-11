@@ -2,6 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_menu"
     tools:showIn="navigation_view">
     <item
         android:id="@+id/nav_show_profile"
@@ -13,4 +14,9 @@
         android:icon="@drawable/list"
         android:title="@string/menu_show_adv_list"
         app:showAsAction="withText" />
+    <item
+        android:id="@+id/nav_logout"
+        android:title="Logout"
+        android:icon="@drawable/user"
+        app:showAsAction="withText"/>
 </menu>

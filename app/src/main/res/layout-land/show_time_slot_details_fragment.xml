@@ -1,46 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_weight="1"
+        android:paddingHorizontal="15dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/titleAdvertisementTV"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textLayoutTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Advertisement Title"
-            android:textSize="32sp" />
-        <TextView
-            android:id="@+id/descriptionAdvertisementTV"
+            android:hint="@string/title_advertisement_placeholder_text"
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginVertical="5dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:textColor="@color/black">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textLayoutDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Description"
-            android:textSize="32sp" />
-        <TextView
-            android:id="@+id/dateAdvertisementTV"
+            android:hint="@string/description_advertisement_placeholder_text"
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginVertical="5dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:textColor="@color/black">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textLayoutDuration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date, time"
-            android:textSize="32sp" />
-        <TextView
-            android:id="@+id/durationAdvertisementTV"
+            android:hint="@string/duration_advertisement_placeholder_text"
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginVertical="5dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textDuration"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:textColor="@color/black">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textLayoutLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Duration"
-            android:textSize="32sp" />
-        <TextView
-            android:id="@+id/locationAdvertisementTV"
+            android:hint="@string/location_advertisement_placeholder_text"
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginVertical="5dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:textColor="@color/black">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textLayoutDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Location"
-            android:textSize="32sp" />
-    </LinearLayout>>
+            android:hint="@string/date_advertisement_placeholder_text"
+            android:textSize="32sp"
+            app:startIconDrawable="@drawable/calendar"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_marginVertical="5dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:enabled="false"
+                android:textColor="@color/black">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
 
 </ScrollView>

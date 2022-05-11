@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.drawerexample.MainActivity
+import com.example.drawerexample.R
 import com.example.drawerexample.databinding.FragmentLoginBinding
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -30,12 +32,11 @@ class LoginFragment : Fragment() {
             signInWithGoogle()
         }
 
-        if (auth.currentUser != null) {
-            //TODO: Add navigation login -> adv list
-            println(":)")
+        auth.addAuthStateListener {
+            if (it.currentUser != null) {
+                findNavController().navigate(R.id.action_loginFragment_to_nav_adv_list)
+            }
         }
-
-        //TODO: Change bar text
 
         return binding.root
     }

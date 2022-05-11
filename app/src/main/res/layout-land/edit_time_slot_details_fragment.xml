@@ -13,89 +13,99 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/titleAdvertisementET"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/title_advertisement_placeholder_text"
-            android:textSize="32sp" />
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginVertical="5dp">
 
-        <EditText
-            android:id="@+id/descriptionAdvertisementET"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/description_advertisement_placeholder_text"
-            android:textSize="32sp" />
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginVertical="5dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutDuration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:hint="@string/duration_advertisement_placeholder_text"
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginVertical="5dp">
 
-            <EditText
-                android:id="@+id/dateAdvertisementEditET"
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditDuration"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:clickable="false"
-                android:editable="false"
-                android:hint="@string/date_advertisement_placeholder_text"
-                android:textSize="32sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/editDateAdvertisement"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:inputType="number">
 
-            <Button
-                android:id="@+id/editDateAdvertisement"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Choose date and time"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/dateAdvertisementEditET"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:hint="@string/location_advertisement_placeholder_text"
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginVertical="5dp">
 
-            <EditText
-                android:id="@+id/locationAdvertisementET"
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditLocation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayoutDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/date_advertisement_placeholder_text"
+            app:startIconDrawable="@drawable/calendar"
+            android:textSize="32sp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_marginVertical="5dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputEditDate"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/location_advertisement_placeholder_text"
-                android:textSize="32sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/durationAdvertisementET"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:focusable="false">
 
-            <EditText
-                android:id="@+id/durationAdvertisementET"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/duration_advertisement_placeholder_text"
-                android:inputType="number"
-                android:textSize="32sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/locationAdvertisementET"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/editAdvertisementSaveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Save Changes"
-            android:layout_marginBottom="8dp"/>
+            android:text="@string/save_changes"
+            android:layout_marginVertical="5dp"/>
     </LinearLayout>
 </ScrollView>

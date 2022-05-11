@@ -91,7 +91,7 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.drawerexample.ui.LoginFragment"
-        android:label="fragment_login"
+        android:label="Login with Google"
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_nav_adv_list"

@@ -56,8 +56,7 @@ class EditProfile : Fragment() {
         binding.editProfileSaveButton.setOnClickListener {
             if (!allFieldsAreValid()) Snackbar.make(root, "Please fill all the fields", Snackbar.LENGTH_LONG).show()
             else {
-                updateViewModelFields()
-                userViewModel.pushChangesToFirebase()
+                updateViewModel()
                 findNavController().popBackStack()
             }
         }
@@ -80,9 +79,10 @@ class EditProfile : Fragment() {
 
         requireActivity()
             .onBackPressedDispatcher
-            .addCallback {
+            .addCallback(viewLifecycleOwner) {
                 findNavController().popBackStack()
             }
+
         return root
     }
 
@@ -93,18 +93,19 @@ class EditProfile : Fragment() {
                 binding.textInputEditUserName.text.toString().isEmpty())
     }
 
-    private fun updateViewModelFields() {
-        userViewModel.liveUser.value?.run {
-            fullname = binding.textInputEditFullName.text.toString()
-            mail = binding.textInputEditMail.text.toString()
-            username = binding.textInputEditUserName.text.toString()
-            location = binding.textInputEditUserLocation.text.toString()
-        }
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         findNavController().popBackStack()
         return true
+    }
+
+    private fun updateViewModel() {
+        userViewModel.liveUser.value?.run {
+            fullname = binding.textInputEditFullName.text.toString()
+            username = binding.textInputEditUserName.text.toString()
+            mail = binding.textInputEditMail.text.toString()
+            location = binding.textInputEditUserLocation.text.toString()
+            userViewModel.updateViewModel()
+        }
     }
 
 }

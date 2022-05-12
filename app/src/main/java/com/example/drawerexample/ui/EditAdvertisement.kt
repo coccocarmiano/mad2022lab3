@@ -71,7 +71,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                 }
             })
 
-        binding.textInputEditDate?.setOnClickListener {
+        binding.textInputEditDate.setOnClickListener {
             getDateTimeCalendar()
             DatePickerDialog(this.requireContext(),this,savedYear,savedMonth,savedDay).show()
         }

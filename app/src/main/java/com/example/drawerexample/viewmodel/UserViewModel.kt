@@ -110,17 +110,28 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
         }
     }
 
-    fun pushChangesToFirebase() {
+    private fun pushChangesToFirebase() {
         liveUser.value?.run {
             val userHashMap = hashMapOf(
                 "fullName" to fullname,
                 "email" to mail,
                 "location" to location,
                 "skills" to skills,
-                "username" to username
+                "username" to username,
+                "skills" to skills
             )
             userDocumentReference.set(userHashMap)
         }
+    }
+
+    fun updateSkills(skills : List<String>) {
+        liveUser.value?.skills = skills
+        pushChangesToFirebase()
+    }
+
+    fun updateViewModel() {
+        liveUser.value = UserProfile(liveUser.value ?: UserProfile())
+        pushChangesToFirebase()
     }
 
     private fun attachListener() {

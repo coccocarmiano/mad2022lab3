@@ -22,9 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 class EditProfile : Fragment() {
 
     private val userViewModel: UserViewModel by activityViewModels()
-
-    private var _binding: EditProfileFragmentBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding : EditProfileFragmentBinding
 
 
     override fun onCreateView(
@@ -32,7 +30,7 @@ class EditProfile : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = EditProfileFragmentBinding.inflate(inflater, container, false)
+        binding = EditProfileFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         setHasOptionsMenu(true)

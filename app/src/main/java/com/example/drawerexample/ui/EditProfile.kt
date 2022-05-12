@@ -1,7 +1,6 @@
 package com.example.drawerexample.ui
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -10,11 +9,11 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.drawerexample.MainActivity
 import com.example.drawerexample.R
-import com.example.drawerexample.UserProfile
 import com.example.drawerexample.databinding.EditProfileFragmentBinding
 import com.example.drawerexample.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -35,13 +34,16 @@ class EditProfile : Fragment() {
 
         setHasOptionsMenu(true)
 
-        val user = userViewModel.liveUser.value!!
 
-        binding.textInputEditFullName.setText(user.fullname)
-        binding.textInputEditMail.setText(user.mail)
-        binding.textInputEditUserLocation.setText(user.location)
-        binding.textInputEditUserName.setText(user.username)
-        binding.profileImageEditProfile.setImageBitmap(userViewModel.livePicture.value)
+        userViewModel.liveUser.observe(viewLifecycleOwner) { user ->
+            user.run {
+                fullname.let { binding.textInputEditFullName.setText(it) }
+                username.let { binding.textInputEditUserName.setText(it) }
+                mail.let { binding.textInputEditMail.setText(it) }
+                location.let { binding.textInputEditUserLocation.setText(it) }
+                username.let { binding.textInputEditUserName.setText(it) }
+            }
+        }
 
         userViewModel.livePicture.observe(viewLifecycleOwner) {
             binding.profileImageEditProfile.setImageBitmap(it)
@@ -52,7 +54,12 @@ class EditProfile : Fragment() {
         }
 
         binding.editProfileSaveButton.setOnClickListener {
-            saveAndExit()
+            if (!allFieldsAreValid()) Snackbar.make(root, "Please fill all the fields", Snackbar.LENGTH_LONG).show()
+            else {
+                updateViewModelFields()
+                userViewModel.pushChangesToFirebase()
+                findNavController().popBackStack()
+            }
         }
 
         binding.editProfileImageButton.setOnClickListener {
@@ -67,49 +74,36 @@ class EditProfile : Fragment() {
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    saveAndExit()
+                    findNavController().popBackStack()
                 }
             })
 
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback {
+                findNavController().popBackStack()
+            }
         return root
     }
 
-    private fun checkSave(): Boolean {
-        var check = true
-        if( binding.textInputEditFullName.text.toString().isEmpty() ||
-            binding.textInputEditMail.text.toString().isEmpty() ||
-            binding.textInputEditUserLocation.text.toString().isEmpty() ||
-            binding.textInputEditUserName.text.toString().isEmpty()
-        )
-            check = false
-        return check
+    private fun allFieldsAreValid(): Boolean {
+        return !(binding.textInputEditFullName.text.toString().isEmpty() ||
+                binding.textInputEditMail.text.toString().isEmpty() ||
+                binding.textInputEditUserLocation.text.toString().isEmpty() ||
+                binding.textInputEditUserName.text.toString().isEmpty())
     }
 
-    fun saveAndExit() {
-        if(!checkSave()){
-            Snackbar
-                .make(binding.mainScrollView as View, "Please complete the form", Snackbar.LENGTH_SHORT)
-                .setBackgroundTint(Color.RED)
-                .show()
-        }else {
-            val user = UserProfile()
-            user.fullname = binding.textInputEditFullName.text.toString()
-            user.mail = binding.textInputEditMail.text.toString()
-            user.location = binding.textInputEditUserLocation.text.toString()
-            user.username = binding.textInputEditUserName.text.toString()
-            userViewModel.liveUser.value = user
-
-            findNavController().popBackStack()
+    private fun updateViewModelFields() {
+        userViewModel.liveUser.value?.run {
+            fullname = binding.textInputEditFullName.text.toString()
+            mail = binding.textInputEditMail.text.toString()
+            username = binding.textInputEditUserName.text.toString()
+            location = binding.textInputEditUserLocation.text.toString()
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        saveAndExit()
+        findNavController().popBackStack()
         return true
     }
 

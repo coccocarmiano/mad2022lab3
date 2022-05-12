@@ -3,19 +3,16 @@ package com.example.drawerexample.ui
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.drawerexample.R
 import com.example.drawerexample.databinding.ShowProfileFragmentBinding
 import com.example.drawerexample.viewmodel.UserViewModel
 
-
 class ShowProfile : Fragment() {
 
-    private val userViewModel: UserViewModel by activityViewModels()
-
-    private var _binding: ShowProfileFragmentBinding? = null
-    private val binding get() = _binding!!
+    private val userViewModel by viewModels<UserViewModel>()
+    private lateinit var binding : ShowProfileFragmentBinding
 
 
     override fun onCreateView(
@@ -23,17 +20,17 @@ class ShowProfile : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
 
-        _binding = ShowProfileFragmentBinding.inflate(inflater, container, false)
+        binding = ShowProfileFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        userViewModel.liveUser.observe(viewLifecycleOwner) {
+        userViewModel.liveUser.observe(viewLifecycleOwner){
             binding.fullNameTV.text = it.fullname
             binding.emailTV.text = it.mail
             binding.locationTV.text = it.location
             binding.usernameTV.text = it.username
         }
+
 
         userViewModel.liveSkills.observe(viewLifecycleOwner) {
             if (it.isEmpty())
@@ -45,12 +42,9 @@ class ShowProfile : Fragment() {
         userViewModel.livePicture.observe(viewLifecycleOwner) {
             binding.profileImageShowProfile.setImageBitmap(it)
         }
-        return root
-    }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        setHasOptionsMenu(true)
+        return root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

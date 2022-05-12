@@ -3,21 +3,19 @@ package com.example.drawerexample.viewmodel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.drawerexample.Advertisement
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
-
 class AdvertisementViewModel(private val app: Application): AndroidViewModel(app) {
 
     var liveAdvList = MutableLiveData<MutableList<Advertisement>>()
     private var l:ListenerRegistration
-    private val db: FirebaseFirestore
+    private val db = FirebaseFirestore.getInstance()
+
     init {
-        db = FirebaseFirestore.getInstance()
         l = db.collection("advertisements")
             .addSnapshotListener { v, e ->
                 if (e==null) {

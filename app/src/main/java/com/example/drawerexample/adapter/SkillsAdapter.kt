@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drawerexample.R
 
-class SkillsAdapter(val skills: Array<String>, private val userSkills : MutableLiveData<MutableList<String>>) : RecyclerView.Adapter<SkillsAdapter.SkillViewHolder>() {
+class SkillsAdapter(private val skills: Array<String>, private val userSkills : MutableLiveData<MutableList<String>>) : RecyclerView.Adapter<SkillsAdapter.SkillViewHolder>() {
 
     class SkillViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val skillTextView : TextView = view.findViewById<TextView>(R.id.skillsListItemTextView)

@@ -9,11 +9,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drawerexample.R
 
-class SkillsAdapter(private val skills: Array<String>, private val userSkills : MutableLiveData<MutableList<String>>) : RecyclerView.Adapter<SkillsAdapter.SkillViewHolder>() {
+class SkillsAdapter(private val skills : HashMap<String, Boolean>) : RecyclerView.Adapter<SkillsAdapter.SkillViewHolder>() {
 
     class SkillViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val skillTextView : TextView = view.findViewById<TextView>(R.id.skillsListItemTextView)
-        val skillCheckBox : CheckBox = view.findViewById<CheckBox>(R.id.skillsListItemCheckbox)
+        val skillTextView : TextView = view.findViewById(R.id.skillsListItemTextView)
+        val skillCheckBox : CheckBox = view.findViewById(R.id.skillsListItemCheckbox)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SkillViewHolder {
@@ -22,10 +22,8 @@ class SkillsAdapter(private val skills: Array<String>, private val userSkills : 
             .inflate(R.layout.skill_list_item, parent, false)
 
         view.findViewById<CheckBox>(R.id.skillsListItemCheckbox).setOnClickListener {
-            when (view.findViewById<CheckBox>(R.id.skillsListItemCheckbox).isChecked) {
-                true -> userSkills.value?.add(view.findViewById<TextView>(R.id.skillsListItemTextView).text.toString())
-                false -> userSkills.value?.remove(view.findViewById<TextView>(R.id.skillsListItemTextView).text.toString())
-            }
+            val skill = view.findViewById<TextView>(R.id.skillsListItemTextView).text.toString()
+            skills[skill] = skills[skill]?.not() ?: false
         }
 
         return SkillViewHolder(view)
@@ -33,8 +31,9 @@ class SkillsAdapter(private val skills: Array<String>, private val userSkills : 
 
 
     override fun onBindViewHolder(holder: SkillViewHolder, position: Int) {
-        holder.skillTextView.text = skills[position]
-        holder.skillCheckBox.isChecked = userSkills.value?.contains(skills[position]) ?: false
+        val element = skills.entries.elementAt(position)
+        holder.skillTextView.text = element.key
+        holder.skillCheckBox.isChecked = element.value
     }
 
     override fun getItemCount(): Int {

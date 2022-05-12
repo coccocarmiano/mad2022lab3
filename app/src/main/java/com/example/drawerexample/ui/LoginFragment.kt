@@ -34,7 +34,7 @@ class LoginFragment : Fragment() {
 
         auth.addAuthStateListener {
             if (it.currentUser != null) {
-                findNavController().navigate(R.id.action_loginFragment_to_nav_adv_list)
+                findNavController().navigate(R.id.nav_adv_list)
             }
         }
 

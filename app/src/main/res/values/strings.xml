@@ -22,7 +22,7 @@
     <string name="email_placeholder_text">Email</string>
     <string name="editProfileButtonText">Edit Profile</string>
     <string name="no_skills">No Skills</string>
-    <string name="editSkillsFragmentBackButton">Back</string>
+    <string name="editSkillsFragmentSaveButton">Save Skills</string>
 
     <string name="title_advertisement_placeholder_text">Title</string>
     <string name="description_advertisement_placeholder_text">Description</string>

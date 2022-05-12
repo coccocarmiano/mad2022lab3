@@ -30,7 +30,7 @@
         android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="20dp"
         android:layout_weight="5"
-        android:text="@string/editSkillsFragmentBackButton"/>
+        android:text="@string/editSkillsFragmentSaveButton"/>
 
 
     </LinearLayout>

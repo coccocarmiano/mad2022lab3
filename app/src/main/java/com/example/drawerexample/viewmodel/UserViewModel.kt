@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.drawerexample.R
@@ -16,28 +17,26 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import java.io.File
 
-class UserViewModel(private val app: Application) : AndroidViewModel(app) {
+class UserViewModel(val app : Application) : AndroidViewModel(app) {
 
-    @Suppress("unused")
-    constructor(test : String) : this(Application()) {
-        if (!userDocumentExists()) createDefaultUserDocument()
-
-        userDocumentReference.addSnapshotListener {  doc, err -> run {
-            when (err) {
-                null -> doc?.run { updateUserFromDocument(this) }
-                else -> Log.e("UserViewModel", err.toString())
-            }
-        }
-        }
-    }
-
-    val liveUser = MutableLiveData<UserProfile>()
+    val liveUser : MutableLiveData<UserProfile> = MutableLiveData()
     val livePicture = MutableLiveData<Bitmap>()
     val liveSkills = MutableLiveData<MutableList<String>>()
     private val uid = Firebase.auth.currentUser?.uid ?: "NULL_USER_UID"
     private val db = FirebaseFirestore.getInstance()
     private val userDocumentReference = db.collection("users").document(uid)
 
+    init {
+        liveUser.value = UserProfile()
+        userDocumentReference.get()
+            .addOnSuccessListener {
+                if (!it.exists()) createDefaultUserDocument()
+                else updateUserFromDocument(it)
+            }.addOnFailureListener {
+                Toast.makeText(app, "Failed to get user document", Toast.LENGTH_LONG).show()
+            }
+        attachListener()
+    }
 
     fun storeProfilePicture(bmp : Bitmap) {
         val user = liveUser.value!!
@@ -68,14 +67,12 @@ class UserViewModel(private val app: Application) : AndroidViewModel(app) {
         livePicture.value = loadProfilePicture(user.profilePictureFilename)
     }
 
-    private fun userDocumentExists(): Boolean {
-        return userDocumentReference.get().result.exists()
-    }
-
     private fun createDefaultUserDocument() {
+        val currentUser = Firebase.auth.currentUser
         val userHashMap = hashMapOf(
-            "fullName" to app.getString(R.string.fullname_placeholder_text),
-            "email" to app.getString(R.string.email_placeholder_text),
+            "fullName" to  ( currentUser?.displayName ?: app.getString(R.string.username_placeholder_text) ),
+            "username" to app.getString(R.string.username_placeholder_text),
+            "email" to ( currentUser?.email ?: app.getString(R.string.email_placeholder_text) ),
             "location" to app.getString(R.string.location_placeholder_text),
             "skills" to listOf<String>()
         )
@@ -85,11 +82,14 @@ class UserViewModel(private val app: Application) : AndroidViewModel(app) {
         }
     }
 
+
     private fun updateUserFromDocument(doc : DocumentSnapshot) {
-        val user = liveUser.value
-        user?.run {
+        UserProfile().apply {
             doc.getString("fullName")?.let {
                 fullname = it
+            }
+            doc.getString("username")?.let {
+                username = it
             }
             doc.getString("email")?.let {
                 mail = it
@@ -101,8 +101,34 @@ class UserViewModel(private val app: Application) : AndroidViewModel(app) {
                 try {
                     @Suppress("UNCHECKED_CAST")
                     skills = it as List<String>
-                } catch (e : ClassCastException) {
+                } catch (e: ClassCastException) {
                     Log.e("UserViewModel", "Failed to cast skills to list")
+                }
+            }
+        }.also {
+            liveUser.value = it
+        }
+    }
+
+    fun pushChangesToFirebase() {
+        liveUser.value?.run {
+            val userHashMap = hashMapOf(
+                "fullName" to fullname,
+                "email" to mail,
+                "location" to location,
+                "skills" to skills,
+                "username" to username
+            )
+            userDocumentReference.set(userHashMap)
+        }
+    }
+
+    private fun attachListener() {
+        userDocumentReference.addSnapshotListener { doc, err ->
+            run {
+                when (err) {
+                    null -> doc?.run { updateUserFromDocument(this) }
+                    else -> Log.e("UserViewModel", err.toString())
                 }
             }
         }

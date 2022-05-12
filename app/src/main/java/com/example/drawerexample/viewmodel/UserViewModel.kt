@@ -5,65 +5,39 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.example.drawerexample.R
 import com.example.drawerexample.UserProfile
-import org.json.JSONObject
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import java.io.File
-
 
 class UserViewModel(private val app: Application) : AndroidViewModel(app) {
 
-    var observer : Observer<UserProfile>
+    @Suppress("unused")
+    constructor(test : String) : this(Application()) {
+        if (!userDocumentExists()) createDefaultUserDocument()
+
+        userDocumentReference.addSnapshotListener {  doc, err -> run {
+            when (err) {
+                null -> doc?.run { updateUserFromDocument(this) }
+                else -> Log.e("UserViewModel", err.toString())
+            }
+        }
+        }
+    }
+
     val liveUser = MutableLiveData<UserProfile>()
     val livePicture = MutableLiveData<Bitmap>()
     val liveSkills = MutableLiveData<MutableList<String>>()
+    private val uid = Firebase.auth.currentUser?.uid ?: "NULL_USER_UID"
+    private val db = FirebaseFirestore.getInstance()
+    private val userDocumentReference = db.collection("users").document(uid)
 
-    init {
-        val jsonString = app.getSharedPreferences("user", Context.MODE_PRIVATE).getString("user", "{}") ?: "{}"
-        val json = JSONObject(jsonString)
-
-        val user = UserProfile()
-
-        json.apply {
-            user.fullname = optString("fullname", app.getString(R.string.fullname_placeholder_text))
-            user.username = optString("username", app.getString(R.string.username_placeholder_text))
-            user.location = optString("location", app.getString(R.string.location_placeholder_text))
-            user.mail = optString("mail", app.getString(R.string.email_placeholder_text))
-            liveSkills.value = optString("skills", "").let {
-                when (it) {
-                    "" -> mutableListOf()
-                    else -> it.split(",").toMutableList()
-                }
-            }
-        }
-        livePicture.value = loadProfilePicture(user.profilePictureFilename);
-        liveUser.value = user
-
-        observer = Observer { save(it) }
-        liveUser.observeForever(observer)
-    }
-
-    private fun save(user : UserProfile) {
-        JSONObject()
-            .apply {
-                put("fullname", user.fullname)
-                put("username", user.username)
-                put("location", user.location)
-                put("mail", user.mail)
-                put("skills", liveSkills.value?.joinToString(",") ?: "")
-            }.toString()
-            .run {
-                 app
-                .getSharedPreferences("user", Context.MODE_PRIVATE)
-                .edit()
-                .putString("user", this)
-                .apply()
-            }
-
-    }
 
     fun storeProfilePicture(bmp : Bitmap) {
         val user = liveUser.value!!
@@ -94,9 +68,45 @@ class UserViewModel(private val app: Application) : AndroidViewModel(app) {
         livePicture.value = loadProfilePicture(user.profilePictureFilename)
     }
 
-    override fun onCleared() {
-        liveUser.removeObserver(observer)
-        super.onCleared()
+    private fun userDocumentExists(): Boolean {
+        return userDocumentReference.get().result.exists()
     }
+
+    private fun createDefaultUserDocument() {
+        val userHashMap = hashMapOf(
+            "fullName" to app.getString(R.string.fullname_placeholder_text),
+            "email" to app.getString(R.string.email_placeholder_text),
+            "location" to app.getString(R.string.location_placeholder_text),
+            "skills" to listOf<String>()
+        )
+
+        userDocumentReference.set(userHashMap).addOnFailureListener {
+            Log.e("UserViewModel", "Failed to create default user document")
+        }
+    }
+
+    private fun updateUserFromDocument(doc : DocumentSnapshot) {
+        val user = liveUser.value
+        user?.run {
+            doc.getString("fullName")?.let {
+                fullname = it
+            }
+            doc.getString("email")?.let {
+                mail = it
+            }
+            doc.getString("location")?.let {
+                location = it
+            }
+            doc.get("skills")?.let {
+                try {
+                    @Suppress("UNCHECKED_CAST")
+                    skills = it as List<String>
+                } catch (e : ClassCastException) {
+                    Log.e("UserViewModel", "Failed to cast skills to list")
+                }
+            }
+        }
+    }
+
 }
 

@@ -28,7 +28,29 @@ class AdvertisementViewModel(private val app: Application): AndroidViewModel(app
     fun save(adv : Advertisement) {
         db.collection("advertisements")
             .document()
-            .set(adv)
+            .set(
+                hashMapOf(
+                "title" to adv.title,
+                "description" to adv.description,
+                "location" to adv.location,
+                "date" to adv.date,
+                "duration" to adv.duration
+            ))
+            .addOnSuccessListener { it -> Log.d("Firebase", "success ${it.toString()}") }
+            .addOnFailureListener { Log.d("Firebase", it.message ?: "Error") }
+
+    }
+
+    fun updateAdvertisement(id:String, adv : Advertisement) {
+        db.collection("advertisements").document(id).set(
+            hashMapOf(
+                "title" to adv.title,
+                "description" to adv.description,
+                "location" to adv.location,
+                "date" to adv.date,
+                "duration" to adv.duration
+            )
+        )
             .addOnSuccessListener { it -> Log.d("Firebase", "success ${it.toString()}") }
             .addOnFailureListener { Log.d("Firebase", it.message ?: "Error") }
 
@@ -42,13 +64,14 @@ class AdvertisementViewModel(private val app: Application): AndroidViewModel(app
 
     fun DocumentSnapshot.toAdvertisement(): Advertisement? {
         return try {
+            val id = id
             val title = get("title") as String
             val description = get("description") as String
             val date = get("date") as String
             val duration = get("duration") as String
             val location = get("location") as String
 
-            Advertisement( title, description, date, duration, location)
+            Advertisement(id, title, description, date, duration, location)
         } catch (e: Exception) {
             e.printStackTrace()
         null

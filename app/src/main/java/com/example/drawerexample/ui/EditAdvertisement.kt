@@ -36,6 +36,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
     private var savedYear = 0
     private var savedHour = 0
     private var savedMinute = 0
+    private var id=""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,7 +51,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         advIndex = arguments?.getInt("adv_index", -1)
         if (advIndex != null && advIndex != -1) {
             val adv = advertisementViewModel.liveAdvList.value?.get(advIndex!!)
-
+            id= adv!!.id
             adv.apply {
                 binding.textInputEditTitle.setText(adv?.title)
                 binding.textInputEditDescription.setText(adv?.description)
@@ -127,7 +128,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
             } else {
 
                 advertisementViewModel.liveAdvList.value?.set(advIndex!!, adv)
-                advertisementViewModel.save(adv)
+                advertisementViewModel.updateAdvertisement(id,adv)
             }
 
 

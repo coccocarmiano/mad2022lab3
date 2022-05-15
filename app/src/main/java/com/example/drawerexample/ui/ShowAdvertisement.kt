@@ -28,10 +28,13 @@ class ShowAdvertisement : Fragment() {
         val root: View = binding.root
 
         advIndex = arguments?.getInt("adv_index", -1)
-        if (advIndex != null && advIndex != -1) {
-            val adv = advertisementViewModel.liveAdvList.value?.get(advIndex!!)
 
-            refreshUI(adv)
+        advIndex?.also { idx ->
+            if ( idx != -1 ) {
+                advertisementViewModel.liveAdvList.value?.get(idx)?.also { adv ->
+                    refreshUI(adv)
+                }
+            }
         }
 
         advertisementViewModel.liveAdvList.observe(viewLifecycleOwner) {

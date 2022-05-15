@@ -14,9 +14,12 @@ class AdvertisementViewModel: ViewModel() {
 
     init {
         db.collection("advertisements")
-            .addSnapshotListener { v, e ->
-                if (e==null) {
-                    liveAdvList.value=(v!!.mapNotNull { d -> d.toAdvertisement() } as MutableList<Advertisement>)
+            .addSnapshotListener { changes, err ->
+                when (err) {
+                    null -> {
+                        liveAdvList.value = changes?.map { doc -> doc.toAdvertisement() } as MutableList<Advertisement>
+                    }
+                    else -> Log.e("Firestore", err.toString())
                 }
             }
     }

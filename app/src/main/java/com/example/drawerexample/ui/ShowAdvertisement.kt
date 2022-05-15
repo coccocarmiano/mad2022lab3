@@ -13,9 +13,7 @@ import com.example.drawerexample.databinding.ShowTimeSlotDetailsFragmentBinding
 class ShowAdvertisement : Fragment() {
 
     private val advertisementViewModel: AdvertisementViewModel by activityViewModels()
-
-    private var _binding: ShowTimeSlotDetailsFragmentBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding : ShowTimeSlotDetailsFragmentBinding
 
     private var advIndex : Int? = null
 
@@ -26,7 +24,7 @@ class ShowAdvertisement : Fragment() {
     ): View {
         setHasOptionsMenu(true)
 
-        _binding = ShowTimeSlotDetailsFragmentBinding.inflate(inflater, container, false)
+        binding = ShowTimeSlotDetailsFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         advIndex = arguments?.getInt("adv_index", -1)

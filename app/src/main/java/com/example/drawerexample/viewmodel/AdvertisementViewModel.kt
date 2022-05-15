@@ -8,7 +8,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
-class AdvertisementViewModel(): ViewModel() {
+class AdvertisementViewModel: ViewModel() {
 
     var liveAdvList = MutableLiveData<MutableList<Advertisement>>()
     private var listenerRegistration : ListenerRegistration
@@ -29,12 +29,12 @@ class AdvertisementViewModel(): ViewModel() {
             .document()
             .set(
                 hashMapOf(
-                "title" to adv.title,
-                "description" to adv.description,
-                "location" to adv.location,
-                "date" to adv.date,
-                "duration" to adv.duration
-            ))
+                    "title" to adv.title,
+                    "description" to adv.description,
+                    "location" to adv.location,
+                    "date" to adv.date,
+                    "duration" to adv.duration
+                ))
             .addOnSuccessListener { it -> Log.d("Firebase", "success ${it.toString()}") }
             .addOnFailureListener { Log.d("Firebase", it.message ?: "Error") }
 

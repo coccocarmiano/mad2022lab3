@@ -61,20 +61,15 @@ class AdvertisementViewModel(): ViewModel() {
         listenerRegistration.remove()
     }
 
-    fun DocumentSnapshot.toAdvertisement(): Advertisement? {
-        return try {
-            val id = id
-            val title = get("title") as String
-            val description = get("description") as String
-            val date = get("date") as String
-            val duration = get("duration") as String
-            val location = get("location") as String
-
-            Advertisement(id, title, description, date, duration, location)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        null
+    private fun DocumentSnapshot.toAdvertisement(): Advertisement {
+        return Advertisement().also {
+            it.id = id
+            it.title = get("title") as String
+            it.description = get("description") as String
+            it.date = get("date") as String
+            it.duration = get("duration") as String
+            it.location = get("location") as String
+        }
     }
-}
 
 }

@@ -15,7 +15,7 @@ import com.example.drawerexample.R
 
 class AdvertisementsAdapter(private val parentFragment : Fragment) : RecyclerView.Adapter<AdvertisementsAdapter.AdvViewHolder>() {
 
-    val data = mutableListOf<Advertisement>()
+    var data = mutableListOf<Advertisement>()
 
     class AdvViewHolder(view: View, parentFragment: Fragment) : RecyclerView.ViewHolder(view) {
         val advTitleTv : TextView = view.findViewById(R.id.adv_title)

@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -124,7 +123,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
 
             if (advIndex == null || advIndex == -1) {
                 advertisementViewModel.liveAdvList.value?.add(adv)
-                advertisementViewModel.save(adv)
+                advertisementViewModel.saveAdvertisement(adv)
             } else {
 
                 advertisementViewModel.liveAdvList.value?.set(advIndex!!, adv)

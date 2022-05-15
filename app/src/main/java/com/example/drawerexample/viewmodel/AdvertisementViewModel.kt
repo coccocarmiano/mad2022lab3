@@ -1,8 +1,6 @@
 package com.example.drawerexample.viewmodel
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.drawerexample.Advertisement
@@ -13,11 +11,11 @@ import com.google.firebase.firestore.ListenerRegistration
 class AdvertisementViewModel(): ViewModel() {
 
     var liveAdvList = MutableLiveData<MutableList<Advertisement>>()
-    private var l:ListenerRegistration
+    private var listenerRegistration : ListenerRegistration
     private val db = FirebaseFirestore.getInstance()
 
     init {
-        l = db.collection("advertisements")
+        listenerRegistration = db.collection("advertisements")
             .addSnapshotListener { v, e ->
                 if (e==null) {
                     liveAdvList.value=(v!!.mapNotNull { d -> d.toAdvertisement() } as MutableList<Advertisement>)
@@ -26,7 +24,7 @@ class AdvertisementViewModel(): ViewModel() {
         liveAdvList=liveAdvList
     }
 
-    fun save(adv : Advertisement) {
+    fun saveAdvertisement(adv : Advertisement) {
         db.collection("advertisements")
             .document()
             .set(
@@ -60,7 +58,7 @@ class AdvertisementViewModel(): ViewModel() {
     override fun onCleared() {
 
         super.onCleared()
-        l.remove()
+        listenerRegistration.remove()
     }
 
     fun DocumentSnapshot.toAdvertisement(): Advertisement? {

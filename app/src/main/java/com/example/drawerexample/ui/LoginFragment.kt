@@ -43,8 +43,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun signInWithGoogle() {
-        //TODO: Move this to XML?
-        val serverClientId = "1003173012370-01id4jr51kdqt07trng2dknpnk8n8c51.apps.googleusercontent.com"
+        val serverClientId = getString(R.string.google_server_client_id)
         val oneTapClient = Identity.getSignInClient(requireActivity())
         val signInRequest = BeginSignInRequest
             .builder()

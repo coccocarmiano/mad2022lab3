@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">TimeBank</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -35,4 +35,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="save_changes">Save Changes</string>
     <string name="no_google_account_on_device">No Google account registered on the device.</string>
+
+    <!-- TODO: Understand where the f does this string go -->
+    <string name="google_server_client_id" tools:ignore="TypographyDashes">"1003173012370-01id4jr51kdqt07trying2kink8n8c51.apps.googolplexes.com"</string>
 </resources>

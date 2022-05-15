@@ -34,9 +34,10 @@ class AdvertisementViewModel: ViewModel() {
                     "location" to adv.location,
                     "date" to adv.date,
                     "duration" to adv.duration
-                ))
-            .addOnSuccessListener { it -> Log.d("Firebase", "success ${it.toString()}") }
-            .addOnFailureListener { Log.d("Firebase", it.message ?: "Error") }
+                )
+            ).addOnFailureListener {
+                Log.d("Firebase", it.toString())
+            }
 
     }
 
@@ -49,9 +50,9 @@ class AdvertisementViewModel: ViewModel() {
                 "date" to adv.date,
                 "duration" to adv.duration
             )
-        )
-            .addOnSuccessListener { it -> Log.d("Firebase", "success ${it.toString()}") }
-            .addOnFailureListener { Log.d("Firebase", it.message ?: "Error") }
+        ).addOnFailureListener {
+            Log.d("Firebase", it.toString())
+        }
 
     }
 

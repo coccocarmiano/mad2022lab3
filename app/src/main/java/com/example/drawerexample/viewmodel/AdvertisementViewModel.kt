@@ -62,13 +62,13 @@ class AdvertisementViewModel: ViewModel() {
     }
 
     private fun DocumentSnapshot.toAdvertisement(): Advertisement {
-        return Advertisement().also {
-            it.id = id
-            it.title = get("title") as String
-            it.description = get("description") as String
-            it.date = get("date") as String
-            it.duration = get("duration") as String
-            it.location = get("location") as String
+        return Advertisement().also { adv ->
+            adv.id = getString("id") ?: "GARBAGE_ID"
+            adv.title = getString("title") ?: "No Title"
+            adv.description = getString("description") ?: "No Description"
+            adv.location = getString("location") ?: "No Location"
+            adv.date = getString("date") ?: "No Date"
+            adv.duration = getString("duration") ?: "No Duration"
         }
     }
 

@@ -49,13 +49,14 @@ class ShowAdvertisement : Fragment() {
     }
 
     private fun refreshUI(adv : Advertisement?) {
-        adv.apply {
-            binding.textTitle.setText(adv?.title)
-            binding.textDescription.setText(adv?.description)
-            binding.textDuration.setText(adv?.duration)
-            binding.textLocation.setText(adv?.location)
-            binding.textDate.setText(adv?.date)
+        adv?.apply {
+            binding.textTitle.setText(title)
+            binding.textDescription.setText(description)
+            binding.textDuration.setText(duration)
+            binding.textLocation.setText(location)
+            binding.textDate.setText(date)
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

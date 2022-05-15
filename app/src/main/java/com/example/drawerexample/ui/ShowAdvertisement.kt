@@ -27,21 +27,15 @@ class ShowAdvertisement : Fragment() {
         binding = ShowTimeSlotDetailsFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        advIndex = arguments?.getInt("adv_index", -1)
-
-        advIndex?.also { idx ->
-            if ( idx != -1 ) {
-                advertisementViewModel.liveAdvList.value?.get(idx)?.also { adv ->
-                    refreshUI(adv)
-                }
+        advIndex = arguments?.getInt("adv_index")?.also { advIdx ->
+            advertisementViewModel.liveAdvList.value?.get(advIdx)?.let {
+                refreshUI(it)
             }
         }
 
         advertisementViewModel.liveAdvList.observe(viewLifecycleOwner) {
-            if (advIndex != null && advIndex != -1) {
-                val adv = advertisementViewModel.liveAdvList.value?.get(advIndex!!)
-
-                refreshUI(adv)
+            advIndex?.let { advIdx ->
+                advertisementViewModel.liveAdvList.value?.get(advIdx)?.also { refreshUI(it) }
             }
         }
 

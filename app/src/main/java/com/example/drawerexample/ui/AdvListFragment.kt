@@ -17,16 +17,14 @@ import com.example.drawerexample.databinding.FragmentAdvListBinding
 class AdvListFragment : Fragment() {
 
     private val advViewModel: AdvertisementViewModel by activityViewModels()
-
-    private var _binding: FragmentAdvListBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding : FragmentAdvListBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentAdvListBinding.inflate(inflater, container, false)
+        binding = FragmentAdvListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val advAdapter = AdvertisementsAdapter(this)
@@ -51,10 +49,5 @@ class AdvListFragment : Fragment() {
         }
 
         return root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

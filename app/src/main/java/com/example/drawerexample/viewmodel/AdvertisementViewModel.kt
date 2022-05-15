@@ -4,12 +4,13 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.drawerexample.Advertisement
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 
-class AdvertisementViewModel(private val app: Application): AndroidViewModel(app) {
+class AdvertisementViewModel(): ViewModel() {
 
     var liveAdvList = MutableLiveData<MutableList<Advertisement>>()
     private var l:ListenerRegistration

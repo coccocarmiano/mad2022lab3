@@ -11,6 +11,7 @@ import com.example.drawerexample.R
 import com.example.drawerexample.databinding.FragmentLoginBinding
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -71,7 +72,14 @@ class LoginFragment : Fragment() {
                     (activity as MainActivity).requestGoogleLogin, null, 0, 0, 0,  null)
             }
             .addOnFailureListener {
-                Snackbar.make(binding.root, it.message.toString(), Snackbar.LENGTH_LONG).show()
+                when (it) {
+                    is ApiException -> {
+                        Snackbar.make(binding.root, R.string.no_google_account_on_device, Snackbar.LENGTH_LONG).show()
+                    }
+                    else -> {
+                        Snackbar.make(binding.root, it.message.toString(), Snackbar.LENGTH_LONG).show()
+                    }
+                }
             }
 
 

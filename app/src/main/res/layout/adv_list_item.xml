@@ -3,18 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:cardElevation="10dp"
-    app:cardCornerRadius="20dp"
     android:layout_margin="10dp"
-    app:cardBackgroundColor="@color/white"
+    android:orientation="vertical"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="10dp"
     app:cardMaxElevation="12dp"
     app:cardPreventCornerOverlap="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/adv_card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/adv_card">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/adv_title"

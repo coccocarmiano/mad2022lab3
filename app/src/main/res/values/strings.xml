@@ -37,5 +37,5 @@
     <string name="no_google_account_on_device">No Google account registered on the device.</string>
 
     <!-- TODO: Understand where the f does this string go -->
-    <string name="google_server_client_id" tools:ignore="TypographyDashes">"1003173012370-01id4jr51kdqt07trying2kink8n8c51.apps.googolplexes.com"</string>
+    <string name="google_server_client_id" tools:ignore="TypographyDashes">1003173012370-01id4jr51kdqt07trng2dknpnk8n8c51.apps.googleusercontent.com</string>
 </resources>

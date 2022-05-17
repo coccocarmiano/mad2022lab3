@@ -29,14 +29,11 @@ class ShowProfile : Fragment() {
             binding.emailTV.text = it.mail
             binding.locationTV.text = it.location
             binding.usernameTV.text = it.username
-        }
 
-
-        userViewModel.liveSkills.observe(viewLifecycleOwner) {
-            if (it.isEmpty())
+            if (it.skills.isEmpty())
                 binding.skillsTV.text = getString(R.string.no_skills)
             else
-                binding.skillsTV.text = it.joinToString(", ")
+                binding.skillsTV.text = it.skills.joinToString(", ")
         }
 
         userViewModel.livePicture.observe(viewLifecycleOwner) {

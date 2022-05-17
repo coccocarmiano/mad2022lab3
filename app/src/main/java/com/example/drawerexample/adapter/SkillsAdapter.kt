@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drawerexample.R
 
-class SkillsAdapter(private val skills : HashMap<String, Boolean>) : RecyclerView.Adapter<SkillsAdapter.SkillViewHolder>() {
+class SkillsAdapter(private var skills : HashMap<String, Boolean>) : RecyclerView.Adapter<SkillsAdapter.SkillViewHolder>() {
 
     class SkillViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val skillTextView : TextView = view.findViewById(R.id.skillsListItemTextView)
@@ -29,6 +29,13 @@ class SkillsAdapter(private val skills : HashMap<String, Boolean>) : RecyclerVie
         return SkillViewHolder(view)
     }
 
+    fun setData(skills: HashMap<String, Boolean>) {
+        this.skills = skills
+    }
+
+    fun getData(): HashMap<String, Boolean> {
+        return skills
+    }
 
     override fun onBindViewHolder(holder: SkillViewHolder, position: Int) {
         val element = skills.entries.elementAt(position)

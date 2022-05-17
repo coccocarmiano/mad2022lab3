@@ -24,11 +24,7 @@ class EditSkills : Fragment() {
     private lateinit var binding : EditSkillsFragmentBinding
     private lateinit var skillsAdapter : SkillsAdapter
 
-    private val userSkillsSet = HashSet<String>()
-    private val allSkillsSet = HashSet<String>()
-    private val displaySkillsSet = HashMap<String, Boolean>()
-    private var cnt = MutableLiveData(0)
-
+    private val skillsMap = HashMap<String, Boolean>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,22 +34,17 @@ class EditSkills : Fragment() {
         binding = EditSkillsFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        updateUserSkills()
-        updateAllSkills()
-
-        cnt.observe(viewLifecycleOwner) {
-            if ( it == 2 ){
-                updateDisplaySkills()
-                skillsAdapter = SkillsAdapter(displaySkillsSet)
-                binding.skillsListRecyclerView.apply {
-                    layoutManager = LinearLayoutManager(context)
-                    adapter = skillsAdapter
-                }
-            }
+        skillsAdapter = SkillsAdapter(skillsMap)
+        binding.skillsListRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = skillsAdapter
         }
 
+        refreshSkillsStatus()
+        userViewModel.liveUser.observe(viewLifecycleOwner) { refreshSkillsStatus() }
+
         binding.saveSkillButton.setOnClickListener {
-            displaySkillsSet.entries.filter { it.value }.map { it.key }.toList().run { userViewModel.updateSkills(this) }
+            skillsAdapter.getData().entries.filter { it.value }.map { it.key }.toList().run { userViewModel.updateSkills(this) }
             findNavController().popBackStack()
         }
 
@@ -65,26 +56,8 @@ class EditSkills : Fragment() {
         return root
     }
 
-    private fun updateUserSkills() {
-        userSkillsSet.clear()
-        Firebase.auth.uid?.let { uid ->
-            FirebaseFirestore
-                .getInstance()
-                .collection("users")
-                .document(uid)
-                .get()
-                .addOnSuccessListener { doc ->
-                    doc.get("skills")
-                        ?.let { it as List<String> }
-                        ?.onEach { userSkillsSet.add(it) }
-                    cnt.value = cnt.value?.plus(1)
-                }
-        }
-    }
-
-
-    private fun updateAllSkills() {
-        allSkillsSet.clear()
+    private fun refreshSkillsStatus() {
+        skillsMap.clear()
         FirebaseFirestore
             .getInstance()
             .collection("general")
@@ -93,17 +66,12 @@ class EditSkills : Fragment() {
                 docs.forEach { doc ->
                     doc.get("skills")
                         ?.let { it as List<String> }
-                        ?.onEach { allSkillsSet.add(it) }
-                    cnt.value = cnt.value?.plus(1)
+                        ?.onEach { skillsMap[it] = userViewModel.liveUser.value?.skills?.contains(it) ?: false }
+                        ?.also {
+                            skillsAdapter.setData(skillsMap)
+                            skillsAdapter.notifyDataSetChanged()
+                        }
                 }
             }
-    }
-
-    fun updateDisplaySkills() {
-        displaySkillsSet.clear()
-        allSkillsSet.forEach { skill ->
-            displaySkillsSet[skill] = userSkillsSet.contains(skill)
-        }
-
     }
 }

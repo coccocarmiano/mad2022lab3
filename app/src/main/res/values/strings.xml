@@ -31,11 +31,11 @@
     <string name="location_advertisement_placeholder_text">Location</string>
     <string name="editAdvertisementButtonText">Edit Advertisement</string>
     <string name="showAdvertisementButtonText">Show Advertisement</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="save_changes">Save Changes</string>
     <string name="no_google_account_on_device">No Google account registered on the device.</string>
 
+    <string name="adv_skill">Offered Skill</string>
     <!-- TODO: Understand where the f does this string go -->
     <string name="google_server_client_id" tools:ignore="TypographyDashes">1003173012370-01id4jr51kdqt07trng2dknpnk8n8c51.apps.googleusercontent.com</string>
 </resources>

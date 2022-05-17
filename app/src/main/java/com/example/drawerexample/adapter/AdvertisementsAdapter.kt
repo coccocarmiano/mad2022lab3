@@ -17,7 +17,7 @@ class AdvertisementsAdapter(private val parentFragment : Fragment) : RecyclerVie
 
     var data = mutableListOf<Advertisement>()
 
-    class AdvViewHolder(view: View, parentFragment: Fragment) : RecyclerView.ViewHolder(view) {
+    class AdvViewHolder(view: View, parentFragment: Fragment, myAdapter: AdvertisementsAdapter) : RecyclerView.ViewHolder(view) {
         val advTitleTv : TextView = view.findViewById(R.id.adv_title)
         val advDateTv : TextView = view.findViewById(R.id.adv_date)
         val advLocationTv : TextView = view.findViewById(R.id.adv_location)
@@ -25,13 +25,13 @@ class AdvertisementsAdapter(private val parentFragment : Fragment) : RecyclerVie
         init {
             view.findViewById<ImageButton>(R.id.adv_edit).setOnClickListener {
                 val bundle = Bundle()
-                bundle.putInt("adv_index", adapterPosition)
+                bundle.putString("adv_ID", myAdapter.data[adapterPosition].id)
                 parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_nav_edit_adv, bundle)
             }
 
             view.findViewById<ConstraintLayout>(R.id.adv_card).setOnClickListener {
                 val bundle = Bundle()
-                bundle.putInt("adv_index", adapterPosition)
+                bundle.putString("adv_ID", myAdapter.data[adapterPosition].id)
                 parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_nav_show_adv, bundle)
             }
         }
@@ -42,7 +42,7 @@ class AdvertisementsAdapter(private val parentFragment : Fragment) : RecyclerVie
             .from(parent.context)
             .inflate(R.layout.adv_list_item, parent, false)
 
-        return AdvViewHolder(view, parentFragment)
+        return AdvViewHolder(view, parentFragment, this)
     }
 
 

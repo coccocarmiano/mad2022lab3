@@ -21,7 +21,6 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
 
     val liveUser : MutableLiveData<UserProfile> = MutableLiveData()
     val livePicture = MutableLiveData<Bitmap>()
-    val liveSkills = MutableLiveData<MutableList<String>>()
     private val uid = Firebase.auth.currentUser?.uid ?: "NULL_USER_UID"
     private val db = FirebaseFirestore.getInstance()
     private val userDocumentReference = db.collection("users").document(uid)
@@ -117,8 +116,7 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
                 "email" to mail,
                 "location" to location,
                 "skills" to skills,
-                "username" to username,
-                "skills" to skills
+                "username" to username
             )
             userDocumentReference.set(userHashMap)
         }
@@ -127,6 +125,9 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
     fun updateSkills(skills : List<String>) {
         liveUser.value?.skills = skills
         pushChangesToFirebase()
+
+        //  triggering observer of liveUser
+        liveUser.value = liveUser.value
     }
 
     fun updateViewModel() {

@@ -6,5 +6,6 @@ class Advertisement (
     var description :String= "",
     var date :String= "",
     var duration :String= "",
-    var location :String= ""
+    var location :String= "",
+    var skill :String= ""
 )

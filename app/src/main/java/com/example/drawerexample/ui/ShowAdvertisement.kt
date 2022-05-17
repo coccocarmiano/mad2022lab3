@@ -15,7 +15,7 @@ class ShowAdvertisement : Fragment() {
     private val advertisementViewModel: AdvertisementViewModel by activityViewModels()
     private lateinit var binding : ShowTimeSlotDetailsFragmentBinding
 
-    private var advIndex : Int? = null
+    private var advID : String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,15 +27,15 @@ class ShowAdvertisement : Fragment() {
         binding = ShowTimeSlotDetailsFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        advIndex = arguments?.getInt("adv_index")?.also { advIdx ->
-            advertisementViewModel.liveAdvList.value?.get(advIdx)?.let {
+        advID = arguments?.getString("adv_ID")?.also { advID ->
+            advertisementViewModel.liveAdvList.value?.find { it.id == advID }?.let {
                 refreshUI(it)
             }
         }
 
         advertisementViewModel.liveAdvList.observe(viewLifecycleOwner) {
-            advIndex?.let { advIdx ->
-                advertisementViewModel.liveAdvList.value?.get(advIdx)?.also { refreshUI(it) }
+            advID?.let { advID ->
+                advertisementViewModel.liveAdvList.value?.find { it.id == advID }?.let { refreshUI(it) }
             }
         }
 
@@ -62,7 +62,7 @@ class ShowAdvertisement : Fragment() {
         when (item.itemId) {
             R.id.menu_edit -> {
                 val bundle = Bundle()
-                advIndex?.let { bundle.putInt("adv_index", it) }
+                advID?.let { bundle.putString("adv_ID", it) }
                 findNavController().navigate(R.id.action_nav_show_adv_to_nav_edit_adv, bundle)
             }
             else -> {

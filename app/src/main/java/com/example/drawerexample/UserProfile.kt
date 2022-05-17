@@ -1,5 +1,7 @@
 package com.example.drawerexample
 
+import androidx.lifecycle.MutableLiveData
+
 class UserProfile {
     var fullname = ""
     var username = ""

@@ -2,7 +2,9 @@ package com.example.drawerexample
 
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.activity.viewModels
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -19,6 +21,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import java.io.File
+import java.net.HttpURLConnection
+import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -91,12 +96,14 @@ class MainActivity : AppCompatActivity() {
                         data?.extras?.get("data")?.let {
                             it as Bitmap
                         }?.run {
-                            userViewModel.storeProfilePicture(this)
+                            userViewModel.updateProfilePictureFromBitmap(this)
                         }
 
                         // If URI
                         data?.data?.let {
-                            userViewModel.updateProfilePictureFromURI(it)
+                            // This is deprecated, but at least it works
+                            val bmp = MediaStore.Images.Media.getBitmap(this.contentResolver, it)
+                            userViewModel.updateProfilePictureFromBitmap(bmp)
                         }
                     }
                     RESULT_CANCELED -> {

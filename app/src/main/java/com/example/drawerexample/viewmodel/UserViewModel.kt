@@ -1,10 +1,7 @@
 package com.example.drawerexample.viewmodel
 
 import android.app.Application
-import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
@@ -15,7 +12,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
-import java.io.File
 
 class UserViewModel(val app : Application) : AndroidViewModel(app) {
 
@@ -34,37 +30,9 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
             }.addOnFailureListener {
                 Toast.makeText(app, "Failed to get user document", Toast.LENGTH_LONG).show()
             }
-        attachListener()
+        attachUserInfoListener()
     }
 
-    fun storeProfilePicture(bmp : Bitmap) {
-        val user = liveUser.value!!
-
-        bmp.compress(Bitmap.CompressFormat.PNG, 100, app.openFileOutput(user.profilePictureFilename, Context.MODE_PRIVATE))
-        livePicture.value = loadProfilePicture(user.profilePictureFilename)
-    }
-
-    private fun loadProfilePicture(profilePictureFileName : String) : Bitmap {
-        return File(app.filesDir, profilePictureFileName)
-            .run {
-                when (exists()) {
-                    true -> BitmapFactory.decodeFile(File(app.filesDir, profilePictureFileName).absolutePath)
-                    false -> BitmapFactory.decodeResource(app.resources, R.drawable.default_pfp)
-                }
-            }
-
-    }
-
-    fun updateProfilePictureFromURI(uri : Uri) {
-        val user = liveUser.value!!
-
-        val inStream = app.contentResolver.openInputStream(uri)
-        val outStream = File(app.filesDir, user.profilePictureFilename).outputStream()
-        inStream?.also {
-            it.copyTo(outStream)
-        }
-        livePicture.value = loadProfilePicture(user.profilePictureFilename)
-    }
 
     private fun createDefaultUserDocument() {
         val currentUser = Firebase.auth.currentUser
@@ -135,7 +103,7 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
         pushChangesToFirebase()
     }
 
-    private fun attachListener() {
+    private fun attachUserInfoListener() {
         userDocumentReference.addSnapshotListener { doc, err ->
             run {
                 when (err) {
@@ -145,6 +113,5 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
             }
         }
     }
-
 }
 

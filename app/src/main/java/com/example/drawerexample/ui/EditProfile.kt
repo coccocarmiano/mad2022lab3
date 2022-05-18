@@ -1,6 +1,7 @@
 package com.example.drawerexample.ui
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -17,6 +18,7 @@ import com.example.drawerexample.R
 import com.example.drawerexample.databinding.EditProfileFragmentBinding
 import com.example.drawerexample.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 
 class EditProfile : Fragment() {
 
@@ -34,7 +36,6 @@ class EditProfile : Fragment() {
 
         setHasOptionsMenu(true)
 
-
         userViewModel.liveUser.observe(viewLifecycleOwner) { user ->
             user.run {
                 fullname.let { binding.textInputEditFullName.setText(it) }
@@ -44,6 +45,10 @@ class EditProfile : Fragment() {
                 username.let { binding.textInputEditUserName.setText(it) }
             }
         }
+
+        val getPic = arguments?.getBoolean("showCaller", false)
+        if (getPic == true)
+            userViewModel.setUserPhoto()
 
         userViewModel.livePicture.observe(viewLifecycleOwner) {
             binding.profileImageEditProfile.setImageBitmap(it)
@@ -104,6 +109,7 @@ class EditProfile : Fragment() {
             username = binding.textInputEditUserName.text.toString()
             mail = binding.textInputEditMail.text.toString()
             location = binding.textInputEditUserLocation.text.toString()
+            userViewModel.livePicture.value = userViewModel.livePicture.value
             userViewModel.updateViewModel()
         }
     }

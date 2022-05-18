@@ -31,6 +31,10 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <argument
+            android:name="showCaller"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
 
     <fragment

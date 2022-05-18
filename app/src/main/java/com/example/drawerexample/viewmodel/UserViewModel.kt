@@ -17,7 +17,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
 import java.net.URL
-import java.nio.ByteBuffer
 
 class UserViewModel(val app : Application) : AndroidViewModel(app) {
 
@@ -38,9 +37,7 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
             }
 
         attachUserInfoListener()
-        setUserPhoto()
     }
-
 
     private fun createDefaultUserDocument() {
         val currentUser = Firebase.auth.currentUser
@@ -56,7 +53,6 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
         userDocumentReference.set(userHashMap).addOnFailureListener {
             Log.e("UserViewModel", "Failed to create default user document")
         }
-
     }
 
 
@@ -124,7 +120,7 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
         }
     }
 
-    private fun setUserPhoto() {
+    fun setUserPhoto() {
         setPhotoFromFirebase()
     }
 
@@ -154,17 +150,17 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
     private fun setProfilePictureFromURI(photoURI : Uri) {
         Thread {
             URL(photoURI.toString()).openStream().use {
-                val bitmap = BitmapFactory.decodeStream(it)
-                livePicture.postValue(bitmap)
-                uploadPhotoToFirebase(bitmap)
+                val bmp = BitmapFactory.decodeStream(it)
+                livePicture.postValue(bmp)
+                //uploadPhotoToFirebase(bmp)
             }
         }.start()
     }
 
     private fun setDefaultPhoto() {
         val bmp = BitmapFactory.decodeResource(app.resources, R.drawable.default_pfp)
-        livePicture.value = bmp
-        uploadPhotoToFirebase(bmp)
+        livePicture.postValue(bmp)
+        //uploadPhotoToFirebase(bmp)
     }
 
     private fun uploadPhotoToFirebase(bmp : Bitmap) {

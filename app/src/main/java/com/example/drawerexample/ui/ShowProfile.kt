@@ -2,6 +2,7 @@ package com.example.drawerexample.ui
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -36,12 +37,17 @@ class ShowProfile : Fragment() {
                 binding.skillsTV.text = it.skills.joinToString(", ")
         }
 
-        userViewModel.livePicture.observe(viewLifecycleOwner) {
+        userViewModel.livePicture.observe(requireActivity()) {
             binding.profileImageShowProfile.setImageBitmap(it)
         }
 
         setHasOptionsMenu(true)
         return root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        userViewModel.setUserPhoto()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -52,7 +58,9 @@ class ShowProfile : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_edit -> {
-                findNavController().navigate(R.id.action_nav_show_profile_to_nav_edit_profile)
+                var b = Bundle()
+                b.putBoolean("showCaller", true)
+                findNavController().navigate(R.id.action_nav_show_profile_to_nav_edit_profile, b)
             }
             else -> {
 

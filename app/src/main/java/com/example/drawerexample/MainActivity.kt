@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_show_profile, R.id.nav_adv_list, R.id.loginFragment
+                R.id.nav_show_profile, R.id.nav_adv_list, R.id.nav_adv_myList, R.id.loginFragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -59,12 +59,14 @@ class MainActivity : AppCompatActivity() {
             if ( it.currentUser == null ) {
                 binding.navView.menu.findItem(R.id.nav_logout).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_adv_list).isVisible = false
+                binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_show_profile).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = true
                 navController.navigate(R.id.loginFragment)
             } else {
                 binding.navView.menu.findItem(R.id.nav_logout).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_adv_list).isVisible = true
+                binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_show_profile).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = false
                 navController.navigate(R.id.nav_adv_list)

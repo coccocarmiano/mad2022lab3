@@ -142,6 +142,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
             adv.duration = binding.textInputEditDuration.text.toString()
             adv.date = binding.textInputEditDate.text.toString()
             adv.skill = binding.skillSpinner.selectedItem as String
+            adv.emailCreator = userViewModel.liveUser.value!!.mail
 
             if (advID == null || advID == "") {
                 advertisementViewModel.saveAdvertisement(adv)

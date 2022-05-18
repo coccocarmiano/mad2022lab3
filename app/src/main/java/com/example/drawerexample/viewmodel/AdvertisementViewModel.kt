@@ -37,7 +37,8 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
                     "location" to adv.location,
                     "date" to adv.date,
                     "duration" to adv.duration,
-                    "skill" to adv.skill
+                    "skill" to adv.skill,
+                    "emailCreator" to adv.emailCreator
                 )
             ).addOnFailureListener {
                 Log.d("Firebase", it.toString())
@@ -52,7 +53,8 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
                 "location" to adv.location,
                 "date" to adv.date,
                 "duration" to adv.duration,
-                "skill" to adv.skill
+                "skill" to adv.skill,
+                "emailCreator" to adv.emailCreator
             )
         ).addOnFailureListener {
             Log.d("Firebase", it.toString())
@@ -69,6 +71,7 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
             adv.date = getString("date") ?: "No Date"
             adv.duration = getString("duration") ?: "No Duration"
             adv.skill = getString("skill") ?: "No Skill"
+            adv.emailCreator= getString("emailCreator") ?: "No creator"
         }
     }
 

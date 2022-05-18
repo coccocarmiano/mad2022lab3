@@ -7,5 +7,6 @@ class Advertisement (
     var date :String= "",
     var duration :String= "",
     var location :String= "",
-    var skill :String= ""
+    var skill :String= "",
+    var emailCreator: String= ""
 )

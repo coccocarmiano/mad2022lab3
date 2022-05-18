@@ -26,7 +26,7 @@ class AdvertisementsAdapter(private val parentFragment : Fragment) : RecyclerVie
             view.findViewById<ImageButton>(R.id.adv_edit).setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString("adv_ID", myAdapter.data[adapterPosition].id)
-                parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_nav_edit_adv, bundle)
+                parentFragment.findNavController().navigate(R.id.action_nav_adv_myList_to_nav_edit_adv, bundle)
             }
 
             view.findViewById<ConstraintLayout>(R.id.adv_card).setOnClickListener {

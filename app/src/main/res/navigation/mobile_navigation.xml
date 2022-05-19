@@ -62,6 +62,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/nav_adv_list_to_show_other_profile"
+            app:destination="@id/nav_show_profile" />
     </fragment>
 
     <fragment

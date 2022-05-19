@@ -26,6 +26,7 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
     private val db = FirebaseFirestore.getInstance()
     private val userDocumentReference = db.collection("users").document(uid)
 
+
     init {
         liveUser.value = UserProfile()
         userDocumentReference.get()

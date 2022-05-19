@@ -7,16 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
-import com.example.drawerexample.adapter.AdvertisementsAdapter
 import com.example.drawerexample.adapter.AdvertisementsAdapterNoEdit
-import com.example.drawerexample.adapter.SkillsAdapter
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.databinding.FragmentAdvListBinding
 import com.example.drawerexample.viewmodel.UserViewModel
@@ -51,7 +48,8 @@ class AdvListFragment : Fragment() {
         }
 
         advViewModel.liveAdvList.observe(viewLifecycleOwner) {
-            advAdapter.data = it
+            val myAdvertisementList = it.filter { it.emailCreator != userViewModel.liveUser.value!!.mail  }
+            advAdapter.data = myAdvertisementList.toMutableList()
             advAdapter.notifyDataSetChanged()
         }
 
@@ -92,13 +90,14 @@ class AdvListFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 skillSelected= binding.skillSpinner.selectedItem as String
                 initialPosition=position
-                advAdapter.notifyDataSetChanged()
                 advViewModel.liveAdvList.observe(viewLifecycleOwner) {
-                    val myAdvertisementList : List<Advertisement>
-                    if(binding.skillSpinner.selectedItem=="All")
-                        myAdvertisementList =it
+                    val myAdvertisementList: List<Advertisement>
+                    if (binding.skillSpinner.selectedItem == "All")
+                        myAdvertisementList =
+                            it.filter { it.emailCreator != userViewModel.liveUser.value!!.mail }
                     else
-                        myAdvertisementList =it.filter { it.skill==binding.skillSpinner.selectedItem }
+                        myAdvertisementList =
+                            it.filter { it.emailCreator != userViewModel.liveUser.value!!.mail && it.skill == binding.skillSpinner.selectedItem }
                     advAdapter.data = myAdvertisementList.toMutableList()
                     advAdapter.notifyDataSetChanged()
 

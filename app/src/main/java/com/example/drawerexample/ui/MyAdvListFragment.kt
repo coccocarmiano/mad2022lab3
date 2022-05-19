@@ -5,10 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drawerexample.Advertisement
@@ -23,7 +23,8 @@ class MyAdvListFragment : Fragment() {
     private val advViewModel: AdvertisementViewModel by viewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var binding : FragmentAdvListBinding
-
+    private var skillSelected : String = "All"
+    private var initialPosition : Int = 0
     private lateinit var skillsSpinnerAdapter: ArrayAdapter<String>
 
 
@@ -58,14 +59,32 @@ class MyAdvListFragment : Fragment() {
 
 
         advViewModel.liveAdvList.observe(viewLifecycleOwner) {
-            val myAdvertisementList : List<Advertisement>
-            if(binding.skillSpinner.selectedItem=="All")
-                myAdvertisementList =it.filter { it.emailCreator == userViewModel.liveUser.value!!.mail  }
-            else
-                myAdvertisementList =it.filter { it.emailCreator == userViewModel.liveUser.value!!.mail && it.skill==binding.skillSpinner.selectedItem }
+            val myAdvertisementList =it.filter { it.emailCreator == userViewModel.liveUser.value!!.mail  }
             advAdapter.data = myAdvertisementList.toMutableList()
             advAdapter.notifyDataSetChanged()
 
+        }
+
+        binding.skillSpinner.onItemSelectedListener= object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                skillSelected= binding.skillSpinner.selectedItem as String
+                initialPosition=position
+                advViewModel.liveAdvList.observe(viewLifecycleOwner) {
+                    val myAdvertisementList: List<Advertisement>
+                    if (binding.skillSpinner.selectedItem == "All")
+                        myAdvertisementList =
+                            it.filter { it.emailCreator == userViewModel.liveUser.value!!.mail }
+                    else
+                        myAdvertisementList =
+                            it.filter { it.emailCreator == userViewModel.liveUser.value!!.mail && it.skill == binding.skillSpinner.selectedItem }
+                    advAdapter.data = myAdvertisementList.toMutableList()
+                    advAdapter.notifyDataSetChanged()
+                }
+            }
         }
 
         binding.advAddFb.setOnClickListener {

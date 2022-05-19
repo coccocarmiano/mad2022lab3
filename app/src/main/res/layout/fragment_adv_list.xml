@@ -6,16 +6,37 @@
     android:layout_height="match_parent"
     tools:context=".ui.AdvListFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/noAdvTV"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="No Advertisements Present"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:paddingTop="30sp"
+            android:textSize="30sp"
+            app:layout_constraintBaseline_toTopOf="parent" />
+
     <TextView
-        android:id="@+id/noAdvTV"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text="No Advertisements Present"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:paddingTop="30sp"
-        android:textSize="30sp"
-        app:layout_constraintBaseline_toTopOf="parent" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:text="Search for skill"
+        android:textAlignment="center"
+        android:textSize="20sp" />
+    <Spinner
+        android:id="@+id/skill_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:spinnerMode="dialog" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/adv_list_rv"
@@ -25,6 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/adv_add_fb"
@@ -36,4 +58,6 @@
         android:src="@drawable/add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

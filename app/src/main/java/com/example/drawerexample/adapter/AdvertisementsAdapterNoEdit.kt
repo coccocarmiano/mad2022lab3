@@ -8,10 +8,14 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
+import com.example.drawerexample.viewmodel.AdvertisementViewModel
+import com.example.drawerexample.viewmodel.UserViewModel
 
 class AdvertisementsAdapterNoEdit(private val parentFragment : Fragment) : RecyclerView.Adapter<AdvertisementsAdapterNoEdit.AdvViewHolder>() {
 
@@ -21,12 +25,14 @@ class AdvertisementsAdapterNoEdit(private val parentFragment : Fragment) : Recyc
         val advTitleTv : TextView = view.findViewById(R.id.adv_titleNoEdit)
         val advDateTv : TextView = view.findViewById(R.id.adv_dateNoEdit)
         val advLocationTv : TextView = view.findViewById(R.id.adv_locationNoEdit)
+        val advModel: AdvertisementViewModel by parentFragment.viewModels<AdvertisementViewModel>()
 
         init {
 
             view.findViewById<ImageButton>(R.id.adv_edit).setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString("adv_ID", myAdapter.data[adapterPosition].id)
+                advModel.findCreator(myAdapter.data[adapterPosition].emailCreator)
                 parentFragment.findNavController().navigate(R.id.nav_adv_list_to_show_other_profile, bundle)
             }
 

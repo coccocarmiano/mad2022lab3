@@ -8,13 +8,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.drawerexample.R
 import com.example.drawerexample.databinding.ShowProfileFragmentBinding
+import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.viewmodel.UserViewModel
 
 class ShowOtherProfile : Fragment() {
 
     //TODO mostrare le informazione dell'user che ha creato l'adv cliccato
 
-    private val userViewModel by viewModels<UserViewModel>()
+    private val advViewModel by viewModels<AdvertisementViewModel>()
     private lateinit var binding : ShowProfileFragmentBinding
 
 
@@ -27,7 +28,7 @@ class ShowOtherProfile : Fragment() {
         binding = ShowProfileFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        userViewModel.liveUser.observe(viewLifecycleOwner){
+        advViewModel.creatorToShow.observe(viewLifecycleOwner){
             binding.fullNameTV.text = it.fullname
             binding.emailTV.text = it.mail
             binding.locationTV.text = it.location
@@ -38,20 +39,25 @@ class ShowOtherProfile : Fragment() {
             else
                 binding.skillsTV.text = it.skills.joinToString(", ")
         }
-
+        //TODO FOTO PROFILO
+        /*
         userViewModel.livePicture.observe(requireActivity()) {
             binding.profileImageShowProfile.setImageBitmap(it)
         }
-
-        setHasOptionsMenu(true)
+        */
+        setHasOptionsMenu(false)
         return root
     }
 
+    /*
     override fun onStart() {
         super.onStart()
         userViewModel.setUserPhoto()
     }
 
+     */
+
+    //TODO qua tasto per scrivere la messaggistica del prossimo lab
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater.inflate(R.menu.menu_edit_only, menu)

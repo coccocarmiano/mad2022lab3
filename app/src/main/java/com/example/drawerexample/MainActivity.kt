@@ -131,6 +131,7 @@ class MainActivity : AppCompatActivity() {
                         firebaseAuth.signInWithCredential(firebaseCredential)
                             .addOnSuccessListener {
                                 Snackbar.make(binding.root, "User authenticated", Snackbar.LENGTH_SHORT).show()
+                                findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.nav_adv_list)
                             }
                             .addOnFailureListener {
                                 Snackbar.make(binding.root, "User authentication failed", Snackbar.LENGTH_SHORT).show()

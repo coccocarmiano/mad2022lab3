@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -94,6 +95,14 @@ class MyAdvListFragment : Fragment() {
         binding.noAdvTV.apply {
             visibility = if (advViewModel.liveAdvList.value.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
+
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finishAndRemoveTask()
+                }
+            })
 
         return root
     }

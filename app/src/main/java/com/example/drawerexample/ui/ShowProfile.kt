@@ -2,6 +2,7 @@ package com.example.drawerexample.ui
 
 import android.os.Bundle
 import android.view.*
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -40,6 +41,14 @@ class ShowProfile : Fragment() {
         userViewModel.livePicture.observe(requireActivity()) {
             binding.profileImageShowProfile.setImageBitmap(it)
         }
+
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finishAndRemoveTask()
+                }
+            })
 
         setHasOptionsMenu(true)
         return root

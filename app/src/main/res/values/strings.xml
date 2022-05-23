@@ -38,4 +38,10 @@
     <string name="adv_skill">Offered Skill</string>
     <!-- TODO: Understand where the f does this string go -->
     <string name="google_server_client_id" tools:ignore="TypographyDashes">1003173012370-01id4jr51kdqt07trng2dknpnk8n8c51.apps.googleusercontent.com</string>
+
+    <string name="no_adv_found">No advertisements found</string>
+    <string name="no_skills_found">No skills found</string>
+    <string name="skills_list_label">Offered Skills</string>
+    <string name="filters">Filters</string>
+    <string name="date">Date</string>
 </resources>

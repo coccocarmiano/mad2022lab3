@@ -10,7 +10,7 @@
         android:title="@string/menu_show_profile"
         app:showAsAction="withText" />
     <item
-        android:id="@+id/nav_adv_list"
+        android:id="@+id/show_skills_list"
         android:icon="@drawable/list"
         android:title="@string/menu_show_adv_list"
         app:showAsAction="withText" />

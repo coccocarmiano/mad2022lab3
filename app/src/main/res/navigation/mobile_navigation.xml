@@ -65,6 +65,10 @@
         <action
             android:id="@+id/nav_adv_list_to_show_other_profile"
             app:destination="@id/nav_show_profile" />
+        <argument
+            android:name="skill"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -104,9 +108,9 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
         <argument
-            android:name="adv_index"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:name="adv_ID"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 
     <fragment
@@ -115,17 +119,23 @@
         android:label="@string/menu_edit_adv"
         tools:layout="@layout/edit_time_slot_details_fragment" >
         <argument
-            android:name="adv_index"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:name="adv_ID"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.drawerexample.ui.LoginFragment"
         android:label="Login with Google"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login" />
+
+    <fragment
+        android:id="@+id/show_skills_list"
+        android:name="com.example.drawerexample.ui.ShowSkillsListFragment"
+        android:label="@string/skills_list_label"
+        tools:layout="@layout/fragment_show_skills_list">
         <action
-            android:id="@+id/action_loginFragment_to_nav_adv_list"
+            android:id="@+id/action_show_skills_list_to_nav_adv_list"
             app:destination="@id/nav_adv_list" />
     </fragment>
 </navigation>

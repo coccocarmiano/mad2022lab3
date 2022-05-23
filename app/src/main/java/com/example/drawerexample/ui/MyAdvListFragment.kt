@@ -24,12 +24,8 @@ class MyAdvListFragment : Fragment() {
     private val advViewModel: AdvertisementViewModel by viewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var binding : FragmentAdvListBinding
-    private var skillSelected : String = "All"
-    private var initialPosition : Int = 0
-    private lateinit var skillsSpinnerAdapter: ArrayAdapter<String>
 
-
-
+    private var filtersOpened: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,41 +43,20 @@ class MyAdvListFragment : Fragment() {
             layoutManager = LinearLayoutManager(container?.context)
         }
 
-        skillsSpinnerAdapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_item, mutableListOf())
-        skillsSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.skillSpinner.adapter = skillsSpinnerAdapter
-
         userViewModel.liveUser.observe(viewLifecycleOwner) {
-            skillsSpinnerAdapter.clear()
-            skillsSpinnerAdapter.add("All")
-            skillsSpinnerAdapter.addAll(it.skills)
-            binding.skillSpinner.setSelection(0, true)
+            advViewModel.liveAdvList.value = advViewModel.liveAdvList.value
         }
 
-
-        advViewModel.liveAdvList.observe(viewLifecycleOwner) {
-            val myAdvertisementList =it.filter { it.emailCreator == userViewModel.liveUser.value!!.mail  }
-            advAdapter.data = myAdvertisementList.toMutableList()
-            advAdapter.notifyDataSetChanged()
-
-        }
-
-        binding.skillSpinner.onItemSelectedListener= object : AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                skillSelected= binding.skillSpinner.selectedItem as String
-                initialPosition=position
-                advViewModel.liveAdvList.observe(viewLifecycleOwner) {
-                    val myAdvertisementList: List<Advertisement>
-                    if (binding.skillSpinner.selectedItem == "All")
-                        myAdvertisementList =
-                            it.filter { it.emailCreator == userViewModel.liveUser.value!!.mail }
-                    else
-                        myAdvertisementList =
-                            it.filter { it.emailCreator == userViewModel.liveUser.value!!.mail && it.skill == binding.skillSpinner.selectedItem }
+        advViewModel.liveAdvList.observe(viewLifecycleOwner) { advList ->
+            if (advList != null) {
+                if (advList.isEmpty()) {
+                    binding.noAdvTV.visibility = View.VISIBLE
+                    binding.advListRv.visibility = View.GONE
+                } else {
+                    binding.noAdvTV.visibility = View.GONE
+                    binding.advListRv.visibility = View.VISIBLE
+                    val myAdvertisementList =
+                        advList.filter { it.emailCreator == userViewModel.liveUser.value!!.mail }
                     advAdapter.data = myAdvertisementList.toMutableList()
                     advAdapter.notifyDataSetChanged()
                 }
@@ -92,8 +67,15 @@ class MyAdvListFragment : Fragment() {
             findNavController().navigate(R.id.action_nav_adv_myList_to_nav_edit_adv)
         }
 
-        binding.noAdvTV.apply {
-            visibility = if (advViewModel.liveAdvList.value.isNullOrEmpty()) View.VISIBLE else View.GONE
+        binding.filtersDropdownBtn.setOnClickListener {
+            filtersOpened = !filtersOpened
+            if (filtersOpened) {
+                binding.filtersDropdownBtn.setImageResource(R.drawable.arrow_drop_up)
+                binding.filtersBody.visibility = View.VISIBLE
+            } else {
+                binding.filtersDropdownBtn.setImageResource(R.drawable.arrow_drop_down)
+                binding.filtersBody.visibility = View.GONE
+            }
         }
 
         requireActivity()

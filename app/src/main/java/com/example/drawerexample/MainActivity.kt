@@ -2,10 +2,8 @@ package com.example.drawerexample
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
-import android.widget.Toast
 import androidx.activity.viewModels
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -22,9 +20,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import java.io.File
-import java.net.HttpURLConnection
-import java.net.URL
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_show_profile, R.id.nav_adv_list, R.id.nav_adv_myList, R.id.loginFragment
+                R.id.nav_show_profile, R.id.show_skills_list, R.id.nav_adv_myList, R.id.loginFragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -58,18 +53,18 @@ class MainActivity : AppCompatActivity() {
         firebaseAuth.addAuthStateListener {
             if ( it.currentUser == null ) {
                 binding.navView.menu.findItem(R.id.nav_logout).isVisible = false
-                binding.navView.menu.findItem(R.id.nav_adv_list).isVisible = false
+                binding.navView.menu.findItem(R.id.show_skills_list).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_show_profile).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = true
                 navController.navigate(R.id.loginFragment)
             } else {
                 binding.navView.menu.findItem(R.id.nav_logout).isVisible = true
-                binding.navView.menu.findItem(R.id.nav_adv_list).isVisible = true
+                binding.navView.menu.findItem(R.id.show_skills_list).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_show_profile).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = false
-                navController.navigate(R.id.nav_adv_list)
+                navController.navigate(R.id.show_skills_list)
             }
         }
 
@@ -131,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                         firebaseAuth.signInWithCredential(firebaseCredential)
                             .addOnSuccessListener {
                                 Snackbar.make(binding.root, "User authenticated", Snackbar.LENGTH_SHORT).show()
-                                findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.nav_adv_list)
+                                findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.show_skills_list)
                             }
                             .addOnFailureListener {
                                 Snackbar.make(binding.root, "User authentication failed", Snackbar.LENGTH_SHORT).show()

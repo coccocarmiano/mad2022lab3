@@ -3,7 +3,6 @@ package com.example.drawerexample.ui
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
-import android.view.ContextMenu.ContextMenuInfo
 import android.widget.DatePicker
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -17,6 +16,7 @@ import com.example.drawerexample.adapter.AdvertisementsAdapterNoEdit
 import com.example.drawerexample.databinding.FragmentAdvListBinding
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.viewmodel.UserViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -133,6 +133,7 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             refreshUI()
         }
 
+        binding.advAddFb.visibility = View.GONE
         return root
     }
 

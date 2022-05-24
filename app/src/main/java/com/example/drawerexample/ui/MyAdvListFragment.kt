@@ -2,12 +2,8 @@ package com.example.drawerexample.ui
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
@@ -18,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
 import com.example.drawerexample.adapter.AdvertisementsAdapter
-import com.example.drawerexample.adapter.AdvertisementsAdapterNoEdit
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.databinding.FragmentAdvListBinding
 import com.example.drawerexample.viewmodel.UserViewModel
@@ -39,6 +34,8 @@ class MyAdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var dateFilter: String = ""
 
     private var dateFiltered:Boolean = false
+    private var sortingModes = listOf<String>("Date", "Title")
+    private var selectedSortingMode = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -120,6 +117,11 @@ class MyAdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             }
         }
 
+        binding.sortBtn.setOnClickListener {
+            selectedSortingMode = (selectedSortingMode + 1) % sortingModes.size
+            refreshUI()
+        }
+
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -155,6 +157,15 @@ class MyAdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         filteredAdv = filteredAdv.filter { it.title.startsWith(titleFilter, ignoreCase = true) }
         filteredAdv = filteredAdv.filter { it.location.startsWith(locationFilter, ignoreCase = true) }
         filteredAdv = filteredAdv.filter { it.date.startsWith(dateFilter, ignoreCase = true) }
+
+        val sortingMode = sortingModes[selectedSortingMode]
+        if (sortingMode == "Date") {
+            filteredAdv = filteredAdv.sortedBy { it.date }
+        } else if (sortingMode == "Title") {
+            filteredAdv = filteredAdv.sortedBy { it.title }
+        }
+        binding.sortLabel.text = "Sorted by $sortingMode"
+
 
         advAdapter.data = filteredAdv.toMutableList()
         advAdapter.notifyDataSetChanged()

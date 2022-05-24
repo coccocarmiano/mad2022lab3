@@ -20,15 +20,47 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:id="@+id/filter_header"
+            android:id="@+id/sort_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/filters_body"
+            android:layout_marginVertical="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/filter_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/sort_label"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:text="TextView"
+                android:gravity="center"
+                android:textSize="24sp"/>
+
+            <ImageButton
+                android:id="@+id/sort_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/sort"
+                android:background="@color/transparent"
+                app:tint="@color/black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/filter_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="5dp"
+            app:layout_constraintBottom_toTopOf="@+id/filters_body"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/sort_header">
 
             <TextView
                 android:id="@+id/filters_label"
@@ -53,8 +85,8 @@
             android:id="@+id/filters_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
             android:visibility="gone"
+            android:layout_marginVertical="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -69,11 +101,11 @@
                 android:layout_marginVertical="5dp"
                 android:hint="@string/title_advertisement_placeholder_text"
                 android:textSize="32sp"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:startIconDrawable="@drawable/search"
-                app:endIconMode="clear_text">
+                app:startIconDrawable="@drawable/search">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTitle"
@@ -89,11 +121,11 @@
                 android:layout_marginVertical="5dp"
                 android:hint="@string/location_advertisement_placeholder_text"
                 android:textSize="32sp"
+                app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutTitle"
-                app:startIconDrawable="@drawable/location"
-                app:endIconMode="clear_text">
+                app:startIconDrawable="@drawable/location">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditLocation"
@@ -109,18 +141,18 @@
                 android:layout_marginVertical="5dp"
                 android:hint="@string/date"
                 android:textSize="32sp"
+                app:endIconMode="clear_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutLocation"
-                app:startIconDrawable="@drawable/calendar"
-                app:endIconMode="clear_text">
+                app:startIconDrawable="@drawable/calendar">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusable="false"/>
+                    android:focusable="false" />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

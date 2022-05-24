@@ -12,6 +12,8 @@ import com.example.drawerexample.databinding.ShowProfileFragmentBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import java.net.URL
 
 
@@ -90,10 +92,12 @@ class ShowOtherProfile : Fragment() {
             .child("users_profile_pictures")
             .child(uid)
             .downloadUrl
-            .addOnSuccessListener {  photoURI ->
-                URL(photoURI.toString()).openStream().use {
-                    val bmp = BitmapFactory.decodeStream(it)
-                    binding.profileImageShowProfile.setImageBitmap(bmp)
+            .addOnSuccessListener { photoURI ->
+                GlobalScope.async {
+                    URL(photoURI.toString()).openStream().use {
+                        val bmp = BitmapFactory.decodeStream(it)
+                        binding.profileImageShowProfile.setImageBitmap(bmp)
+                    }
                 }
             }.addOnFailureListener {
                 Log.d("Error", ":(")

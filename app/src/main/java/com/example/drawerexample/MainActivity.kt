@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import com.example.drawerexample.databinding.ActivityMainBinding
 import com.example.drawerexample.viewmodel.UserViewModel
 import com.google.android.gms.auth.api.identity.Identity
@@ -73,13 +74,7 @@ class MainActivity : AppCompatActivity() {
             .setOnMenuItemClickListener {
                 firebaseAuth.signOut()
                 navController.navigate(R.id.loginFragment)
-                true
-            }
-
-        binding.navView.menu
-            .findItem(R.id.nav_show_adv)
-            .setOnMenuItemClickListener {
-                navController.navigate(R.id.nav_adv_list)
+                drawerLayout.closeDrawer(GravityCompat.START)
                 true
             }
     }

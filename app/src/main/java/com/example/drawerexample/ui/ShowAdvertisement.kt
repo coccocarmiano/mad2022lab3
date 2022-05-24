@@ -23,6 +23,9 @@ class ShowAdvertisement : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         setHasOptionsMenu(true)
+        arguments?.getBoolean("allow_edit")?.also {
+            setHasOptionsMenu(it)
+        }
 
         binding = ShowTimeSlotDetailsFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root

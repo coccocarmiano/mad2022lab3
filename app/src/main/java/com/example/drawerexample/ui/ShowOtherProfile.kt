@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.net.URL
 
 
@@ -76,6 +77,7 @@ class ShowOtherProfile : Fragment() {
             setPFP(it)
         }
 
+
         setHasOptionsMenu(false)
         return root
     }
@@ -93,10 +95,12 @@ class ShowOtherProfile : Fragment() {
             .child(uid)
             .downloadUrl
             .addOnSuccessListener { photoURI ->
-                GlobalScope.async {
+                GlobalScope.launch {
                     URL(photoURI.toString()).openStream().use {
                         val bmp = BitmapFactory.decodeStream(it)
+                        activity?.runOnUiThread {
                         binding.profileImageShowProfile.setImageBitmap(bmp)
+                        }
                     }
                 }
             }.addOnFailureListener {

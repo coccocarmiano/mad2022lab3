@@ -141,10 +141,17 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
             adv.location = binding.textInputEditLocation.text.toString()
             adv.duration = binding.textInputEditDuration.text.toString()
             adv.date = binding.textInputEditDate.text.toString()
-            adv.skill = binding.skillSpinner.selectedItem as String
+            adv.skill = binding.skillSpinner.selectedItem as? String ?: ""
             adv.emailCreator = userViewModel.liveUser.value!!.mail
 
-            if (advID == null || advID == "") {
+            if (adv.skill.isEmpty()) {
+                Snackbar.make(
+                    binding.root,
+                    "You must select a skill in order to proceed",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                return;
+            } else if (advID == null || advID == "") {
                 advertisementViewModel.saveAdvertisement(adv)
             } else {
                 advertisementViewModel.updateAdvertisement(advID!!, adv)

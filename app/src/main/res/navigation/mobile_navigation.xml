@@ -72,7 +72,20 @@
         <action
             android:id="@+id/nav_adv_list_to_show_other_profile"
             android:name="com.example.drawerexample.ui.ShowOtherProfile"
-            app:destination="@id/nav_show_profile_no_edit" />
+            app:destination="@id/nav_show_profile_no_edit"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/nav_adv_list_to_my_adv_list"
+            android:name="com.example.drawerexample.ui.AdvListFragment"
+            app:destination="@id/nav_adv_list"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+
         <argument
             android:name="skill"
             app:argType="string"
@@ -98,6 +111,13 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_nav_my_adv_list_to_adv_list"
+            app:destination="@id/nav_adv_list"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
 
     </fragment>
 
@@ -105,7 +125,7 @@
 
     <fragment
         android:id="@+id/nav_show_adv"
-        android:name="com.example.drawerexample.ui.ShowAdvertisement"
+        android:name="com.example.drawerexample.ui.AdvListFragment"
         android:label="@string/menu_show_adv"
         tools:layout="@layout/show_time_slot_details_fragment" >
         <action

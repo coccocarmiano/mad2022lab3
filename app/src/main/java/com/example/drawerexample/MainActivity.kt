@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         firebaseAuth.addAuthStateListener {
             if ( it.currentUser == null ) {
                 binding.navView.menu.findItem(R.id.nav_logout).isVisible = false
-                binding.navView.menu.findItem(R.id.nav_show_adv).isVisible = false
+                binding.navView.menu.findItem(R.id.show_skills_list).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_show_profile).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = true
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 binding.navView.menu.findItem(R.id.nav_logout).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = true
-                binding.navView.menu.findItem(R.id.nav_show_adv).isVisible = true
+                binding.navView.menu.findItem(R.id.show_skills_list).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_show_profile).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = false
                 navController.navigate(R.id.nav_adv_list)

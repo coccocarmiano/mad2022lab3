@@ -32,7 +32,8 @@ class AdvertisementsAdapter(private val parentFragment : Fragment) : RecyclerVie
             view.findViewById<ConstraintLayout>(R.id.adv_card).setOnClickListener {
                 val bundle = Bundle()
                 bundle.putString("adv_ID", myAdapter.data[adapterPosition].id)
-                parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_nav_show_adv, bundle)
+                bundle.putBoolean("allow_edit", true)
+                parentFragment.findNavController().navigate(R.id.action_nav_adv_myList_to_nav_show_adv, bundle)
             }
         }
     }

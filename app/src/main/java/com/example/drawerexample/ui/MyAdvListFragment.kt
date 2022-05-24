@@ -64,10 +64,8 @@ class MyAdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             if (advList != null) {
                 if (advList.isEmpty()) {
                     binding.noAdvTV.visibility = View.VISIBLE
-                    binding.advListRv.visibility = View.GONE
                 } else {
                     binding.noAdvTV.visibility = View.GONE
-                    binding.advListRv.visibility = View.VISIBLE
                     val myAdvertisementList =
                         advList.filter { it.emailCreator == userViewModel.liveUser.value!!.mail }.let {
                             myAdvList = it
@@ -160,5 +158,11 @@ class MyAdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         advAdapter.data = filteredAdv.toMutableList()
         advAdapter.notifyDataSetChanged()
+
+        if (filteredAdv.isEmpty()) {
+            binding.noAdvTV.visibility = View.VISIBLE
+        } else {
+            binding.noAdvTV.visibility = View.GONE
+        }
     }
 }

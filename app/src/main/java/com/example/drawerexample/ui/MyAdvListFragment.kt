@@ -1,5 +1,6 @@
 package com.example.drawerexample.ui
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.DatePicker
 import androidx.activity.OnBackPressedCallback
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -15,17 +18,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
 import com.example.drawerexample.adapter.AdvertisementsAdapter
+import com.example.drawerexample.adapter.AdvertisementsAdapterNoEdit
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.databinding.FragmentAdvListBinding
 import com.example.drawerexample.viewmodel.UserViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
-class MyAdvListFragment : Fragment() {
+class MyAdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private val advViewModel: AdvertisementViewModel by viewModels()
     private val userViewModel: UserViewModel by activityViewModels()
     private lateinit var binding : FragmentAdvListBinding
 
     private var filtersOpened: Boolean = false
+    private lateinit var advAdapter: AdvertisementsAdapter
+    private var myAdvList: List<Advertisement> = listOf()
+    private var titleFilter: String = ""
+    private var locationFilter: String = ""
+    private var dateFilter: String = ""
+
+    private var dateFiltered:Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +48,7 @@ class MyAdvListFragment : Fragment() {
         binding = FragmentAdvListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val advAdapter = AdvertisementsAdapter(this)
+        advAdapter = AdvertisementsAdapter(this)
 
         val recyclerView = binding.advListRv
         recyclerView.run {
@@ -56,9 +69,10 @@ class MyAdvListFragment : Fragment() {
                     binding.noAdvTV.visibility = View.GONE
                     binding.advListRv.visibility = View.VISIBLE
                     val myAdvertisementList =
-                        advList.filter { it.emailCreator == userViewModel.liveUser.value!!.mail }
-                    advAdapter.data = myAdvertisementList.toMutableList()
-                    advAdapter.notifyDataSetChanged()
+                        advList.filter { it.emailCreator == userViewModel.liveUser.value!!.mail }.let {
+                            myAdvList = it
+                            refreshUI()
+                        }
                 }
             }
         }
@@ -78,6 +92,36 @@ class MyAdvListFragment : Fragment() {
             }
         }
 
+        binding.textInputEditTitle.doOnTextChanged { text, start, before, count ->
+            titleFilter = text.toString()
+            refreshUI()
+        }
+        binding.textInputEditLocation.doOnTextChanged { text, start, before, count ->
+            locationFilter = text.toString()
+            refreshUI()
+        }
+
+        binding.textInputEditDate.setOnClickListener {
+            binding.textInputEditTitle.clearFocus()
+            binding.textInputEditLocation.clearFocus()
+
+            if (dateFiltered) {
+                dateFiltered = false
+                binding.textInputEditDate.setText("")
+                dateFilter = ""
+                refreshUI()
+            } else {
+                val cal = Calendar.getInstance()
+                DatePickerDialog(
+                    this.requireContext(),
+                    this,
+                    cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH),
+                    cal.get(Calendar.DAY_OF_MONTH)
+                ).show()
+            }
+        }
+
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
@@ -87,5 +131,34 @@ class MyAdvListFragment : Fragment() {
             })
 
         return root
+    }
+
+    private fun dateToString(day: Int, month: Int, year: Int): String{
+        val c = Calendar.getInstance()
+
+        c.set(year, month, day)
+
+        val simpleDateTimeFormat = SimpleDateFormat("dd/MM/yyyy")
+
+        return simpleDateTimeFormat.format(c.time)
+    }
+
+    override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
+        var stringDate = dateToString(p3, p2, p1)
+        binding.textInputEditDate.setText("$stringDate (Tap to remove)")
+        dateFilter = stringDate
+        refreshUI()
+        dateFiltered = true
+    }
+
+    private fun refreshUI() {
+        var filteredAdv = myAdvList
+
+        filteredAdv = filteredAdv.filter { it.title.startsWith(titleFilter, ignoreCase = true) }
+        filteredAdv = filteredAdv.filter { it.location.startsWith(locationFilter, ignoreCase = true) }
+        filteredAdv = filteredAdv.filter { it.date.startsWith(dateFilter, ignoreCase = true) }
+
+        advAdapter.data = filteredAdv.toMutableList()
+        advAdapter.notifyDataSetChanged()
     }
 }

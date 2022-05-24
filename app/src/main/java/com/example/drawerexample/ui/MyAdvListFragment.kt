@@ -17,6 +17,8 @@ import com.example.drawerexample.adapter.AdvertisementsAdapter
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.databinding.FragmentAdvListBinding
 import com.example.drawerexample.viewmodel.UserViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,6 +38,15 @@ class MyAdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var dateFiltered:Boolean = false
     private var sortingModes = listOf<String>("Date", "Title")
     private var selectedSortingMode = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val user = Firebase.auth.addAuthStateListener {
+            if (it.currentUser == null) {
+                findNavController().navigate(R.id.loginFragment)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

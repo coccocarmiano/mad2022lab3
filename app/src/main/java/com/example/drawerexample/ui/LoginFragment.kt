@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.drawerexample.MainActivity
 import com.example.drawerexample.R
 import com.example.drawerexample.databinding.FragmentLoginBinding
@@ -12,10 +13,13 @@ import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

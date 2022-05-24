@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private val firebaseAuth = Firebase.auth
+    val firebaseAuth = Firebase.auth
     private val userViewModel: UserViewModel by viewModels()
     val requestPhotoForProfileEdit = 1
     val requestGoogleLogin = 2
@@ -58,14 +58,14 @@ class MainActivity : AppCompatActivity() {
                 binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_show_profile).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = true
-                navController.navigate(R.id.loginFragment)
+                // navController.navigate(R.id.loginFragment)
             } else {
                 binding.navView.menu.findItem(R.id.nav_logout).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = true
                 binding.navView.menu.findItem(R.id.show_skills_list).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_show_profile).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = false
-                navController.navigate(R.id.nav_adv_list)
+                // navController.navigate(R.id.nav_adv_list)
             }
         }
 

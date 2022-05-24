@@ -6,10 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.DatePicker
-import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -21,7 +18,6 @@ import com.example.drawerexample.adapter.AdvertisementsAdapterNoEdit
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.databinding.FragmentAdvListBinding
 import com.example.drawerexample.viewmodel.UserViewModel
-import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
 

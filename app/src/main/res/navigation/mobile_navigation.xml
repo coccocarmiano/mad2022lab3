@@ -20,6 +20,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_show_profile_no_edit"
+        android:name="com.example.drawerexample.ui.ShowOtherProfile"
+        android:label="@string/menu_show_profile"
+        tools:layout="@layout/show_profile_fragment" >
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_edit_profile"
         android:name="com.example.drawerexample.ui.EditProfile"
         android:label="@string/menu_edit_profile"
@@ -64,7 +71,8 @@
             app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/nav_adv_list_to_show_other_profile"
-            app:destination="@id/nav_show_profile" />
+            android:name="com.example.drawerexample.ui.ShowOtherProfile"
+            app:destination="@id/nav_show_profile_no_edit" />
         <argument
             android:name="skill"
             app:argType="string"

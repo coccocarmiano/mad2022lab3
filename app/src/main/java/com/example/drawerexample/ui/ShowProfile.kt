@@ -3,7 +3,6 @@ package com.example.drawerexample.ui
 import android.os.Bundle
 import android.view.*
 import androidx.activity.OnBackPressedCallback
-import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController

@@ -4,21 +4,18 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.drawerexample.Advertisement
 import com.example.drawerexample.UserProfile
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.auth.User
-import kotlin.concurrent.thread
 
 class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
 
     var liveAdvList = MutableLiveData<MutableList<Advertisement>>()
-    lateinit var creatorToShow: LiveData<UserProfile>
+    val creatorToShow: MutableLiveData<UserProfile> = MutableLiveData()
     private val db = FirebaseFirestore.getInstance()
+    val userID : MutableLiveData<String?> = MutableLiveData(null);
 
     init {
         db.collection("advertisements")
@@ -33,12 +30,13 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
             }
     }
 
+
     fun findCreator(email: String) {
         db.collection("users").whereEqualTo("email" , email).get()
             .addOnSuccessListener {
                 for (doc in it) {
-                    val c = doc.toCreator()
-                    creatorToShow = c as LiveData<UserProfile>
+                    creatorToShow.value = doc.toCreator()
+                    userID.value = doc.id
             }
         }.addOnFailureListener{
             it.printStackTrace()
@@ -84,7 +82,7 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
             user.fullname = getString("fullname") ?: "No Fullname"
             user.mail = getString("email") ?: "No Email"
             user.location = getString("location") ?: "No Location"
-            user.skills = getString("skills") as List<String> ?: listOf<String>()
+            user.skills = get("skills") as? List<String> ?: listOf()
             user.username = getString("username") ?: "No Username"
         }
     }

@@ -1,23 +1,32 @@
 package com.example.drawerexample.ui
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import androidx.core.view.drawToBitmap
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.MutableLiveData
 import com.example.drawerexample.R
+import com.example.drawerexample.UserProfile
 import com.example.drawerexample.databinding.ShowProfileFragmentBinding
-import com.example.drawerexample.viewmodel.AdvertisementViewModel
-import com.example.drawerexample.viewmodel.UserViewModel
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import java.net.URL
+
 
 class ShowOtherProfile : Fragment() {
-
-    //TODO mostrare le informazione dell'user che ha creato l'adv cliccato
-
-    private val advViewModel by viewModels<AdvertisementViewModel>()
+    private val user = MutableLiveData(UserProfile())
+    private val userID : MutableLiveData<String> = MutableLiveData()
     private lateinit var binding : ShowProfileFragmentBinding
+    private lateinit var advID : String
+    private val db = FirebaseFirestore.getInstance()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(false)
+        advID = arguments?.get("adv_ID") as String
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,34 +37,47 @@ class ShowOtherProfile : Fragment() {
         binding = ShowProfileFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        advViewModel.creatorToShow.observe(viewLifecycleOwner){
-            binding.fullNameTV.text = it.fullname
-            binding.emailTV.text = it.mail
-            binding.locationTV.text = it.location
-            binding.usernameTV.text = it.username
+        db.document("advertisements/$advID").get().addOnSuccessListener {
+            it.get("emailCreator").let { it as String }.also { email ->
+                db.collection("users").whereEqualTo("email", email).limit(1)
+                    .addSnapshotListener { res, err ->
+                        res?.let { it.documents[0] }?.also { doc ->
+                            val username = doc.get("username") as String
+                            val fullname = doc.get("fullName") as String
+                            val location = doc.get("location") as String
+                            val skills = doc.get("skills") as? List<String> ?: emptyList()
+                            val id = doc.id
+                            val mail = doc.get("email") as String
 
-            if (it.skills.isEmpty())
-                binding.skillsTV.text = getString(R.string.no_skills)
-            else
-                binding.skillsTV.text = it.skills.joinToString(", ")
+                            val newUser = UserProfile()
+                            newUser.username = username
+                            newUser.fullname = fullname
+                            newUser.location = location
+                            newUser.skills = skills
+                            newUser.mail = mail
+                            user.value = newUser
+                            userID.value = id
+                        }
+                    }
+            }
         }
-        //TODO FOTO PROFILO
-        /*
-        userViewModel.livePicture.observe(requireActivity()) {
-            binding.profileImageShowProfile.setImageBitmap(it)
+
+        user.observe(viewLifecycleOwner) {
+            binding.emailTV.text = it.mail
+            binding.usernameTV.text = it.username
+            binding.fullNameTV.text = it.fullname
+            binding.locationTV.text = it.location
+            binding.skillsTV.text = it.skills.joinToString(", ")
         }
-        */
+
+        userID.observe(viewLifecycleOwner) {
+            setPFP(it)
+        }
+
         setHasOptionsMenu(false)
         return root
     }
 
-    /*
-    override fun onStart() {
-        super.onStart()
-        userViewModel.setUserPhoto()
-    }
-
-     */
 
     //TODO qua tasto per scrivere la messaggistica del prossimo lab
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -63,18 +85,18 @@ class ShowOtherProfile : Fragment() {
         inflater.inflate(R.menu.menu_edit_only, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.menu_edit -> {
-                var b = Bundle()
-                b.putBoolean("showCaller", true)
-                findNavController().navigate(R.id.action_nav_show_profile_to_nav_edit_profile, b)
+    private fun setPFP(uid : String) {
+        Firebase.storage.reference
+            .child("users_profile_pictures")
+            .child(uid)
+            .downloadUrl
+            .addOnSuccessListener {  photoURI ->
+                URL(photoURI.toString()).openStream().use {
+                    val bmp = BitmapFactory.decodeStream(it)
+                    binding.profileImageShowProfile.setImageBitmap(bmp)
+                }
+            }.addOnFailureListener {
+                Log.d("Error", ":(")
             }
-            else -> {
-
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
-
 }

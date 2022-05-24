@@ -76,7 +76,9 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         }
 
         binding.advAddFb.setOnClickListener {
-            findNavController().navigate(R.id.action_nav_adv_list_to_nav_edit_adv)
+            val bundle = Bundle()
+            bundle.putBoolean("allow_edit", false);
+            findNavController().navigate(R.id.action_nav_adv_list_to_nav_edit_adv, bundle)
         }
 
         binding.filtersDropdownBtn.setOnClickListener {

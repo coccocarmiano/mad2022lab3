@@ -60,18 +60,22 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             layoutManager = LinearLayoutManager(container?.context)
         }
 
+        userViewModel.liveUser.observe(viewLifecycleOwner) {
+            advViewModel.liveAdvList.value = advViewModel.liveAdvList.value
+        }
+
         advViewModel.liveAdvList.observe(viewLifecycleOwner) { advList ->
-            if (advList.isEmpty()) {
-                binding.noAdvTV.visibility = View.VISIBLE
-                binding.advListRv.visibility = View.GONE
-            } else {
-                binding.noAdvTV.visibility = View.GONE
-                binding.advListRv.visibility = View.VISIBLE
-                advList.filter { it.skill == listSkill }
-                    .let {
-                        myAdvList = it
-                        refreshUI()
-                    }
+            if (advList != null) {
+                if (advList.isEmpty()) {
+                    binding.noAdvTV.visibility = View.VISIBLE
+                } else {
+                    binding.noAdvTV.visibility = View.GONE
+                    advList.filter { it.skill == listSkill && it.emailCreator != userViewModel.liveUser.value!!.mail }
+                        .let {
+                            myAdvList = it
+                            refreshUI()
+                        }
+                }
             }
         }
 
@@ -144,6 +148,12 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
         advAdapter.data = filteredAdv.toMutableList()
         advAdapter.notifyDataSetChanged()
+
+        if (filteredAdv.isEmpty()) {
+            binding.noAdvTV.visibility = View.VISIBLE
+        } else {
+            binding.noAdvTV.visibility = View.GONE
+        }
     }
 
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {

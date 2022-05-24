@@ -61,7 +61,8 @@
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popExitAnim="@android:anim/slide_out_right" >
+        </action>
         <action
             android:id="@+id/action_nav_adv_list_to_nav_edit_adv"
             app:destination="@id/nav_edit_adv"
@@ -73,14 +74,6 @@
             android:id="@+id/nav_adv_list_to_show_other_profile"
             android:name="com.example.drawerexample.ui.ShowOtherProfile"
             app:destination="@id/nav_show_profile_no_edit"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
-        <action
-            android:id="@+id/nav_adv_list_to_my_adv_list"
-            android:name="com.example.drawerexample.ui.AdvListFragment"
-            app:destination="@id/nav_adv_list"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
@@ -98,7 +91,7 @@
         android:label="My Advertisements"
         tools:layout="@layout/fragment_adv_list" >
         <action
-            android:id="@+id/action_nav_adv_list_to_nav_show_adv"
+            android:id="@+id/action_nav_adv_myList_to_nav_show_adv"
             app:destination="@id/nav_show_adv"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
@@ -111,23 +104,14 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
-        <action
-            android:id="@+id/action_nav_my_adv_list_to_adv_list"
-            app:destination="@id/nav_adv_list"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
 
     </fragment>
 
 
-
     <fragment
         android:id="@+id/nav_show_adv"
-        android:name="com.example.drawerexample.ui.AdvListFragment"
-        android:label="@string/menu_show_adv"
-        tools:layout="@layout/show_time_slot_details_fragment" >
+        android:name="com.example.drawerexample.ui.ShowAdvertisement"
+        android:label="@string/menu_show_adv">
         <action
             android:id="@+id/action_nav_show_adv_to_nav_edit_adv"
             app:destination="@id/nav_edit_adv"
@@ -135,22 +119,13 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
-        <argument
-            android:name="adv_ID"
-            app:argType="string"
-            app:nullable="true" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_edit_adv"
         android:name="com.example.drawerexample.ui.EditAdvertisement"
         android:label="@string/menu_edit_adv"
-        tools:layout="@layout/edit_time_slot_details_fragment" >
-        <argument
-            android:name="adv_ID"
-            app:argType="string"
-            app:nullable="true" />
-    </fragment>
+        tools:layout="@layout/edit_time_slot_details_fragment" />
     <fragment
         android:id="@+id/loginFragment"
         android:name="com.example.drawerexample.ui.LoginFragment"

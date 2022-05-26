@@ -20,8 +20,10 @@ class ShowSkillListAdapter(private val parentFragment: Fragment) : RecyclerView.
 
         init {
             view.findViewById<ConstraintLayout>(R.id.skill_card).setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("skill", myAdapter.data[adapterPosition])
+                val bundle = Bundle().apply {
+                    putString("selectedSkill", myAdapter.data[adapterPosition])
+                    putBoolean("allowEdit", false)
+                }
                 parentFragment.findNavController().navigate(R.id.action_show_skills_list_to_nav_adv_list, bundle)
             }
         }

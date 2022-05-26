@@ -14,6 +14,7 @@ class ShowAdvertisement : Fragment() {
 
     private val advertisementViewModel: AdvertisementViewModel by activityViewModels()
     private lateinit var binding : ShowTimeSlotDetailsFragmentBinding
+    private var allowEdit = false
 
     private var advID : String? = null
 
@@ -22,15 +23,14 @@ class ShowAdvertisement : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setHasOptionsMenu(true)
-        arguments?.getBoolean("allow_edit")?.also {
-            setHasOptionsMenu(it)
-        }
+        setHasOptionsMenu(allowEdit)
+        arguments?.getBoolean("allowEdit")?.also { allowEdit = it }
+        setHasOptionsMenu(allowEdit)
 
         binding = ShowTimeSlotDetailsFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        advID = arguments?.getString("adv_ID")?.also { advID ->
+        advID = arguments?.getString("advertisementID")?.also { advID ->
             advertisementViewModel.liveAdvList.value?.find { it.id == advID }?.let {
                 refreshUI(it)
             }
@@ -64,8 +64,10 @@ class ShowAdvertisement : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_edit -> {
-                val bundle = Bundle()
-                advID?.let { bundle.putString("adv_ID", it) }
+                val bundle = Bundle().apply {
+                    putString("advertisementID", advID)
+                    putBoolean("allowEdit", allowEdit)
+                }
                 findNavController().navigate(R.id.action_nav_show_adv_to_nav_edit_adv, bundle)
             }
             else -> {

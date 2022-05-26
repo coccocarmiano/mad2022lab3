@@ -12,23 +12,23 @@
     <item
         android:id="@+id/show_skills_list"
         android:icon="@drawable/list"
-        android:title="@string/menu_show_adv_list"
+        android:title="@string/drawer_menu_show_adv_list"
         app:showAsAction="withText" />
 
     <item
         android:id="@+id/nav_adv_myList"
         android:icon="@drawable/list"
-        android:title="My Advertisements"
+        android:title="@string/drawer_menu_go_to_user_advertisements"
         app:showAsAction="withText" />
 
     <item
         android:id="@+id/nav_logout"
-        android:title="Logout"
+        android:title="@string/drawer_menu_logout"
         android:icon="@drawable/user"
         app:showAsAction="withText"/>
     <item
         android:id="@+id/nav_login"
-        android:title="Login"
+        android:title="@string/drawer_menu_login"
         android:icon="@drawable/user"
         app:showAsAction="withText"/>
 </menu>

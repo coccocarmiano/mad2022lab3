@@ -14,14 +14,14 @@
     <string name="menu_edit_skills">Edit Skills</string>
     <string name="menu_show_adv">User Advertisement</string>
     <string name="menu_edit_adv">Edit Advertisement</string>
-    <string name="menu_show_adv_list">Advertisement List</string>
+    <string name="drawer_menu_show_adv_list">Advertisement List</string>
 
     <string name="location_placeholder_text">Location</string>
     <string name="username_placeholder_text">Username</string>
     <string name="fullname_placeholder_text">Full Name</string>
     <string name="email_placeholder_text">Email</string>
     <string name="editProfileButtonText">Edit Profile</string>
-    <string name="no_skills">No Skills</string>
+    <string name="no_skills_placeholder_text">No Skills</string>
     <string name="editSkillsFragmentSaveButton">Save Skills</string>
 
     <string name="title_advertisement_placeholder_text">Title</string>
@@ -44,4 +44,18 @@
     <string name="skills_list_label">Offered Skills</string>
     <string name="filters">Filters</string>
     <string name="date">Date</string>
+    <string name="sorted_by_literal">Sorted by %1s</string>
+    <string name="tap_to_remove_adv_list_fragment">$1s (Tap to Remove)</string>
+    <string name="genericTextViewPlaceholder">TextView</string>
+    <string name="content_description_show_or_edit_advertisement">Button to show or edit advertisement</string>
+    <string name="content_description_edit_profile_picture">Click to edit profile picture</string>
+    <string name="content_description_profile_picture">Your profile picture</string>
+    <string name="content_description_sort_btn">Click to sort Advertisements</string>
+    <string name="content_description_filter_dropdown_btn">Click to show available filters</string>
+    <string name="content_description_advertisement_fab">Click to create a new advertisement</string>
+    <string name="login_btn_text">Login With Google</string>
+    <string name="skill_name_placeholder">Skill Name</string>
+    <string name="drawer_menu_go_to_user_advertisements">My Advertisements</string>
+    <string name="drawer_menu_logout">Logout</string>
+    <string name="drawer_menu_login">Login</string>
 </resources>

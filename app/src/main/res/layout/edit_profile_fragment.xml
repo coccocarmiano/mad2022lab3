@@ -33,7 +33,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/default_pfp" />
+                android:src="@drawable/default_pfp"
+                android:contentDescription="@string/content_description_profile_picture" />
 
             <ImageButton
                 android:id="@+id/editProfileImageButton"
@@ -43,7 +44,8 @@
                 android:scaleType="centerInside"
                 android:scaleX="0.5"
                 android:scaleY="0.5"
-                android:src="@drawable/camera" />
+                android:src="@drawable/camera"
+                android:contentDescription="@string/content_description_edit_profile_picture" />
         </RelativeLayout>
 
         <LinearLayout

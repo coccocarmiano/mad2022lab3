@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
 
-class AdvertisementsAdapter(private val parentFragment : Fragment) : RecyclerView.Adapter<AdvertisementsAdapter.AdvViewHolder>() {
+class AdvertisementsAdapter(private val parentFragment : Fragment, private val allowEdit : Boolean = false) : RecyclerView.Adapter<AdvertisementsAdapter.AdvViewHolder>() {
 
     var data = mutableListOf<Advertisement>()
 
@@ -23,17 +23,41 @@ class AdvertisementsAdapter(private val parentFragment : Fragment) : RecyclerVie
         val advLocationTv : TextView = view.findViewById(R.id.adv_location)
 
         init {
+            val bundle = Bundle()
             view.findViewById<ImageButton>(R.id.adv_edit).setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("adv_ID", myAdapter.data[adapterPosition].id)
-                parentFragment.findNavController().navigate(R.id.action_nav_adv_myList_to_nav_edit_adv, bundle)
+                bundle.putString("advertisementID", myAdapter.data[adapterPosition].id)
+                parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_nav_edit_adv, bundle)
             }
 
+            // Listener to go see adv details
             view.findViewById<ConstraintLayout>(R.id.adv_card).setOnClickListener {
-                val bundle = Bundle()
-                bundle.putString("adv_ID", myAdapter.data[adapterPosition].id)
-                bundle.putBoolean("allow_edit", true)
-                parentFragment.findNavController().navigate(R.id.action_nav_adv_myList_to_nav_show_adv, bundle)
+                bundle.apply {
+                    putString("advertisementID", myAdapter.data[adapterPosition].id)
+                    putBoolean("allowEdit", myAdapter.allowEdit)
+                }
+                parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_nav_show_adv, bundle)
+            }
+
+            val imageButton = view.findViewById<ImageButton>(R.id.adv_edit)
+            when (myAdapter.allowEdit) {
+                true -> { // In this case we should render the little pencil and bring to adv edit
+                    imageButton
+                        .apply { setImageResource(R.drawable.edit) }
+                        .setOnClickListener {
+                            bundle.putString("advertisementID", myAdapter.data[adapterPosition].id)
+                            bundle.putBoolean("allowEdit", true)
+                            parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_nav_edit_adv, bundle)
+                        }
+
+                }
+                false -> { // In this case we should render the little user icon and go to show user profile
+                    imageButton
+                        .apply { setImageResource(R.drawable.user) }
+                        .setOnClickListener {
+                            bundle.putString("UID", myAdapter.data[adapterPosition].creatorUID)
+                            parentFragment.findNavController().navigate(R.id.nav_show_profile, bundle)
+                        }
+                }
             }
         }
     }

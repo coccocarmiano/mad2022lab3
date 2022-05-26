@@ -36,7 +36,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:text="TextView"
+                android:text="@string/genericTextViewPlaceholder"
                 android:gravity="center"
                 android:textSize="24sp"/>
 
@@ -47,7 +47,7 @@
                 android:layout_weight="1"
                 android:src="@drawable/sort"
                 android:background="@color/transparent"
-                app:tint="@color/black"/>
+                android:contentDescription="@string/content_description_sort_btn" />
         </LinearLayout>
 
         <LinearLayout
@@ -78,7 +78,7 @@
                 android:layout_weight="1"
                 android:background="@color/transparent"
                 android:src="@drawable/arrow_drop_down"
-                app:tint="@color/black" />
+                android:contentDescription="@string/content_description_filter_dropdown_btn"/>
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -181,7 +181,7 @@
         app:layout_constraintTop_toBottomOf="@+id/filter_container" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/adv_add_fb"
+        android:id="@+id/addAdvertisementFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="25dp"
@@ -189,7 +189,9 @@
         android:clickable="true"
         android:src="@drawable/add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:focusable="true"
+        android:contentDescription="@string/content_description_advertisement_fab" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

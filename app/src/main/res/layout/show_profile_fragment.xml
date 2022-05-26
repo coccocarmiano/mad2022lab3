@@ -26,7 +26,8 @@
             android:src="@drawable/default_pfp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/default_pfp" />
+            app:srcCompat="@drawable/default_pfp"
+            android:contentDescription="@string/content_description_profile_picture" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,35 +40,35 @@
                 android:id="@+id/fullNameTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Fullname"
+                android:text="@string/fullname_placeholder_text"
                 android:textSize="32sp" />
 
             <TextView
                 android:id="@+id/usernameTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Username"
+                android:text="@string/username_placeholder_text"
                 android:textSize="32sp" />
 
             <TextView
                 android:id="@+id/emailTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="e-Mail"
+                android:text="@string/email_placeholder_text"
                 android:textSize="32sp" />
 
             <TextView
                 android:id="@+id/locationTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Location"
+                android:text="@string/location_placeholder_text"
                 android:textSize="32sp" />
 
             <TextView
                 android:id="@+id/skillsTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="No Skills"
+                android:text="@string/no_skills_placeholder_text"
                 android:textSize="32sp" />
 
 

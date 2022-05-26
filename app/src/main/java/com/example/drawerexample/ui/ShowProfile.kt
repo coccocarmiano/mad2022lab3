@@ -15,47 +15,57 @@ class ShowProfile : Fragment() {
     private val userViewModel by viewModels<UserViewModel>()
     private lateinit var binding : ShowProfileFragmentBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = ShowProfileFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        userViewModel.liveUser.observe(viewLifecycleOwner){
-            binding.fullNameTV.text = it.fullname
-            binding.emailTV.text = it.mail
-            binding.locationTV.text = it.location
-            binding.usernameTV.text = it.username
-
-            if (it.skills.isEmpty())
-                binding.skillsTV.text = getString(R.string.no_skills)
-            else
-                binding.skillsTV.text = it.skills.joinToString(", ")
-        }
-
-        userViewModel.livePicture.observe(requireActivity()) {
-            binding.profileImageShowProfile.setImageBitmap(it)
-        }
+        val userIDToDisplay = arguments?.getString("UID")
+        val allowEdit = arguments?.getBoolean("allowEdit") ?: true
+        userIDToDisplay?.also { userViewModel.loadUser(it) }
+        startListeningForChanges()
 
         requireActivity()
             .onBackPressedDispatcher
             .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    requireActivity().finishAndRemoveTask()
+                    findNavController().popBackStack()
                 }
             })
 
-        setHasOptionsMenu(true)
+        setHasOptionsMenu(allowEdit)
         return root
     }
 
-    override fun onStart() {
-        super.onStart()
-        userViewModel.setUserPhoto()
+    private fun startListeningForChanges() {
+        userViewModel.fullname.observe(viewLifecycleOwner) {
+            binding.fullNameTV.text = it
+        }
+
+        userViewModel.email.observe(viewLifecycleOwner) {
+            binding.emailTV.text = it
+        }
+
+        userViewModel.location.observe(viewLifecycleOwner) {
+            binding.locationTV.text = it
+        }
+
+        userViewModel.username.observe(viewLifecycleOwner) {
+            binding.usernameTV.text = it
+        }
+
+        userViewModel.skills.observe(viewLifecycleOwner) {
+            if (it.isEmpty())
+                binding.skillsTV.text = getString(R.string.no_skills_placeholder_text)
+            else
+                binding.skillsTV.text = it.joinToString(", ")
+        }
+
+        userViewModel.propic.observe(viewLifecycleOwner) {
+            binding.profileImageShowProfile.setImageBitmap(it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -66,7 +76,7 @@ class ShowProfile : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_edit -> {
-                var b = Bundle()
+                val b = Bundle()
                 b.putBoolean("showCaller", true)
                 findNavController().navigate(R.id.action_nav_show_profile_to_nav_edit_profile, b)
             }

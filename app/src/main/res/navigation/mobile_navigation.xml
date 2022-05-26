@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/nav_adv_myList">
+    app:startDestination="@id/show_skills_list">
 
     <fragment
         android:id="@+id/nav_show_profile"
@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/nav_show_profile_no_edit"
-        android:name="com.example.drawerexample.ui.ShowOtherProfile"
+        android:name="com.example.drawerexample.ui.ShowProfile"
         android:label="@string/menu_show_profile"
         tools:layout="@layout/show_profile_fragment" >
     </fragment>
@@ -38,10 +38,6 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
-        <argument
-            android:name="showCaller"
-            app:argType="boolean"
-            android:defaultValue="false" />
     </fragment>
 
     <fragment
@@ -53,16 +49,8 @@
     <fragment
         android:id="@+id/nav_adv_list"
         android:name="com.example.drawerexample.ui.AdvListFragment"
-        android:label="@string/menu_show_adv_list"
+        android:label="@string/drawer_menu_show_adv_list"
         tools:layout="@layout/fragment_adv_list" >
-        <action
-            android:id="@+id/action_nav_adv_list_to_nav_show_adv"
-            app:destination="@id/nav_show_adv"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" >
-        </action>
         <action
             android:id="@+id/action_nav_adv_list_to_nav_edit_adv"
             app:destination="@id/nav_edit_adv"
@@ -78,48 +66,11 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
-
-        <argument
-            android:name="skill"
-            app:argType="string"
-            app:nullable="true" />
+        <action
+            android:id="@+id/action_nav_adv_list_to_nav_show_adv"
+            app:destination="@id/nav_show_adv" />
     </fragment>
 
-    <fragment
-        android:id="@+id/nav_adv_myList"
-        android:name="com.example.drawerexample.ui.MyAdvListFragment"
-        android:label="My Advertisements"
-        tools:layout="@layout/fragment_adv_list" >
-        <action
-            android:id="@+id/action_nav_adv_myList_to_nav_show_adv"
-            app:destination="@id/nav_show_adv"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
-        <action
-            android:id="@+id/action_nav_adv_myList_to_nav_edit_adv"
-            app:destination="@id/nav_edit_adv"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
-
-    </fragment>
-
-
-    <fragment
-        android:id="@+id/nav_show_adv"
-        android:name="com.example.drawerexample.ui.ShowAdvertisement"
-        android:label="@string/menu_show_adv">
-        <action
-            android:id="@+id/action_nav_show_adv_to_nav_edit_adv"
-            app:destination="@id/nav_edit_adv"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right"
-            app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
-    </fragment>
 
     <fragment
         android:id="@+id/nav_edit_adv"
@@ -130,7 +81,11 @@
         android:id="@+id/loginFragment"
         android:name="com.example.drawerexample.ui.LoginFragment"
         android:label="Login with Google"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_show_skills_list"
+            app:destination="@id/show_skills_list" />
+    </fragment>
 
     <fragment
         android:id="@+id/show_skills_list"
@@ -140,5 +95,18 @@
         <action
             android:id="@+id/action_show_skills_list_to_nav_adv_list"
             app:destination="@id/nav_adv_list" />
+        <action
+            android:id="@+id/action_show_skills_list_to_nav_show_profile"
+            app:destination="@id/nav_show_profile" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_show_adv"
+        android:name="com.example.drawerexample.ui.ShowAdvertisement"
+        android:label="Show Advertisement"
+        tools:layout="@layout/show_time_slot_details_fragment">
+        <action
+            android:id="@+id/action_nav_show_adv_to_nav_edit_adv"
+            app:destination="@id/nav_edit_adv" />
     </fragment>
 </navigation>

@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.drawerexample.Advertisement
-import com.example.drawerexample.R
 import com.example.drawerexample.databinding.EditTimeSlotDetailsFragmentBinding
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.viewmodel.UserViewModel
@@ -29,10 +28,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
     private val advertisementViewModel: AdvertisementViewModel by activityViewModels()
     private val userViewModel: UserViewModel by activityViewModels()
 
-    private var _binding: EditTimeSlotDetailsFragmentBinding? = null
-    private val binding get() = _binding!!
-
-    private var advID : String? = null
+    private lateinit var binding : EditTimeSlotDetailsFragmentBinding
 
     private var initialAdvSkill : String? = null
 
@@ -43,20 +39,24 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
     private var savedMinute = 0
 
     private lateinit var skillsSpinnerAdapter: ArrayAdapter<String>
+    private var allowEdit = false
+    private lateinit var advID : String
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = EditTimeSlotDetailsFragmentBinding.inflate(inflater, container, false)
+        binding = EditTimeSlotDetailsFragmentBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        allowEdit = arguments?.getBoolean("allowEdit") ?: false
+        advID = arguments?.getString("advertisementID", "").orEmpty()
 
-        setHasOptionsMenu(true)
+        setHasOptionsMenu(allowEdit)
 
-        advID = arguments?.getString("adv_ID", "")
 
-        if (advID != null && advID != "") {
+        if (advID.isNotEmpty()) {
             val adv = advertisementViewModel.liveAdvList.value?.find { it.id == advID }
 
             adv.apply {
@@ -65,7 +65,6 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                 binding.textInputEditLocation.setText(adv?.location)
                 binding.textInputEditDuration.setText(adv?.duration)
                 binding.textInputEditDate.setText(adv?.date)
-
                 initialAdvSkill = adv?.skill
             }
         }
@@ -74,10 +73,10 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
         skillsSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.skillSpinner.adapter = skillsSpinnerAdapter
 
-        userViewModel.liveUser.observe(viewLifecycleOwner) {
+        userViewModel.skills.observe(viewLifecycleOwner) { userSkillList ->
             skillsSpinnerAdapter.clear()
-            skillsSpinnerAdapter.addAll(it.skills)
-            val initialPos = it.skills.indexOf(initialAdvSkill)
+            skillsSpinnerAdapter.addAll(userSkillList)
+            val initialPos = userSkillList.indexOf(initialAdvSkill)
             if (initialPos != -1)
                 binding.skillSpinner.setSelection(initialPos, true)
         }
@@ -142,34 +141,30 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
             adv.duration = binding.textInputEditDuration.text.toString()
             adv.date = binding.textInputEditDate.text.toString()
             adv.skill = binding.skillSpinner.selectedItem as? String ?: ""
-            adv.emailCreator = userViewModel.liveUser.value!!.mail
+            adv.creatorMail = userViewModel.email.value ?: "No eMail"
+            adv.creatorUID = userViewModel.userID.value ?: "No UID"
 
-            if (adv.skill.isEmpty()) {
-                Snackbar.make(
-                    binding.root,
-                    "You must select a skill in order to proceed",
-                    Snackbar.LENGTH_SHORT
-                ).show()
-                return;
-            } else if (advID == null || advID == "") {
-                advertisementViewModel.saveAdvertisement(adv)
-            } else {
-                advertisementViewModel.updateAdvertisement(advID!!, adv)
+
+            when {
+                adv.skill.isEmpty() -> {
+                    Snackbar.make(
+                        binding.root,
+                        "You must select a skill in order to proceed",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
+                    return
+                }
+                advID.isEmpty() -> advertisementViewModel.createAdvertisement(adv)
+                else -> advID.also { _ -> advertisementViewModel.updateAdvertisement(advID, adv) }
             }
-
-
             findNavController().popBackStack()
         }
     }
 
     private fun dateTimeToString(day: Int, month: Int, year: Int,hour:Int, minute:Int): String{
-        val c = Calendar.getInstance()
-
-        c.set(year, month, day, hour, minute)
-
-        val simpleDateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm")
-
-        return simpleDateTimeFormat.format(c.time)
+        val date = Calendar.getInstance().apply { set(year, month, day, hour, minute) }
+        val fmt = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        return fmt.format(date.time)
     }
 
     private fun getDateTimeCalendar(){
@@ -198,7 +193,6 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         saveAndExit()
-
         return true
     }
 

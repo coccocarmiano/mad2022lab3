@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    val firebaseAuth = Firebase.auth
+    private val firebaseAuth = Firebase.auth
     private val userViewModel: UserViewModel by viewModels()
     val requestPhotoForProfileEdit = 1
     val requestGoogleLogin = 2
@@ -77,6 +77,25 @@ class MainActivity : AppCompatActivity() {
                 drawerLayout.closeDrawer(GravityCompat.START)
                 true
             }
+
+        binding.navView.menu
+            .findItem(R.id.nav_adv_myList)
+            .setOnMenuItemClickListener {
+                val bundle = Bundle().apply { putBoolean("allowEdit", true) }
+                navController.navigate(R.id.nav_adv_list, bundle)
+                drawerLayout.closeDrawer(GravityCompat.START)
+                true
+            }
+
+        binding.navView.menu
+            .findItem(R.id.show_skills_list)
+            .setOnMenuItemClickListener {
+                val bundle = Bundle().apply { putBoolean("allowEdit", false) }
+                navController.navigate(R.id.show_skills_list, bundle)
+                drawerLayout.closeDrawer(GravityCompat.START)
+                true
+            }
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -84,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    @Deprecated("")
+    @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         @Suppress("DEPRECATION")
         super.onActivityResult(requestCode, resultCode, data)
@@ -92,19 +111,13 @@ class MainActivity : AppCompatActivity() {
             requestPhotoForProfileEdit -> {
                 when (resultCode) {
                     RESULT_OK -> {
-                        // If Bitmap
-                        data?.extras?.get("data")?.let {
-                            it as Bitmap
-                        }?.run {
-                            userViewModel.updateProfilePictureFromBitmap(this)
+                        val bmp = when {
+                            data?.extras?.get("data") != null -> data.extras?.get("data") as Bitmap                  // If from Camera
+                            data?.data != null -> MediaStore.Images.Media.getBitmap(this.contentResolver, data.data) // If from File
+                            else -> null
                         }
 
-                        // If URI
-                        data?.data?.let {
-                            // This is deprecated, but at least it works
-                            val bmp = MediaStore.Images.Media.getBitmap(this.contentResolver, it)
-                            userViewModel.updateProfilePictureFromBitmap(bmp)
-                        }
+                        bmp?.also { userViewModel.uploadPhoto(it) }
                     }
                     RESULT_CANCELED -> {
                         Snackbar

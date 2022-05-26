@@ -5,185 +5,165 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.drawerexample.R
-import com.example.drawerexample.UserProfile
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.net.URL
 
+
 class UserViewModel(val app : Application) : AndroidViewModel(app) {
 
-    val liveUser : MutableLiveData<UserProfile> = MutableLiveData()
-    val livePicture = MutableLiveData<Bitmap>()
-    private val uid = Firebase.auth.currentUser?.uid ?: "NULL_USER_UID"
-    private val db = FirebaseFirestore.getInstance()
-    private val userDocumentReference = db.collection("users").document(uid)
+    // Class Fields
+    val fullname = MutableLiveData<String>()
+    val username = MutableLiveData<String>()
+    val location = MutableLiveData<String>()
+    val email    = MutableLiveData<String>()
+    val userID   = MutableLiveData<String?>(Firebase.auth.currentUser?.uid)
+    val skills   = MutableLiveData<List<String>>()
+    val propic   = MutableLiveData<Bitmap>()
+    private val nullUID = "null"
 
+    private val db = FirebaseFirestore.getInstance()
+    private var userDocumentReference = db.collection("users").document(userID.value ?: nullUID)
 
     init {
-        liveUser.value = UserProfile()
-        userDocumentReference.get()
-            .addOnSuccessListener {
-                if (!it.exists()) createDefaultUserDocument()
-                else updateUserFromDocument(it)
-            }.addOnFailureListener {
-                Toast.makeText(app, "Failed to get user document", Toast.LENGTH_LONG).show()
+        userDocumentReference.get().addOnFailureListener { createDefaultUserDocument() }
+        userID.observeForever { uid ->
+            uid?.also {
+                userDocumentReference = db.collection("users").document(it)
+                userDocumentReference.addSnapshotListener { doc, err ->
+                    when {
+                        err != null -> Log.w("UserViewModel", "Listen failed.", err)
+                        doc != null -> {
+                            updateUserFromDocument(doc)
+                        }
+                    }
+                }
+                updateProfilePicture()
             }
+        }
+    }
 
-        attachUserInfoListener()
+    fun loadUser(userID: String) {
+        this.userID.value = userID
     }
 
     private fun createDefaultUserDocument() {
         val currentUser = Firebase.auth.currentUser
+        val newUID = currentUser?.uid
         val userHashMap = hashMapOf(
             "fullName" to  ( currentUser?.displayName ?: app.getString(R.string.username_placeholder_text) ),
             "username" to app.getString(R.string.username_placeholder_text),
             "email" to ( currentUser?.email ?: app.getString(R.string.email_placeholder_text) ),
             "location" to app.getString(R.string.location_placeholder_text),
             "skills" to listOf<String>(),
-            "pfpProg" to 0,
         )
 
-        userDocumentReference.set(userHashMap).addOnFailureListener {
-            Log.e("UserViewModel", "Failed to create default user document")
+        newUID?.also {
+            userDocumentReference = db.collection("users").document(newUID)
+            userDocumentReference.set(userHashMap).addOnFailureListener {
+                Log.w("UserViewModel", "Failed to create user document", it)
+            }
+            uploadDefaultPhoto()
         }
     }
 
-
+    @Suppress("UNCHECKED_CAST")
     private fun updateUserFromDocument(doc : DocumentSnapshot) {
-        UserProfile().apply {
-            doc.getString("fullName")?.let {
-                fullname = it
-            }
-            doc.getString("username")?.let {
-                username = it
-            }
-            doc.getString("email")?.let {
-                mail = it
-            }
-            doc.getString("location")?.let {
-                location = it
-            }
-            doc.get("skills")?.let {
-                try {
-                    @Suppress("UNCHECKED_CAST")
-                    skills = it as List<String>
-                } catch (e: ClassCastException) {
-                    Log.e("UserViewModel", "Failed to cast skills to list")
-                }
-            }
-        }.also {
-            liveUser.value = it
+        doc.run {
+            fullname.value = getString("fullName")
+            username.value = getString("username")
+            location.value = getString("location")
+            email.value = getString("email")
+            skills.value = get("skills") as? List<String> ?: listOf()
+            updateProfilePicture()
         }
     }
 
-    private fun pushChangesToFirebase() {
-        liveUser.value?.run {
-            val userHashMap = hashMapOf(
-                "fullName" to fullname,
-                "email" to mail,
-                "location" to location,
-                "skills" to skills,
-                "username" to username,
-            )
-            userDocumentReference.set(userHashMap)
-        }
+    fun applyChangesToFirebase() {
+        val userHashMap = hashMapOf(
+            "fullName" to fullname.value, 
+            "username" to username.value,
+            "email" to email.value,
+            "location" to location.value,
+            "skills" to skills.value,
+        )
+        userDocumentReference.update(userHashMap)
     }
 
     fun updateSkills(skills : List<String>) {
-        liveUser.value?.skills = skills
-        pushChangesToFirebase()
-
-        //  triggering observer of liveUser
-        liveUser.value = liveUser.value
+        this.skills.value = skills
+        applyChangesToFirebase()
     }
 
-    fun updateViewModel() {
-        liveUser.value = UserProfile(liveUser.value ?: UserProfile())
-        pushChangesToFirebase()
+    private fun compressBitmap(bmp: Bitmap): ByteArray{
+        val baos = ByteArrayOutputStream()
+        bmp.compress(Bitmap.CompressFormat.PNG, 70, baos)
+        return baos.toByteArray()
     }
 
-    private fun attachUserInfoListener() {
-        userDocumentReference.addSnapshotListener { doc, err ->
-            run {
-                when (err) {
-                    null -> doc?.run { updateUserFromDocument(this) }
-                    else -> Log.e("UserViewModel", err.toString())
+    private fun updateProfilePicture() {
+        // First we should try getting it from the Firebase Storage
+        val storageRef = Firebase.storage.reference
+        storageRef.child("users_profile_pictures/${userID.value}").downloadUrl
+            .addOnSuccessListener { uri ->
+                updateProfilePictureFromURI(uri)
+            }
+            .addOnFailureListener {
+                // If that fails, we should try getting it from Google Account
+                // TODO: Ensure we're not getting the wrong user PFP here...
+                val googleAccountRef = Firebase.auth.currentUser
+                when (googleAccountRef?.photoUrl) {
+                    null -> {
+                        googleAccountRef?.photoUrl?.also { Uri ->
+                            val url = URL(Uri.toString())
+                            val bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                            val compressed = compressBitmap(bmp)
+                            Firebase.storage.reference.child("users_profile_pictures/${userID.value}").putBytes(compressed)
+                                .addOnFailureListener {
+                                    Log.w("UserViewModel", "Failed to upload profile picture", it)
+                                }
+                        }
+                    }
+                    else -> uploadDefaultPhoto()
                 }
             }
-        }
     }
 
-    fun setUserPhoto() {
-        setPhotoFromFirebase()
-    }
-
-    private fun setPhotoFromGoogle() {
-        when (val photoURI = Firebase.auth.currentUser?.photoUrl) {
-            null -> {
-                setDefaultPhoto()
-            }
-            else -> {
-                setProfilePictureFromURI(photoURI)
-            }
-        }
-    }
-
-    private fun setPhotoFromFirebase() {
-        Firebase.storage.reference
-            .child("users_profile_pictures")
-            .child(uid)
-            .downloadUrl
-            .addOnSuccessListener {
-                setProfilePictureFromURI(it)
-            }.addOnFailureListener {
-                setPhotoFromGoogle()
-            }
-    }
-
-    private fun setProfilePictureFromURI(photoURI : Uri) {
-        Thread {
-            URL(photoURI.toString()).openStream().use {
-                val bmp = BitmapFactory.decodeStream(it)
-                livePicture.postValue(bmp)
-                //uploadPhotoToFirebase(bmp)
-            }
-        }.start()
-    }
-
-    private fun setDefaultPhoto() {
+    private fun uploadDefaultPhoto() {
         val bmp = BitmapFactory.decodeResource(app.resources, R.drawable.default_pfp)
-        livePicture.postValue(bmp)
-        //uploadPhotoToFirebase(bmp)
-    }
-
-    private fun uploadPhotoToFirebase(bmp : Bitmap) {
-        val byteOutStream = ByteArrayOutputStream()
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, byteOutStream)
-        val byteArray = byteOutStream.toByteArray()
-        Firebase.storage.reference
-            .child("users_profile_pictures")
-            .child(uid)
-            .putBytes(byteArray)
+        val compressed = compressBitmap(bmp)
+        Firebase.storage.reference.child("users_profile_pictures/${userID.value}").putBytes(compressed)
             .addOnFailureListener {
-                Toast.makeText(app, "Failed to upload photo: ${it.toString()}", Toast.LENGTH_SHORT).show()
+                Log.w("UserViewModel", "Failed to upload profile picture", it)
             }
     }
 
-    fun updateProfilePictureFromBitmap(bmp : Bitmap) {
-        livePicture.postValue(bmp)
-        uploadPhotoToFirebase(bmp)
+    fun uploadPhoto(bmp : Bitmap) {
+        val compressed = compressBitmap(bmp)
+        Firebase.storage.reference
+            .child("users_profile_pictures/${userID.value}")
+            .putBytes(compressed)
+            .addOnFailureListener {
+                Log.w("UserViewModel", "Failed to upload profile picture", it)
+                // TODO Add user warning for failure
+            }
     }
 
-    fun updateProfilePictureFromURI(uri : Uri) {
-        setProfilePictureFromURI(uri)
+    private fun updateProfilePictureFromURI(uri : Uri) {
+        viewModelScope.launch(Dispatchers.IO) {
+            URL(uri.toString()).let { BitmapFactory.decodeStream(it.openConnection().getInputStream()) }
+                .also { viewModelScope.launch { propic.value = it } }
+        }
     }
 }
 

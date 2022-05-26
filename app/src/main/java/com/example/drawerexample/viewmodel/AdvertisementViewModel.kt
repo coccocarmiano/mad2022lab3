@@ -2,20 +2,16 @@ package com.example.drawerexample.viewmodel
 
 import android.app.Application
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.example.drawerexample.Advertisement
-import com.example.drawerexample.UserProfile
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
 class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
 
     var liveAdvList = MutableLiveData<MutableList<Advertisement>>()
-    val creatorToShow: MutableLiveData<UserProfile> = MutableLiveData()
     private val db = FirebaseFirestore.getInstance()
-    val userID : MutableLiveData<String?> = MutableLiveData(null);
 
     init {
         db.collection("advertisements")
@@ -25,25 +21,13 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
                         liveAdvList.value =
                             changes?.documents?.map { doc -> doc.toAdvertisement() } as MutableList<Advertisement>
                     }
-                    else -> Toast.makeText(app, "Firestore $err", Toast.LENGTH_LONG).show()
+                    else -> Log.w("Firebase", "Error receiving updates", err)
                 }
             }
     }
 
 
-    fun findCreator(email: String) {
-        db.collection("users").whereEqualTo("email" , email).get()
-            .addOnSuccessListener {
-                for (doc in it) {
-                    creatorToShow.value = doc.toCreator()
-                    userID.value = doc.id
-            }
-        }.addOnFailureListener{
-            it.printStackTrace()
-            }
-    }
-
-    fun saveAdvertisement(adv: Advertisement) {
+    fun createAdvertisement(adv: Advertisement) {
         db.collection("advertisements")
             .document()
             .set(
@@ -54,39 +38,30 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
                     "date" to adv.date,
                     "duration" to adv.duration,
                     "skill" to adv.skill,
-                    "emailCreator" to adv.emailCreator
+                    "creatorMail" to adv.creatorMail,
+                    "creatorID" to adv.creatorUID
                 )
             ).addOnFailureListener {
                 Log.d("Firebase", it.toString())
             }
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun updateAdvertisement(id: String, adv: Advertisement) {
-        db.collection("advertisements").document(id).set(
-            hashMapOf(
+        db.collection("advertisements").document(id)
+            .update( hashMapOf(
                 "title" to adv.title,
                 "description" to adv.description,
                 "location" to adv.location,
                 "date" to adv.date,
                 "duration" to adv.duration,
                 "skill" to adv.skill,
-                "emailCreator" to adv.emailCreator
-            )
+                "emailCreator" to adv.creatorMail
+            ) as MutableMap<String, Any>
         ).addOnFailureListener {
-            Log.d("Firebase", it.toString())
+            Log.w("Firebase", "Could not upadte advertisement", it)
         }
     }
-
-    private fun DocumentSnapshot.toCreator(): UserProfile {
-        return UserProfile().also { user ->
-            user.fullname = getString("fullname") ?: "No Fullname"
-            user.mail = getString("email") ?: "No Email"
-            user.location = getString("location") ?: "No Location"
-            user.skills = get("skills") as? List<String> ?: listOf()
-            user.username = getString("username") ?: "No Username"
-        }
-    }
-
 
     private fun DocumentSnapshot.toAdvertisement(): Advertisement {
         return Advertisement().also { adv ->
@@ -97,7 +72,8 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
             adv.date = getString("date") ?: "No Date"
             adv.duration = getString("duration") ?: "No Duration"
             adv.skill = getString("skill") ?: "No Skill"
-            adv.emailCreator = getString("emailCreator") ?: "No creator"
+            adv.creatorMail = getString("emailCreator") ?: "No creator"
+            adv.creatorUID = getString("creatorID") ?: "No creator UID"
         }
     }
 

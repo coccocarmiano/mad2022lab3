@@ -1,7 +1,6 @@
 package com.example.drawerexample.ui
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import androidx.fragment.app.Fragment
@@ -18,7 +17,6 @@ import com.example.drawerexample.R
 import com.example.drawerexample.databinding.EditProfileFragmentBinding
 import com.example.drawerexample.viewmodel.UserViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.ktx.userProfileChangeRequest
 
 class EditProfile : Fragment() {
 
@@ -35,34 +33,20 @@ class EditProfile : Fragment() {
         val root: View = binding.root
 
         setHasOptionsMenu(true)
-
-        userViewModel.liveUser.observe(viewLifecycleOwner) { user ->
-            user.run {
-                fullname.let { binding.textInputEditFullName.setText(it) }
-                username.let { binding.textInputEditUserName.setText(it) }
-                mail.let { binding.textInputEditMail.setText(it) }
-                location.let { binding.textInputEditUserLocation.setText(it) }
-                username.let { binding.textInputEditUserName.setText(it) }
-            }
-        }
-
-        val getPic = arguments?.getBoolean("showCaller", false)
-        if (getPic == true)
-            userViewModel.setUserPhoto()
-
-        userViewModel.livePicture.observe(viewLifecycleOwner) {
-            binding.profileImageEditProfile.setImageBitmap(it)
-        }
+        startListeningForChanges()
 
         binding.editProfileManageSkillsButton.setOnClickListener {
             findNavController().navigate(R.id.action_nav_edit_profile_to_nav_edit_skills)
         }
 
         binding.editProfileSaveButton.setOnClickListener {
-            if (!allFieldsAreValid()) Snackbar.make(root, "Please fill all the fields", Snackbar.LENGTH_LONG).show()
-            else {
-                updateViewModel()
-                findNavController().popBackStack()
+            when (allFieldsAreValid()) {
+                true -> {
+                    updateViewModel()
+                    findNavController().popBackStack()
+                }
+                else -> Snackbar.make(root, "Please fill all the fields", Snackbar.LENGTH_LONG)
+                    .show()
             }
         }
 
@@ -104,13 +88,34 @@ class EditProfile : Fragment() {
     }
 
     private fun updateViewModel() {
-        userViewModel.liveUser.value?.run {
-            fullname = binding.textInputEditFullName.text.toString()
-            username = binding.textInputEditUserName.text.toString()
-            mail = binding.textInputEditMail.text.toString()
-            location = binding.textInputEditUserLocation.text.toString()
-            userViewModel.livePicture.value = userViewModel.livePicture.value
-            userViewModel.updateViewModel()
+        userViewModel.apply {
+            fullname.value = binding.textInputEditFullName.text.toString()
+            username.value = binding.textInputEditUserName.text.toString()
+            email.value = binding.textInputEditMail.text.toString()
+            location.value = binding.textInputEditUserLocation.text.toString()
+            userViewModel.applyChangesToFirebase()
+        }
+    }
+
+    private fun startListeningForChanges() {
+        userViewModel.fullname.observe(viewLifecycleOwner) {
+            binding.textInputEditFullName.setText(it)
+        }
+
+        userViewModel.username.observe(viewLifecycleOwner) {
+            binding.textInputEditUserName.setText(it)
+        }
+
+        userViewModel.email.observe(viewLifecycleOwner) {
+            binding.textInputEditMail.setText(it)
+        }
+
+        userViewModel.location.observe(viewLifecycleOwner) {
+            binding.textInputEditUserLocation.setText(it)
+        }
+
+        userViewModel.propic.observe(viewLifecycleOwner) {
+            binding.profileImageEditProfile.setImageBitmap(it)
         }
     }
 

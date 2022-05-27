@@ -55,7 +55,7 @@
     <string name="content_description_advertisement_fab">Click to create a new advertisement</string>
     <string name="login_btn_text">Login With Google</string>
     <string name="skill_name_placeholder">Skill Name</string>
-    <string name="drawer_menu_go_to_user_advertisements">My Advertisements</string>
+    <string name="drawer_menu_go_to_user_advertisements">Your Advertisements</string>
     <string name="drawer_menu_logout">Logout</string>
     <string name="drawer_menu_login">Login</string>
 </resources>

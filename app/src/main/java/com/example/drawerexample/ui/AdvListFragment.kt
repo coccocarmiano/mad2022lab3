@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.DatePicker
+import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -57,7 +58,7 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             adapter = advAdapter
             layoutManager = LinearLayoutManager(context)
         }
-        
+
 
         userViewModel.userID.observe(viewLifecycleOwner) {
             advViewModel.liveAdvList.value = advViewModel.liveAdvList.value
@@ -140,8 +141,16 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         }
 
         binding.addAdvertisementFAB.visibility = if (allowEdit) View.VISIBLE else View.GONE
+        val yourSkillsString = getString(R.string.drawer_menu_go_to_user_advertisements)
+        if (allowEdit) { activity?.findViewById<Toolbar>(R.id.toolbar)?.title = yourSkillsString }
         return root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+
 
     private fun dateToString(day: Int, month: Int, year: Int): String{
         val date = Calendar.getInstance().apply { set(year, month, day) }

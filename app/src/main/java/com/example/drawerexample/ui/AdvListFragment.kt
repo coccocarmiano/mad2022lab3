@@ -57,6 +57,7 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             adapter = advAdapter
             layoutManager = LinearLayoutManager(context)
         }
+        
 
         userViewModel.userID.observe(viewLifecycleOwner) {
             advViewModel.liveAdvList.value = advViewModel.liveAdvList.value

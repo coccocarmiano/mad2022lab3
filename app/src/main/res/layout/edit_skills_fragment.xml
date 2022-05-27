@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <LinearLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
@@ -16,7 +15,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </FrameLayout>
-
         <Button
             android:id="@+id/saveSkillButton"
             android:layout_width="match_parent"
@@ -24,11 +22,5 @@
             android:layout_margin="10dp"
             android:layout_weight="9"
             android:text="@string/editSkillsFragmentSaveButton"/>
-
     </LinearLayout>
-
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

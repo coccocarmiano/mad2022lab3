@@ -14,4 +14,8 @@
     <color name="secondaryDarkColor">#808e95</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#000000</color>
+
+    <!-- Material Design overrides -->
+    <color name="mtrl_btn_text_color_selector">@color/primaryTextColor</color>
+    <color name="text_color_primary">@color/primaryTextColor</color>
 </resources>

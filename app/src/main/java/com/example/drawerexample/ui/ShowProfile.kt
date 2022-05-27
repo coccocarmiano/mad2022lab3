@@ -36,6 +36,11 @@ class ShowProfile : Fragment() {
             })
 
         setHasOptionsMenu(allowEdit)
+
+        // Spinning Circle
+        binding.showProfileSpinLoading.visibility = View.VISIBLE
+        binding.profileImageShowProfile.visibility = View.GONE
+
         return root
     }
 
@@ -65,6 +70,8 @@ class ShowProfile : Fragment() {
 
         userViewModel.propic.observe(viewLifecycleOwner) {
             binding.profileImageShowProfile.setImageBitmap(it)
+            binding.showProfileSpinLoading.visibility = View.GONE
+            binding.profileImageShowProfile.visibility = View.VISIBLE
         }
     }
 

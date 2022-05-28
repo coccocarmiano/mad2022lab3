@@ -65,10 +65,15 @@
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popExitAnim="@android:anim/slide_out_right">
+        </action>
         <action
             android:id="@+id/action_nav_adv_list_to_nav_show_adv"
-            app:destination="@id/nav_show_adv" />
+            app:destination="@id/nav_show_adv"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
 
 
@@ -97,7 +102,11 @@
             app:destination="@id/nav_adv_list" />
         <action
             android:id="@+id/action_show_skills_list_to_nav_show_profile"
-            app:destination="@id/nav_show_profile" />
+            app:destination="@id/nav_show_profile">
+            <argument
+                android:name="allowEdit"
+                android:value="true" />
+        </action>
     </fragment>
 
     <fragment

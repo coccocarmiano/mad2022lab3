@@ -55,7 +55,7 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val a
                         .apply { setImageResource(R.drawable.user) }
                         .setOnClickListener {
                             bundle.putString("UID", myAdapter.data[adapterPosition].creatorUID)
-                            parentFragment.findNavController().navigate(R.id.nav_show_profile, bundle)
+                            parentFragment.findNavController().navigate(R.id.nav_adv_list_to_show_other_profile, bundle)
                         }
                 }
             }

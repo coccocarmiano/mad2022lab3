@@ -13,7 +13,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
+import androidx.navigation.navOptions
 import com.example.drawerexample.databinding.ActivityMainBinding
 import com.example.drawerexample.viewmodel.UserViewModel
 import com.google.android.gms.auth.api.identity.Identity
@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val firebaseAuth = Firebase.auth
     private val userViewModel: UserViewModel by viewModels()
+    private lateinit var drawerLayout : DrawerLayout
     val requestPhotoForProfileEdit = 1
     val requestGoogleLogin = 2
 
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        val drawerLayout: DrawerLayout = binding.drawerLayout
+        drawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(
@@ -49,6 +50,14 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        val smoothAnimations = navOptions {
+            anim {
+                enter = R.anim.slide_in_left
+                exit = R.anim.slide_out_right
+                popEnter = R.anim.slide_in_left
+                popExit = R.anim.slide_out_right
+            }
+        }
 
 
         firebaseAuth.addAuthStateListener {
@@ -58,32 +67,32 @@ class MainActivity : AppCompatActivity() {
                 binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_show_profile).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = true
-                // navController.navigate(R.id.loginFragment)
             } else {
                 binding.navView.menu.findItem(R.id.nav_logout).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = true
                 binding.navView.menu.findItem(R.id.show_skills_list).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_show_profile).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = false
-                // navController.navigate(R.id.nav_adv_list)
             }
         }
+
 
         binding.navView.menu
             .findItem(R.id.nav_logout)
             .setOnMenuItemClickListener {
                 firebaseAuth.signOut()
-                navController.navigate(R.id.loginFragment)
-                drawerLayout.closeDrawer(GravityCompat.START)
+                navController.navigate(R.id.loginFragment, null, smoothAnimations)
+                drawerLayout.close()
                 true
             }
+
 
         binding.navView.menu
             .findItem(R.id.nav_adv_myList)
             .setOnMenuItemClickListener {
                 val bundle = Bundle().apply { putBoolean("allowEdit", true) }
-                navController.navigate(R.id.nav_adv_list, bundle)
-                drawerLayout.closeDrawer(GravityCompat.START)
+                navController.navigate(R.id.nav_adv_list, bundle, smoothAnimations)
+                drawerLayout.close()
                 true
             }
 
@@ -91,8 +100,8 @@ class MainActivity : AppCompatActivity() {
             .findItem(R.id.show_skills_list)
             .setOnMenuItemClickListener {
                 val bundle = Bundle().apply { putBoolean("allowEdit", false) }
-                navController.navigate(R.id.show_skills_list, bundle)
-                drawerLayout.closeDrawer(GravityCompat.START)
+                navController.navigate(R.id.show_skills_list, bundle, smoothAnimations)
+                drawerLayout.close()
                 true
             }
 
@@ -155,6 +164,5 @@ class MainActivity : AppCompatActivity() {
                     .show()
             }
         }
-
     }
 }

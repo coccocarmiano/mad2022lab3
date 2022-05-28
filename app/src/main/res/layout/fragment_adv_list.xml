@@ -8,23 +8,21 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/filter_container"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_marginHorizontal="10dp"
         android:layout_marginVertical="10dp"
         android:animateLayoutChanges="true"
-        app:layout_constraintBottom_toTopOf="@+id/adv_list_rv"
+        app:layout_constraintBottom_toTopOf="@+id/adv_list_rv_container"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
-        <LinearLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/sort_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginVertical="5dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/filter_header"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -36,26 +34,26 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="4"
-                android:text="@string/genericTextViewPlaceholder"
                 android:gravity="center"
-                android:textSize="24sp"/>
+                android:text="@string/genericTextViewPlaceholder"
+                android:textSize="24sp" />
 
             <ImageButton
                 android:id="@+id/sort_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/sort"
                 android:background="@color/transparent"
-                android:contentDescription="@string/content_description_sort_btn" />
-        </LinearLayout>
+                android:contentDescription="@string/content_description_sort_btn"
+                android:src="@drawable/sort" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <LinearLayout
             android:id="@+id/filter_header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginVertical="5dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/filters_body"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -77,16 +75,16 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:src="@drawable/arrow_drop_down"
-                android:contentDescription="@string/content_description_filter_dropdown_btn"/>
+                android:contentDescription="@string/content_description_filter_dropdown_btn"
+                android:src="@drawable/arrow_drop_down" />
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/filters_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_marginVertical="5dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -170,15 +168,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/filter_container" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/adv_list_rv"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/adv_list_rv_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:animateLayoutChanges="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/filter_container" />
+        app:layout_constraintTop_toBottomOf="@id/filter_container">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/adv_list_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="204dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addAdvertisementFAB"

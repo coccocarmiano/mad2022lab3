@@ -1,5 +1,6 @@
 package com.example.drawerexample.ui
 
+import android.animation.LayoutTransition
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -43,12 +44,14 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var sortingMode = "Date" // Allowed: "Date", "Title"
     private var allowEdit : Boolean = false
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAdvListBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        val root = binding.root
+        binding.advListRvContainer.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         allowEdit = arguments?.getBoolean("allowEdit") ?: false
         selectedSkill = arguments?.getString("selectedSkill") ?: "NO_SKILL_SELECTED"
 

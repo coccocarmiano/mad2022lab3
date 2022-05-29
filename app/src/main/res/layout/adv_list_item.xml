@@ -13,19 +13,29 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/adv_card"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="64dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/adv_details"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/adv_buttons"
+            app:layout_constraintHorizontal_weight="3">
         <TextView
             android:id="@+id/adv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="top|start"
             android:layout_marginVertical="5dp"
             android:text="@string/genericTextViewPlaceholder"
             android:textSize="20sp"
+            android:maxLines="1"
             app:layout_constraintBottom_toTopOf="@+id/adv_date"
-            app:layout_constraintEnd_toStartOf="@+id/adv_edit"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -47,23 +57,48 @@
             android:layout_height="wrap_content"
             android:text="@string/genericTextViewPlaceholder"
             app:layout_constraintBottom_toBottomOf="@+id/adv_date"
-            app:layout_constraintEnd_toStartOf="@+id/adv_edit"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/adv_date"
             app:layout_constraintTop_toTopOf="@+id/adv_date" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageButton
-            android:id="@+id/adv_edit"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="20dp"
+            android:id="@+id/adv_buttons"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintStart_toEndOf="@id/adv_details"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="16dp">
+        <ImageButton
+            android:padding="12dp"
+            android:id="@+id/adv_edit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:background="@color/transparent"
             android:contentDescription="@string/content_description_show_or_edit_advertisement"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/edit" />
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/adv_chat"
+            app:srcCompat="@drawable/edit"
+            android:scaleType="centerCrop"
+            app:layout_constraintTop_toTopOf="parent" />
+        <ImageButton
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/adv_chat"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:src="@drawable/letter"
+                app:layout_constraintHorizontal_weight="1"
+                android:scaleType="centerCrop"
+                android:padding="12dp"
+                app:layout_constraintStart_toEndOf="@id/adv_edit"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

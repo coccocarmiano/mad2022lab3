@@ -17,32 +17,32 @@
         android:padding="6dp"
         app:layout_constraintBottom_toTopOf="@+id/chat_messages_recycler_view"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:animateLayoutChanges="true">
 
         <TextView
             android:id="@+id/chat_user_displayed_name"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:textAlignment="textStart"
+            android:layout_height="wrap_content"
             android:layout_marginStart="6dp"
             android:layout_marginEnd="18dp"
             android:fontFamily="sans-serif-light"
             android:text="@string/chat_display_username_placeholder"
             android:textColor="@color/primaryTextColor"
             android:textColorHighlight="@color/primaryLightColor"
-            app:autoSizeTextType="uniform"
-            android:gravity="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="10"
             app:layout_constraintStart_toEndOf="@id/chat_user_profile_picture_card"
             app:layout_constraintTop_toTopOf="parent"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:textSize="24sp" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/chat_user_profile_picture_card"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="4dp"
             app:cardBackgroundColor="@color/secondaryDarkColor"
             app:cardCornerRadius="1000dp"
             app:cardElevation="1dp"
@@ -63,18 +63,23 @@
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chat_messages_recycler_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/chat_messages_recycler_view_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="20"
-        android:background="@color/secondaryDarkColor"
-        android:paddingTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chat_user_info"
-        tools:listitem="@layout/fake_chat"
-        app:stackFromEnd="true"
-        app:reverseLayout="true"/>
+        android:animateLayoutChanges="true">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chat_messages_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/secondaryDarkColor"
+            android:paddingTop="8dp"
+            tools:listitem="@layout/fake_chat"
+            app:stackFromEnd="true"
+            app:reverseLayout="true"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <TextView
         android:id="@+id/chat_last_message_info"

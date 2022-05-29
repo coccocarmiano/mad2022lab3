@@ -1,5 +1,6 @@
 package com.example.drawerexample.ui
 
+import android.animation.LayoutTransition
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,11 @@ class ChatFragment : Fragment() {
             advertiserID?.also { applyAdvertisementID(it) }
             requesterID?.also { applyRequesterID(it) }
         }
+
+        // Enable animations
+
+        binding.chatUserInfo.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+        binding.chatMessagesRecyclerViewContainer.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
 
         return root
     }

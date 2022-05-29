@@ -74,6 +74,13 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/action_nav_adv_list_to_chat"
+            app:destination="@id/chatFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
 
@@ -118,4 +125,9 @@
             android:id="@+id/action_nav_show_adv_to_nav_edit_adv"
             app:destination="@id/nav_edit_adv" />
     </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.drawerexample.ui.ChatFragment"
+        android:label="ChatFragment"
+        tools:layout="@layout/fragment_chat"/>
 </navigation>

@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class AdvertisementsAdapter(private val parentFragment : Fragment, private val allowEdit : Boolean = false) : RecyclerView.Adapter<AdvertisementsAdapter.AdvViewHolder>() {
 
@@ -38,25 +40,39 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val a
                 parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_nav_show_adv, bundle)
             }
 
-            val imageButton = view.findViewById<ImageButton>(R.id.adv_edit)
+            val editImageButton = view.findViewById<ImageButton>(R.id.adv_edit)
+            val startChatImageButton = view.findViewById<ImageButton>(R.id.adv_chat)
             when (myAdapter.allowEdit) {
                 true -> { // In this case we should render the little pencil and bring to adv edit
-                    imageButton
+                    editImageButton
                         .apply { setImageResource(R.drawable.edit) }
                         .setOnClickListener {
                             bundle.putString("advertisementID", myAdapter.data[adapterPosition].id)
                             bundle.putBoolean("allowEdit", true)
                             parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_nav_edit_adv, bundle)
                         }
+                    startChatImageButton.visibility = View.GONE
 
                 }
                 false -> { // In this case we should render the little user icon and go to show user profile
-                    imageButton
+                    editImageButton
                         .apply { setImageResource(R.drawable.user) }
                         .setOnClickListener {
                             bundle.putString("UID", myAdapter.data[adapterPosition].creatorUID)
                             parentFragment.findNavController().navigate(R.id.nav_adv_list_to_show_other_profile, bundle)
                         }
+                    startChatImageButton.setOnClickListener {
+                        val bundle = Bundle()
+                        bundle.apply {
+                            putString("advertiserID", myAdapter.data[adapterPosition].creatorUID)
+                            putString("advertisementID", myAdapter.data[adapterPosition].id)
+                            putString("requesterID", Firebase.auth.currentUser?.uid)
+                        }
+
+                        editImageButton.setOnClickListener {
+                            parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_chat, bundle)
+                        }
+                    }
                 }
             }
         }

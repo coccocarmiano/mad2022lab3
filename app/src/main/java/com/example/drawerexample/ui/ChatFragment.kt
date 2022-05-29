@@ -20,7 +20,7 @@ class ChatFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentChatBinding.inflate(inflater, container, false)
         val root = binding.root
         advertisementID = arguments?.getString("advertisementID")
@@ -35,8 +35,4 @@ class ChatFragment : Fragment() {
         return root
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
 }

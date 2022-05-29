@@ -149,12 +149,6 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         return root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-    }
-
-
     private fun dateToString(day: Int, month: Int, year: Int): String{
         val date = Calendar.getInstance().apply { set(year, month, day) }
         val fmt = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())

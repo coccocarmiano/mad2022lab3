@@ -27,7 +27,7 @@ class ChatViewModel : ViewModel() {
         advertisementID.value = id
     }
 
-    fun setRequesterID(id : String){
+    fun applyRequesterID(id : String){
         advertiserID = id
     }
 

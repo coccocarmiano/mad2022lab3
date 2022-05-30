@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:animateLayoutChanges="true">
 
+
         <TextView
             android:id="@+id/chat_user_displayed_name"
             android:layout_width="0dp"
@@ -66,6 +67,38 @@
         android:layout_height="0dp"
         android:layout_weight="20"
         android:animateLayoutChanges="true">
+
+        <include
+            android:id="@+id/chat_popup_send_request"
+            layout="@layout/chat_request_time_slot_popup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            />
+
+        <include
+            android:id="@+id/chat_popup_pending_request"
+            layout="@layout/chat_pending_request_time_slot_popup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:visibility="gone"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/chat_messages_recycler_view"
             android:layout_width="match_parent"
@@ -75,6 +108,7 @@
             tools:listitem="@layout/fake_chat"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
     <!-- TODO: A nice idea, maybe later... -->

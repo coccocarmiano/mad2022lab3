@@ -67,7 +67,6 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val a
                             putString("advertisementID", myAdapter.data[adapterPosition].id)
                             putString("userID", Firebase.auth.currentUser?.uid)
                             parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_chat, bundle)
-
                         }
                     }
                 }

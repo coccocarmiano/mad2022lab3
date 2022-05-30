@@ -3,6 +3,7 @@ package com.example.drawerexample.viewmodel
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -133,6 +134,44 @@ class ChatViewModel : ViewModel() {
             URL(uri.toString()).let { BitmapFactory.decodeStream(it.openConnection().getInputStream() )}
                 .also { viewModelScope.launch { otherUserProfilePicture.value = it } }
         }
+    }
+
+    fun sendRequestForAdvertisement() {
+        val junk = Bundle().apply { putString("junk", "junk") }
+        db
+            .collection("advertisements")
+            .document("${advertisementID.value}")
+            .collection("requests")
+            .document("${otherUserID.value}") // The existence of the document itself is the request flag
+            .set(junk)
+            .addOnFailureListener { err ->
+                Log.w("ChatViewModel", "Error sending request", err)
+            }
+    }
+
+    fun acceptRequestForAdvertisement() {
+        val payload = Bundle().apply { putString("acceptedFor", otherUserID.value) }
+        db
+            .collection("advertisements")
+            .document("${advertisementID.value}")
+            .collection("requests")
+            .document("accepted")
+            .set(payload)
+            .addOnFailureListener { err ->
+                Log.w("ChatViewModel", "Error accepting request", err)
+            }
+    }
+
+    fun denyRequestForAdvertisement() {
+        db
+            .collection("advertisements")
+            .document("${advertisementID.value}")
+            .collection("requests")
+            .document("$otherUserID.value")
+            .delete()
+            .addOnFailureListener {
+                Log.w("ChatViewModel", "Error denying request", it)
+            }
     }
 
 }

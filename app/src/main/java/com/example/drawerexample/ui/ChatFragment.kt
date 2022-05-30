@@ -61,6 +61,9 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.chatSendMessageButton.setOnClickListener { sendMessage() }
+        binding.chatPopupSendRequest.requestTimeSlotButton.setOnClickListener {
+            binding.chatPopupSendRequest.requestTimeSlotButton.isClickable = false
+        }
     }
 
     private fun listenOtherUserProfile() {

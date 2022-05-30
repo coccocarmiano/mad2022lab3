@@ -74,7 +74,8 @@ class ChatFragment : Fragment() {
     }
 
     private fun sendMessage() {
-        val textToSend = binding.chatWriteMessageTextInput.text.toString()
+        val textToSend = binding.chatWriteMessageTextInput.text.toString() // TODO: strip message?
+        if (textToSend.isBlank()) return
         chatViewModel.postMessage(textToSend)
         binding.chatWriteMessageTextInput.text?.clear()
     }

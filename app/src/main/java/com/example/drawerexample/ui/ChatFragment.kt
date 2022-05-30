@@ -19,6 +19,7 @@ class ChatFragment : Fragment() {
     private var advertisementID : String? = null
     private var otherUserID : String? = null
     private lateinit var chatMessagesAdapter : ChatMessagesAdapter
+    private var firstUpdate = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +32,8 @@ class ChatFragment : Fragment() {
 
         chatMessagesAdapter = ChatMessagesAdapter(this)
         chatMessagesAdapter.messages = chatViewModel.messages.value ?: ArrayList()
+
+        firstUpdate = true
     }
 
     override fun onCreateView(
@@ -48,9 +51,8 @@ class ChatFragment : Fragment() {
         // Enable animations
         binding.chatMessagesRecyclerViewContainer.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         binding.chatMessagesRecyclerView.adapter = chatMessagesAdapter
-        (binding.chatMessagesRecyclerView.layoutManager as LinearLayoutManager).let {
-            it.reverseLayout = true
-            it.stackFromEnd = true
+        binding.chatMessagesRecyclerView.layoutManager = LinearLayoutManager(context).apply { reverseLayout = true }.apply {
+            enterTransition = null
         }
 
         return root
@@ -74,12 +76,32 @@ class ChatFragment : Fragment() {
     private fun sendMessage() {
         val textToSend = binding.chatWriteMessageTextInput.text.toString()
         chatViewModel.postMessage(textToSend)
+        binding.chatWriteMessageTextInput.text?.clear()
+    }
+
+    private fun smoothlyAnimateMessages() {
+        val layoutManager = binding.chatMessagesRecyclerView.layoutManager as LinearLayoutManager
+        val firstVisible = layoutManager.findFirstVisibleItemPosition()
+        val lastVisible = layoutManager.findLastVisibleItemPosition()
+
+        if (lastVisible > chatMessagesAdapter.messages.size) {
+            chatMessagesAdapter.notifyDataSetChanged()
+            return
+        }
+
+        chatMessagesAdapter.notifyItemRangeChanged(firstVisible, firstVisible)
+        chatMessagesAdapter.notifyItemInserted(0)
+        layoutManager.scrollToPosition(0)
     }
 
     private fun listenForMessages() {
         chatViewModel.messages.observe(viewLifecycleOwner) {
             chatMessagesAdapter.messages = it
-            chatMessagesAdapter.notifyDataSetChanged()
+            when (chatMessagesAdapter.messages.size) {
+                0 -> chatMessagesAdapter.notifyDataSetChanged()
+                1 -> chatMessagesAdapter.notifyItemInserted(0)
+                else -> smoothlyAnimateMessages()
+            }
         }
     }
 

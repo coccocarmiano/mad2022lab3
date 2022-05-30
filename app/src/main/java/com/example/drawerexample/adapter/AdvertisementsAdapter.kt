@@ -63,9 +63,9 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val a
                         }
                     startChatImageButton.setOnClickListener {
                         bundle.apply {
-                            putString("advertiserID", myAdapter.data[adapterPosition].creatorUID)
+                            putString("otherUserID", myAdapter.data[adapterPosition].creatorUID)
                             putString("advertisementID", myAdapter.data[adapterPosition].id)
-                            putString("requesterID", Firebase.auth.currentUser?.uid)
+                            putString("userID", Firebase.auth.currentUser?.uid)
                         }
 
                         editImageButton.setOnClickListener {

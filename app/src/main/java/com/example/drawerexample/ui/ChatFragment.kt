@@ -13,9 +13,22 @@ import com.example.drawerexample.viewmodel.ChatViewModel
 class ChatFragment : Fragment() {
     private val chatViewModel : ChatViewModel by viewModels()
     private lateinit var binding: FragmentChatBinding
-    private var advertiserID : String? = null
+    private var userID : String? = null
     private var advertisementID : String? = null
-    private var requesterID : String? = null
+    private var otherUserID : String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        advertisementID = arguments?.getString("advertisementID")
+        userID = arguments?.getString("userID")
+        otherUserID = arguments?.getString("otherUserID")
+
+        chatViewModel.run {
+            userID?.also { setAdvertisementID(it) }
+            otherUserID?.also { setOtherUserID(it) }
+            advertisementID?.also { setAdvertisementID(it) }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,19 +37,24 @@ class ChatFragment : Fragment() {
     ): View {
         binding = FragmentChatBinding.inflate(inflater, container, false)
         val root = binding.root
-        advertisementID = arguments?.getString("advertisementID")
-        advertiserID = arguments?.getString("advertiserID")
-        requesterID = arguments?.getString("requesterID")
 
-        chatViewModel.run {
-            advertiserID?.also { applyAdvertisementID(it) }
-            requesterID?.also { applyRequesterID(it) }
-        }
+        listenOtherUserProfile()
+
 
         // Enable animations
         binding.chatMessagesRecyclerViewContainer.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
 
         return root
+    }
+
+    private fun listenOtherUserProfile() {
+        chatViewModel.otherUserProfilePicture.observe(viewLifecycleOwner) {
+            binding.chatUserProfilePictureImageView.setImageBitmap(it)
+        }
+
+        chatViewModel.otherUserUsername.observe(viewLifecycleOwner) {
+            binding.chatUserDisplayedName.text = it
+        }
     }
 
 }

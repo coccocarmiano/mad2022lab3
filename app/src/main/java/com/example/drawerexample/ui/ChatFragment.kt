@@ -45,24 +45,26 @@ class ChatFragment : Fragment() {
         val root = binding.root
 
         listenOtherUserProfile()
-
         listenForMessages()
 
         // Enable animations
         binding.chatMessagesRecyclerViewContainer.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         binding.chatMessagesRecyclerView.adapter = chatMessagesAdapter
-        binding.chatMessagesRecyclerView.layoutManager = LinearLayoutManager(context).apply { reverseLayout = true }.apply {
-            enterTransition = null
-        }
+        binding.chatMessagesRecyclerView.layoutManager = LinearLayoutManager(context).apply { reverseLayout = true }
 
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val enableRequestButton : () -> Unit = { binding.chatPopupSendRequest.requestTimeSlotButton.isClickable = true }
+        val hideRequestPopup : () -> Unit = { binding.chatPopupSendRequest.root.visibility = View.GONE }
+
         binding.chatSendMessageButton.setOnClickListener { sendMessage() }
         binding.chatPopupSendRequest.requestTimeSlotButton.setOnClickListener {
             binding.chatPopupSendRequest.requestTimeSlotButton.isClickable = false
+            chatViewModel.sendRequestForAdvertisement(onFailure = enableRequestButton, onSuccess = hideRequestPopup)
         }
     }
 

@@ -136,7 +136,7 @@ class ChatViewModel : ViewModel() {
         }
     }
 
-    fun sendRequestForAdvertisement() {
+    fun sendRequestForAdvertisement( onFailure : () -> Unit = {}, onSuccess : () -> Unit = {}) {
         val junk = Bundle().apply { putString("junk", "junk") }
         db
             .collection("advertisements")
@@ -144,8 +144,12 @@ class ChatViewModel : ViewModel() {
             .collection("requests")
             .document("${otherUserID.value}") // The existence of the document itself is the request flag
             .set(junk)
+            .addOnSuccessListener {
+                onSuccess()
+            }
             .addOnFailureListener { err ->
                 Log.w("ChatViewModel", "Error sending request", err)
+                onFailure()
             }
     }
 
@@ -173,5 +177,7 @@ class ChatViewModel : ViewModel() {
                 Log.w("ChatViewModel", "Error denying request", it)
             }
     }
+
+
 
 }

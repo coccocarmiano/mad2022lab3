@@ -8,26 +8,26 @@
         android:id="@+id/chat_item_background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="96dp"
+        app:layout_constraintHorizontal_bias="0.99"
+        android:layout_marginTop="6dp"
         android:textAlignment="center"
         app:cardBackgroundColor="@color/secondaryLightColor"
         app:cardCornerRadius="12dp"
         app:cardElevation="0dp"
-        app:cardMaxElevation="0dp"
-        app:flow_horizontalAlign="end"
+        android:layout_marginEnd="8dp"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="0dp"
-        android:layout_marginEnd="12dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/chat_item_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/chat_message_text_content_placeholder"
-            android:textColor="@color/primaryTextColor"
-            android:layout_margin="12dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="12dp"
+            android:text="@string/chat_message_text_content_placeholder_short"
+            android:textColor="@color/primaryTextColor" />
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

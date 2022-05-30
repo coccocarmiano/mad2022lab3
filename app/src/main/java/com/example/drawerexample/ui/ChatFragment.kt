@@ -102,6 +102,7 @@ class ChatFragment : Fragment() {
                 1 -> chatMessagesAdapter.notifyItemInserted(0)
                 else -> smoothlyAnimateMessages()
             }
+
         }
     }
 

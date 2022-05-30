@@ -58,7 +58,8 @@
     <string name="drawer_menu_go_to_user_advertisements">Your Advertisements</string>
     <string name="drawer_menu_logout">Logout</string>
     <string name="drawer_menu_login">Login</string>
-    <string name="chat_message_text_content_placeholder">My Awesome Message</string>
+    <string name="chat_message_text_content_placeholder_long">Ma tu lo sai che i papaveri sono alti alti alti e tu sei piccolina e tu sei piccolina</string>
+    <string name="chat_message_text_content_placeholder_short">:^]</string>
     <string name="chat_display_username_placeholder">Sample Username</string>
     <string name="chat_profile_picture_content_description">Profile picture of the contacting user</string>
     <string name="datetime_placeholder">hh:mm dd/mm/yyyy</string>

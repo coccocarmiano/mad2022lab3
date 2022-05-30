@@ -77,18 +77,19 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+    <!-- TODO: A nice idea, maybe later... -->
     <TextView
         android:id="@+id/chat_last_message_info"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="11sp"
         android:alpha="0.3"
         android:background="@color/transparent"
-        android:minHeight="10dp"
         android:text="@string/datetime_placeholder"
         android:textColor="@color/primaryTextColor"
         android:textAlignment="textEnd"
         android:paddingStart="12dp"
-        android:paddingEnd="12dp" />
+        android:paddingEnd="12dp"
+        android:visibility="gone"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/chat_text_bar_root"

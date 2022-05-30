@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.drawerexample.adapter.ChatMessagesAdapter
 import com.example.drawerexample.databinding.FragmentChatBinding
 import com.example.drawerexample.viewmodel.ChatViewModel
 
@@ -16,6 +18,7 @@ class ChatFragment : Fragment() {
     private var userID : String? = null
     private var advertisementID : String? = null
     private var otherUserID : String? = null
+    private lateinit var chatMessagesAdapter : ChatMessagesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,11 +26,11 @@ class ChatFragment : Fragment() {
         userID = arguments?.getString("userID")
         otherUserID = arguments?.getString("otherUserID")
 
-        chatViewModel.run {
-            userID?.also { setAdvertisementID(it) }
-            otherUserID?.also { setOtherUserID(it) }
-            advertisementID?.also { setAdvertisementID(it) }
-        }
+        otherUserID?.also { chatViewModel.setOtherUserID(it)}
+        advertisementID?.also { chatViewModel.setAdvertisementID(it) }
+
+        chatMessagesAdapter = ChatMessagesAdapter(this)
+        chatMessagesAdapter.messages = chatViewModel.messages.value ?: ArrayList()
     }
 
     override fun onCreateView(
@@ -40,11 +43,22 @@ class ChatFragment : Fragment() {
 
         listenOtherUserProfile()
 
+        listenForMessages()
 
         // Enable animations
         binding.chatMessagesRecyclerViewContainer.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
+        binding.chatMessagesRecyclerView.adapter = chatMessagesAdapter
+        (binding.chatMessagesRecyclerView.layoutManager as LinearLayoutManager).let {
+            it.reverseLayout = true
+            it.stackFromEnd = true
+        }
 
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.chatSendMessageButton.setOnClickListener { sendMessage() }
     }
 
     private fun listenOtherUserProfile() {
@@ -54,6 +68,18 @@ class ChatFragment : Fragment() {
 
         chatViewModel.otherUserUsername.observe(viewLifecycleOwner) {
             binding.chatUserDisplayedName.text = it
+        }
+    }
+
+    private fun sendMessage() {
+        val textToSend = binding.chatWriteMessageTextInput.text.toString()
+        chatViewModel.postMessage(textToSend)
+    }
+
+    private fun listenForMessages() {
+        chatViewModel.messages.observe(viewLifecycleOwner) {
+            chatMessagesAdapter.messages = it
+            chatMessagesAdapter.notifyDataSetChanged()
         }
     }
 

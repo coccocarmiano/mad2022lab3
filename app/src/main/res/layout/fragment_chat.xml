@@ -74,7 +74,8 @@
             android:paddingTop="8dp"
             tools:listitem="@layout/fake_chat"
             app:stackFromEnd="true"
-            app:reverseLayout="true"/>
+            app:reverseLayout="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

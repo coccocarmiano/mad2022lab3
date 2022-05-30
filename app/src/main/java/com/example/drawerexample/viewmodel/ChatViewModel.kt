@@ -25,7 +25,7 @@ class ChatViewModel : ViewModel() {
 
     private var advertisementID : MutableLiveData<String> = MutableLiveData()
     private lateinit var advCreatorID : String
-    private var otherUserID : MutableLiveData<String> = MutableLiveData()
+    var otherUserID : MutableLiveData<String> = MutableLiveData()
     private var userID = Firebase.auth.currentUser?.uid
     private val db = Firebase.firestore
     private val storage = Firebase.storage.reference
@@ -65,8 +65,8 @@ class ChatViewModel : ViewModel() {
         advertisementID.value = id
     }
 
-    fun setOtherUserID(id : String) {
-        otherUserID.value = id
+    fun setOtherUserID(id : String?) {
+        if ( id != null ) otherUserID.value = id!!
     }
 
     private fun updateListener() {
@@ -101,16 +101,14 @@ class ChatViewModel : ViewModel() {
             }
     }
 
-    private fun postMessage(text: String, sender : String) {
+    fun postMessage(text: String) {
         val chatUserID = when (advCreatorID == userID) {
             true -> otherUserID.value
             false -> userID
         }
 
-        val receiver = when ( sender == advCreatorID ) {
-            true -> otherUserID.value
-            false -> advCreatorID
-        }
+        if ( userID == null ) return
+        if ( otherUserID.value == null ) return
 
         db
             .collection("chats")
@@ -119,11 +117,15 @@ class ChatViewModel : ViewModel() {
             .add(
                 hashMapOf(
                     "text" to text,
-                    "sender" to sender,
-                    "receiver" to receiver,
+                    "sender" to userID,
+                    "receiver" to otherUserID.value,
                     "timestamp" to System.currentTimeMillis()
                 )
-            )
+            ).addOnSuccessListener {
+                Log.d("ChatViewModel", "Message posted")
+            }.addOnFailureListener {
+                Log.w("ChatViewModel", "Error posting message", it)
+            }
     }
 
     private fun setOtherProfilePicture(uri : Uri) {

@@ -15,15 +15,13 @@ enum class Message {
     SENT, RECEIVED
 }
 
-class ChatMessagesAdapter(val view : View, private val parentFragment: Fragment) : RecyclerView.Adapter<ChatMessagesAdapter.ChatMessageViewHolder>() {
+class ChatMessagesAdapter(private val parentFragment: Fragment) : RecyclerView.Adapter<ChatMessagesAdapter.ChatMessageViewHolder>() {
 
-    var messages = ArrayList<Message>()
+    lateinit var messages : ArrayList<Message>
 
     class ChatMessageViewHolder(val view : View, val parentFragment : Fragment, adapter : ChatMessagesAdapter) : RecyclerView.ViewHolder(view) {
 
-        init {
-            view.findViewById<TextView>(R.id.chat_item_content).text = adapter.messages[adapterPosition].text
-        }
+        val textContent : TextView = view.findViewById(R.id.chat_item_content)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -46,7 +44,7 @@ class ChatMessagesAdapter(val view : View, private val parentFragment: Fragment)
     }
 
     override fun onBindViewHolder(holder: ChatMessageViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.textContent.text = messages[position].text
     }
 
     override fun getItemCount(): Int {

@@ -60,12 +60,15 @@ class ChatFragment : Fragment() {
 
         val enableRequestButton : () -> Unit = { binding.chatPopupSendRequest.requestTimeSlotButton.isClickable = true }
         val hideRequestPopup : () -> Unit = { binding.chatPopupSendRequest.root.visibility = View.GONE }
+        val showRequestPopup : () -> Unit = { binding.chatPopupSendRequest.root.visibility = View.VISIBLE }
 
         binding.chatSendMessageButton.setOnClickListener { sendMessage() }
+
         binding.chatPopupSendRequest.requestTimeSlotButton.setOnClickListener {
             binding.chatPopupSendRequest.requestTimeSlotButton.isClickable = false
             chatViewModel.sendRequestForAdvertisement(onFailure = enableRequestButton, onSuccess = hideRequestPopup)
         }
+        chatViewModel.didUserRequestTimeSlot(onTrue = hideRequestPopup, onFalse = showRequestPopup)
     }
 
     private fun listenOtherUserProfile() {

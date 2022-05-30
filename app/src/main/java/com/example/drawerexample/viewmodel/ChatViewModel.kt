@@ -178,6 +178,21 @@ class ChatViewModel : ViewModel() {
             }
     }
 
+    fun didUserRequestTimeSlot(onTrue : () -> Unit = {}, onFalse : () -> Unit = {}) {
+        db
+            .collection("advertisements")
+            .document("${advertisementID.value}")
+            .collection("requests")
+            .document("$userID")
+            .get()
+            .addOnSuccessListener {
+                if ( it.exists() ) onTrue()
+                else onFalse()
+            }
+            .addOnFailureListener {
+                Log.w("ChatViewModel", "Error getting request", it)
+            }
+    }
 
 
 }

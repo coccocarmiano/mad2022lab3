@@ -66,10 +66,8 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val a
                             putString("otherUserID", myAdapter.data[adapterPosition].creatorUID)
                             putString("advertisementID", myAdapter.data[adapterPosition].id)
                             putString("userID", Firebase.auth.currentUser?.uid)
-                        }
-
-                        editImageButton.setOnClickListener {
                             parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_chat, bundle)
+
                         }
                     }
                 }

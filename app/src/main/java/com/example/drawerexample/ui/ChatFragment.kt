@@ -34,8 +34,6 @@ class ChatFragment : Fragment() {
         }
 
         // Enable animations
-
-        binding.chatUserInfo.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         binding.chatMessagesRecyclerViewContainer.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
 
         return root

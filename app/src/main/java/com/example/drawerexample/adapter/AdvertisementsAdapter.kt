@@ -62,7 +62,6 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val a
                             parentFragment.findNavController().navigate(R.id.nav_adv_list_to_show_other_profile, bundle)
                         }
                     startChatImageButton.setOnClickListener {
-                        val bundle = Bundle()
                         bundle.apply {
                             putString("advertiserID", myAdapter.data[adapterPosition].creatorUID)
                             putString("advertisementID", myAdapter.data[adapterPosition].id)

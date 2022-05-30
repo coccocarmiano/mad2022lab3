@@ -70,34 +70,38 @@
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toEndOf="@id/adv_details"
             app:layout_constraintEnd_toEndOf="parent"
-            android:padding="16dp">
+            android:paddingVertical="8dp">
         <ImageButton
-            android:padding="12dp"
             android:id="@+id/adv_edit"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            app:srcCompat="@drawable/edit"
             android:background="@color/transparent"
-            android:contentDescription="@string/content_description_show_or_edit_advertisement"
+
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/adv_chat"
-            app:srcCompat="@drawable/edit"
-            android:scaleType="centerCrop"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+
+            android:scaleType="fitCenter"
+            android:maxWidth="32sp"
+
+            android:contentDescription="@string/content_description_show_or_edit_advertisement" />
         <ImageButton
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 android:id="@+id/adv_chat"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                app:srcCompat="@drawable/letter"
                 android:background="@color/transparent"
-                android:src="@drawable/letter"
-                app:layout_constraintHorizontal_weight="1"
-                android:scaleType="centerCrop"
-                android:padding="12dp"
+
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/adv_edit"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+
+                android:scaleType="fitCenter"
+
+                android:contentDescription="@string/start_chat_button_content_description" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

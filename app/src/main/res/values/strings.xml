@@ -63,4 +63,5 @@
     <string name="chat_profile_picture_content_description">Profile picture of the contacting user</string>
     <string name="datetime_placeholder">hh:mm dd/mm/yyyy</string>
     <string name="chat_send_message_content_description">Press this button to send the message</string>
+    <string name="start_chat_button_content_description">Button to send a message to the advertiser</string>
 </resources>

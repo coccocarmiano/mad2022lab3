@@ -124,6 +124,9 @@
         <action
             android:id="@+id/action_nav_show_adv_to_nav_edit_adv"
             app:destination="@id/nav_edit_adv" />
+        <action
+            android:id="@+id/action_nav_show_adv_to_nav_chat"
+            app:destination="@id/chatFragment" />
     </fragment>
     <fragment
         android:id="@+id/chatFragment"

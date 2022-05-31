@@ -63,6 +63,7 @@ class ChatFragment : Fragment() {
 
         binding.chatSendMessageButton.setOnClickListener { sendMessage() }
         manageSendRequestPopup()
+        managePendingRequestPopup()
     }
 
     private fun listenOtherUserProfile() {
@@ -128,14 +129,20 @@ class ChatFragment : Fragment() {
             chatPopup.requestTimeSlotTextView.text = text
         }
 
+        val setAcceptedRequestPopup : () -> Unit = {
+            val text = getString(R.string.time_slot_accepted)
+            chatPopup.root.visibility = View.VISIBLE
+            chatPopup.requestTimeSlotButton.visibility = View.GONE
+            chatPopup.requestTimeSlotTextView.text = text
+        }
+
         val errRequestingTimeslot = {
             chatPopup.requestTimeSlotButton.isClickable = true
             showSnackBarError("Error requesting the timeslot")
         }
 
-
-
         chatViewModel.didUserRequestTimeSlot(onTrue = disableSendRequestPopup, onFalse = showSendRequestPopup)
+        chatViewModel.didAdvertiserAcceptRequestForUser(onTrue = setAcceptedRequestPopup)
 
         chatPopup.requestTimeSlotButton.setOnClickListener {
             chatPopup.requestTimeSlotButton.isClickable = false
@@ -143,9 +150,46 @@ class ChatFragment : Fragment() {
         }
     }
 
-    private fun managePendingRequestPopup() {
 
+    private fun showRequestAcceptedPopup() {
+        val chatPopup = binding.chatPopupPendingRequest
+        chatPopup.root.visibility = View.VISIBLE
+        chatPopup.requestPendingTimeSlotControls.visibility = View.GONE
+        chatPopup.requestPendingTimeSlotTextView.text = getString(R.string.time_slot_accepted_for_advertiser)
     }
+
+    private fun managePendingRequestPopup(){
+
+        if (!userIsAdvertiser) return;
+
+        val chatPopup = binding.chatPopupPendingRequest
+
+        val showRequestPendingPopup : () -> Unit = {
+            chatPopup.root.animation = AnimationUtils.loadAnimation(this.context, R.anim.slide_up_down)
+            chatPopup.root.visibility = View.VISIBLE
+            activateAcceptDenyButtons()
+        }
+
+        val accept : () -> Unit = { showRequestAcceptedPopup() }
+
+        chatViewModel.didOtherUserRequestTimeSlot(onTrue = showRequestPendingPopup)
+        chatViewModel.didAdvertiserAcceptRequestForUser(onTrue = accept)
+    }
+
+    private fun activateAcceptDenyButtons() {
+        val chatPopup = binding.chatPopupPendingRequest
+        val accept : () -> Unit = { showRequestAcceptedPopup() }
+        val hidePopup : () -> Unit = { chatPopup.root.visibility = View.GONE }
+
+        chatPopup.requestPendingTimeSlotAcceptButton.setOnClickListener {
+            chatViewModel.acceptRequestForAdvertisement(onSuccess = accept)
+        }
+
+        chatPopup.requestPendingTimeSlotDenyButton.setOnClickListener {
+            chatViewModel.denyRequestForAdvertisement(onSuccess = hidePopup)
+        }
+    }
+
 
     private fun showSnackBarError(text : String) {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG)

@@ -4,15 +4,22 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
+import com.example.drawerexample.adapter.EditAdvIncomingMessagesAdapter
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.databinding.ShowTimeSlotDetailsFragmentBinding
+import com.example.drawerexample.viewmodel.ChatViewModel
+import com.example.drawerexample.viewmodel.UserViewModel
 
 class ShowAdvertisement : Fragment() {
 
     private val advertisementViewModel: AdvertisementViewModel by activityViewModels()
+    private val chatViewModel : ChatViewModel by viewModels()
+    private val userViewModel : UserViewModel by viewModels()
     private lateinit var binding : ShowTimeSlotDetailsFragmentBinding
     private var allowEdit = false
 
@@ -67,6 +74,7 @@ class ShowAdvertisement : Fragment() {
                 val bundle = Bundle().apply {
                     putString("advertisementID", advID)
                     putBoolean("allowEdit", allowEdit)
+                    putBoolean("userIsAdvertiser", true)
                 }
                 findNavController().navigate(R.id.action_nav_show_adv_to_nav_edit_adv, bundle)
             }
@@ -75,5 +83,24 @@ class ShowAdvertisement : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if ( allowEdit ) { // This is a user advertisement so we should show the incoming messages
+            val messagesAdapter = EditAdvIncomingMessagesAdapter(this, advID ?: "",  userViewModel.userID.value ?: "")
+
+            binding.editAdvIncomingRequestsRecyclerView?.visibility = View.VISIBLE
+            binding.editAdvIncomingRequestsRecyclerView?.apply {
+                layoutManager = LinearLayoutManager(this.context)
+                adapter = messagesAdapter
+            }
+
+            chatViewModel.listenChatsUpdates(advID, messagesAdapter)
+        } else {
+            binding.editAdvIncomingRequestsHeader?.visibility = View.GONE
+            binding.editAdvIncomingRequestsRecyclerView?.visibility = View.GONE
+        }
     }
 }

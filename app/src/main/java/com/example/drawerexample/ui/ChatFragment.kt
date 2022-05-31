@@ -124,6 +124,7 @@ class ChatFragment : Fragment() {
 
         val disableSendRequestPopup : () -> Unit = {
             val text = getString(R.string.time_slot_already_requested)
+            chatPopup.root.animation = AnimationUtils.loadAnimation(this.context, R.anim.slide_up_down)
             chatPopup.root.visibility = View.VISIBLE
             chatPopup.requestTimeSlotButton.visibility = View.GONE
             chatPopup.requestTimeSlotTextView.text = text
@@ -131,6 +132,7 @@ class ChatFragment : Fragment() {
 
         val setAcceptedRequestPopup : () -> Unit = {
             val text = getString(R.string.time_slot_accepted)
+            chatPopup.root.animation = AnimationUtils.loadAnimation(this.context, R.anim.slide_up_down)
             chatPopup.root.visibility = View.VISIBLE
             chatPopup.requestTimeSlotButton.visibility = View.GONE
             chatPopup.requestTimeSlotTextView.text = text
@@ -153,6 +155,7 @@ class ChatFragment : Fragment() {
 
     private fun showRequestAcceptedPopup() {
         val chatPopup = binding.chatPopupPendingRequest
+        chatPopup.root.animation = AnimationUtils.loadAnimation(this.context, R.anim.slide_up_down)
         chatPopup.root.visibility = View.VISIBLE
         chatPopup.requestPendingTimeSlotControls.visibility = View.GONE
         chatPopup.requestPendingTimeSlotTextView.text = getString(R.string.time_slot_accepted_for_advertiser)
@@ -179,7 +182,10 @@ class ChatFragment : Fragment() {
     private fun activateAcceptDenyButtons() {
         val chatPopup = binding.chatPopupPendingRequest
         val accept : () -> Unit = { showRequestAcceptedPopup() }
-        val hidePopup : () -> Unit = { chatPopup.root.visibility = View.GONE }
+        val hidePopup : () -> Unit = {
+            chatPopup.root.animation = AnimationUtils.loadAnimation(this.context, R.anim.slide_down_up)
+            chatPopup.root.visibility = View.GONE
+        }
 
         chatPopup.requestPendingTimeSlotAcceptButton.setOnClickListener {
             chatViewModel.acceptRequestForAdvertisement(onSuccess = accept)

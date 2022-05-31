@@ -23,21 +23,20 @@ class ChatFragment : Fragment() {
     private var advertisementID : String? = null
     private var otherUserID : String? = null
     private lateinit var chatMessagesAdapter : ChatMessagesAdapter
-    private var firstUpdate = true
+    private var userIsAdvertiser = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         advertisementID = arguments?.getString("advertisementID")
         userID = arguments?.getString("userID")
         otherUserID = arguments?.getString("otherUserID")
+        userIsAdvertiser = arguments?.getBoolean("userIsAdvertiser") ?: false
 
         otherUserID?.also { chatViewModel.setOtherUserID(it)}
         advertisementID?.also { chatViewModel.setAdvertisementID(it) }
 
         chatMessagesAdapter = ChatMessagesAdapter(this)
         chatMessagesAdapter.messages = chatViewModel.messages.value ?: ArrayList()
-
-        firstUpdate = true
     }
 
     override fun onCreateView(
@@ -111,6 +110,9 @@ class ChatFragment : Fragment() {
     }
 
     private fun manageSendRequestPopup() {
+
+        if (userIsAdvertiser) return
+
         val chatPopup = binding.chatPopupSendRequest
 
         val showSendRequestPopup : () -> Unit = {

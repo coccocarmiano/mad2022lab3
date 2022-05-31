@@ -19,7 +19,7 @@ class ChatMessagesAdapter(private val parentFragment: Fragment) : RecyclerView.A
 
     lateinit var messages : ArrayList<Message>
 
-    class ChatMessageViewHolder(val view : View, val parentFragment : Fragment, adapter : ChatMessagesAdapter) : RecyclerView.ViewHolder(view) {
+    class ChatMessageViewHolder(val view : View) : RecyclerView.ViewHolder(view) {
 
         val textContent : TextView = view.findViewById(R.id.chat_item_content)
     }
@@ -40,7 +40,7 @@ class ChatMessagesAdapter(private val parentFragment: Fragment) : RecyclerView.A
         val view = LayoutInflater
                 .from(parent.context).inflate(layoutToInflate, parent, false)
 
-        return ChatMessageViewHolder(view, parentFragment, this)
+        return ChatMessageViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ChatMessageViewHolder, position: Int) {

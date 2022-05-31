@@ -56,12 +56,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/fullname_placeholder_text"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="32sp" />
 
             <TextView
                 android:id="@+id/usernameTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/secondaryTextColor"
                 android:text="@string/username_placeholder_text"
                 android:textSize="32sp" />
 
@@ -69,6 +71,11 @@
                 android:id="@+id/emailTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/secondaryTextColor"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:scrollHorizontally="true"
+                android:marqueeRepeatLimit="marquee_forever"
                 android:text="@string/email_placeholder_text"
                 android:textSize="32sp" />
 
@@ -77,6 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/location_placeholder_text"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="32sp" />
 
             <TextView
@@ -84,6 +92,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/no_skills_placeholder_text"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="32sp" />
 
 

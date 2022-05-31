@@ -8,6 +8,7 @@
     app:cardCornerRadius="20dp"
     app:cardElevation="10dp"
     app:cardMaxElevation="12dp"
+    app:cardBackgroundColor="@color/primaryColor"
     app:cardPreventCornerOverlap="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,6 +34,7 @@
             android:text="@string/genericTextViewPlaceholder"
             android:textSize="20sp"
             android:maxLines="1"
+            android:textColor="@color/primaryTextColor"
             app:layout_constraintBottom_toTopOf="@+id/adv_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -45,6 +47,7 @@
             android:layout_gravity="bottom|start"
             android:layout_marginVertical="5dp"
             android:text="@string/genericTextViewPlaceholder"
+            android:textColor="@color/primaryTextColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/adv_location"
             app:layout_constraintHorizontal_bias="0.5"
@@ -60,7 +63,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/adv_date"
-            app:layout_constraintTop_toTopOf="@+id/adv_date" />
+            app:layout_constraintTop_toTopOf="@+id/adv_date"
+            android:textColor="@color/primaryTextColor"
+            />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

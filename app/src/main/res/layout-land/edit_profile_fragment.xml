@@ -66,6 +66,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputEditFullName"
+                        android:textColor="@color/primaryTextColor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -83,6 +84,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputEditUserName"
+                        android:textColor="@color/primaryTextColor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -100,6 +102,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputEditMail"
+                        android:textColor="@color/primaryTextColor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -117,6 +120,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/textInputEditUserLocation"
+                        android:textColor="@color/primaryTextColor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -128,12 +132,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/menu_edit_skills"
+                    android:backgroundTint="@color/primaryLightColor"
                     android:layout_marginVertical="5dp"/>
 
                 <Button
                     android:id="@+id/editProfileSaveButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/primaryLightColor"
                     android:text="@string/save_changes"
                     android:layout_marginVertical="5dp"/>
             </LinearLayout>

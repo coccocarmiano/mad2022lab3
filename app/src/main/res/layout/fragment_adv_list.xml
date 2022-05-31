@@ -36,6 +36,7 @@
                 android:layout_weight="4"
                 android:gravity="center"
                 android:text="@string/genericTextViewPlaceholder"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="24sp" />
 
             <ImageButton
@@ -44,6 +45,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/transparent"
+                app:tint="@color/secondaryTextColor"
                 android:contentDescription="@string/content_description_sort_btn"
                 android:src="@drawable/sort" />
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -67,6 +69,7 @@
                 android:layout_weight="4"
                 android:gravity="center"
                 android:text="@string/filters"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="24sp" />
 
             <ImageButton
@@ -75,6 +78,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/transparent"
+                app:tint="@color/secondaryTextColor"
                 android:contentDescription="@string/content_description_filter_dropdown_btn"
                 android:src="@drawable/arrow_drop_down" />
         </LinearLayout>
@@ -188,6 +192,7 @@
             android:layout_height="0dp"
             android:animateLayoutChanges="false"
             android:layoutAnimation="@anim/recycler_view_fall_down_animation"
+            app:layout_constraintTop_toTopOf="@id/adv_list_rv_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

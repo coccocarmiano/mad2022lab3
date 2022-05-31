@@ -40,6 +40,7 @@ class ShowProfile : Fragment() {
         // Spinning Circle
         binding.showProfileSpinLoading.visibility = View.VISIBLE
         binding.profileImageShowProfile.visibility = View.GONE
+        binding.emailTV.isSelected = true
 
         return root
     }

@@ -70,4 +70,5 @@
     <string name="edit_adv_chat_card_text">Chat with %1$s</string>
     <string name="time_slot_accepted">The advertiser has accepted your request</string>
     <string name="time_slot_accepted_for_advertiser">You accepted this request</string>
+    <string name="chat_input_text_placeholder">Quindi vi vediamo alle 19?</string>
 </resources>

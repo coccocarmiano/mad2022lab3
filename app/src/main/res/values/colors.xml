@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Do not use these -->
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 
     <!-- Use these -->
     <color name="transparent">#00000000</color>
-    <color name="primaryColor">#eeeeee</color>
-    <color name="primaryLightColor">#ffffff</color>
-    <color name="primaryDarkColor">#bcbcbc</color>
-    <color name="secondaryColor">#b0bec5</color>
-    <color name="secondaryLightColor">#e2f1f8</color>
-    <color name="secondaryDarkColor">#808e95</color>
-    <color name="primaryTextColor">#000000</color>
+    <color name="primaryColor">#303f9f</color>
+    <color name="primaryLightColor">#666ad1</color>
+    <color name="primaryDarkColor">#001970</color>
+    <color name="secondaryColor">#29b6f6</color>
+    <color name="secondaryLightColor">#73e8ff</color>
+    <color name="secondaryDarkColor">#0086c3</color>
+    <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#000000</color>
 
     <!-- Material Design overrides -->

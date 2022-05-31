@@ -21,6 +21,7 @@
             android:layout_height="match_parent"
             android:layout_margin="10dp"
             android:layout_weight="9"
+            android:backgroundTint="@color/primaryLightColor"
             android:text="@string/editSkillsFragmentSaveButton"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

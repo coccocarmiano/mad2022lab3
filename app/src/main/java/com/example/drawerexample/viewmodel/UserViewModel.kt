@@ -91,13 +91,15 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
 
     fun applyChangesToFirebase() {
         val userHashMap = hashMapOf(
-            "fullName" to fullname.value, 
-            "username" to username.value,
-            "email" to email.value,
-            "location" to location.value,
-            "skills" to skills.value,
+            "fullName" to (fullname.value ?: Firebase.auth.currentUser?.displayName ?: app.getString(R.string.username_placeholder_text)),
+            "username" to (username.value ?: app.getString(R.string.username_placeholder_text)),
+            "email" to (email.value ?: Firebase.auth.currentUser?.email ?: app.getString(R.string.email_placeholder_text)),
+            "location" to (location.value ?: app.getString(R.string.location_placeholder_text)),
+            "skills" to (skills.value ?: listOf())
         )
-        userDocumentReference.update(userHashMap)
+        userDocumentReference.update(userHashMap).addOnFailureListener {
+            userDocumentReference.set(userHashMap)
+        }
     }
 
     fun updateSkills(skills : List<String>) {

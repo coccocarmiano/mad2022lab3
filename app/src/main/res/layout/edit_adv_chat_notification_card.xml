@@ -15,9 +15,10 @@
         android:paddingHorizontal="12dp"
         >
         <TextView
+            android:id="@+id/edit_adv_incoming_message_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/request_card_message_intent_text"
+            android:text="@string/edit_adv_chat_card_text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

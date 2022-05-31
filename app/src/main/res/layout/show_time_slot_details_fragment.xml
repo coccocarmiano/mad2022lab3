@@ -124,7 +124,7 @@
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edit_adv_incoming_requests_header"
-                tools:listitem="@layout/show_profile_chat_notification_card"
+                tools:listitem="@layout/edit_adv_chat_notification_card"
                 tools:itemCount="3"
                 android:paddingHorizontal="12dp"
                 />

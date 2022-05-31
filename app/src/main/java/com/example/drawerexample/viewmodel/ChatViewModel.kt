@@ -169,27 +169,35 @@ class ChatViewModel : ViewModel() {
             }
     }
 
-    fun acceptRequestForAdvertisement() {
-        val payload = Bundle().apply { putString("acceptedFor", otherUserID.value) }
+    fun acceptRequestForAdvertisement(onSuccess : () -> Unit = {}, onFailure : () -> Unit = {}) {
+        val payload = mapOf("acceptedFor" to otherUserID.value)
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
             .collection("requests")
             .document("accepted")
             .set(payload)
+            .addOnSuccessListener {
+                onSuccess()
+            }
             .addOnFailureListener { err ->
                 Log.w("ChatViewModel", "Error accepting request", err)
+                onFailure()
             }
     }
 
-    fun denyRequestForAdvertisement() {
+    fun denyRequestForAdvertisement(onSuccess : () -> Unit = {}, onFailure : () -> Unit = {}) {
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
             .collection("requests")
-            .document("$otherUserID.value")
+            .document("${otherUserID.value}")
             .delete()
+            .addOnSuccessListener {
+                onSuccess()
+            }
             .addOnFailureListener {
+                onFailure()
                 Log.w("ChatViewModel", "Error denying request", it)
             }
     }
@@ -204,6 +212,60 @@ class ChatViewModel : ViewModel() {
             .addOnSuccessListener {
                 if ( it.exists() ) onTrue()
                 else onFalse()
+            }
+            .addOnFailureListener {
+                Log.w("ChatViewModel", "Error getting request", it)
+            }
+    }
+
+    fun didOtherUserRequestTimeSlot(onTrue : () -> Unit = {}, onFalse : () -> Unit = {}) {
+        db
+            .collection("advertisements")
+            .document("${advertisementID.value}")
+            .collection("requests")
+            .document("${otherUserID.value}")
+            .get()
+            .addOnSuccessListener {
+                when ( it.exists() ) {
+                    true -> onTrue()
+                    false -> onFalse()
+                }
+            }
+            .addOnFailureListener {
+                Log.w("ChatViewModel", "Error getting request", it)
+            }
+    }
+
+    fun didAdvertiserAcceptRequestForUser(onTrue : () -> Unit = {}, onFalse : () -> Unit = {}) {
+        db
+            .collection("advertisements")
+            .document("${advertisementID.value}")
+            .collection("requests")
+            .document("accepted")
+            .get()
+            .addOnSuccessListener { doc ->
+                when ( doc.getString("acceptedFor") == userID || doc.getString("acceptedFor") == otherUserID.value ) {
+                    true -> onTrue()
+                    false -> onFalse()
+                }
+            }
+            .addOnFailureListener {
+                Log.w("ChatViewModel", "Error getting request", it)
+            }
+    }
+
+    fun hasAdvertisementAlreadyBeenAllocated(onTrue : () -> Unit = {}, onFalse : () -> Unit = {}) {
+        db
+            .collection("advertisements")
+            .document("${advertisementID.value}")
+            .collection("requests")
+            .document("accepted")
+            .get()
+            .addOnSuccessListener {
+                when ( it.exists() ) {
+                    true -> onTrue()
+                    false -> onFalse()
+                }
             }
             .addOnFailureListener {
                 Log.w("ChatViewModel", "Error getting request", it)

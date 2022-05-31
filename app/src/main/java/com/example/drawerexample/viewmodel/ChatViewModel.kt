@@ -146,6 +146,7 @@ class ChatViewModel : ViewModel() {
             .set(junk)
             .addOnSuccessListener {
                 onSuccess()
+                Log.d("ChatViewModel", "Request sent")
             }
             .addOnFailureListener { err ->
                 Log.w("ChatViewModel", "Error sending request", err)

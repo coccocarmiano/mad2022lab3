@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.drawerexample.Message
+import com.example.drawerexample.adapter.EditAdvIncomingMessagesAdapter
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
@@ -53,7 +54,7 @@ class ChatViewModel : ViewModel() {
     }
 
     private fun updateAdvCreatorID() {
-        db.collection("advertisements").document("$advertisementID").get()
+        db.collection("advertisements").document("${advertisementID.value}").get()
             .addOnSuccessListener {
                 advCreatorID = it.getString("creatorID").toString()
                 updateListener()
@@ -66,6 +67,7 @@ class ChatViewModel : ViewModel() {
         advertisementID.value = id
     }
 
+    @Suppress("UNNECESSARY_NOT_NULL_ASSERTION")
     fun setOtherUserID(id : String?) {
         if ( id != null ) otherUserID.value = id!!
     }
@@ -127,6 +129,19 @@ class ChatViewModel : ViewModel() {
             }.addOnFailureListener {
                 Log.w("ChatViewModel", "Error posting message", it)
             }
+
+        db
+            .collection("chats")
+            .document("${advertisementID.value}")
+            .update(mapOf(userID to true)) // Need to keep track of available subcollections
+            .addOnFailureListener {
+                db.collection("chats")
+                    .document("${advertisementID.value}")
+                    .set(mapOf(userID to true))
+                    .addOnFailureListener {
+                        Log.w("ChatViewModel", "Error updating chat", it)
+                    }
+            }
     }
 
     private fun setOtherProfilePicture(uri : Uri) {
@@ -142,7 +157,7 @@ class ChatViewModel : ViewModel() {
             .collection("advertisements")
             .document("${advertisementID.value}")
             .collection("requests")
-            .document("${otherUserID.value}") // The existence of the document itself is the request flag
+            .document("$userID") // The existence of the document itself is the request flag
             .set(junk)
             .addOnSuccessListener {
                 onSuccess()
@@ -192,6 +207,42 @@ class ChatViewModel : ViewModel() {
             }
             .addOnFailureListener {
                 Log.w("ChatViewModel", "Error getting request", it)
+            }
+    }
+
+    fun listenChatsUpdates(advID: String?, adapter : EditAdvIncomingMessagesAdapter) {
+        if ( advID == null ) return
+
+        adapter.incomingMessages.clear()
+
+        db
+            .collection("chats")
+            .document("$advID")
+            .addSnapshotListener { allChats, err -> // This document contains a collection for each user chat
+                when ( err == null ) {
+                    true -> {
+                        // First we need to get all the users who sent a message into the chat
+                        allChats?.data?.keys?.forEach { userID ->
+                            db.collection("users")
+                                .document(userID)
+                                .get()
+                                .addOnSuccessListener {
+                                    it.getString("username")?.also { uname ->
+                                        val bundle = Bundle().apply {
+                                            putString("userID", userID)
+                                            putString("username", uname)
+                                        }
+                                        adapter.incomingMessages.add(bundle)
+                                        Log.d("ChatViewModelAdapter", "${adapter.incomingMessages.size}")
+                                        adapter.notifyDataSetChanged()
+                                    }
+                                }
+                        }
+                    }
+                    else -> {
+                        Log.w("ChatViewModel", "Error getting documents.", err)
+                    }
+                }
             }
     }
 

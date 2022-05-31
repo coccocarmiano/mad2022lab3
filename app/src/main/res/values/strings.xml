@@ -44,7 +44,7 @@
     <string name="skills_list_label">Offered Skills</string>
     <string name="filters">Filters</string>
     <string name="date">Date</string>
-    <string name="sorted_by_literal">Sorted by %1s</string>
+    <string name="sorted_by_literal">Sorted by %1$s</string>
     <string name="tap_to_remove_adv_list_fragment">$1s (Tap to Remove)</string>
     <string name="genericTextViewPlaceholder">TextView</string>
     <string name="content_description_show_or_edit_advertisement">Button to show or edit advertisement</string>
@@ -67,5 +67,5 @@
     <string name="start_chat_button_content_description">Button to send a message to the advertiser</string>
     <string name="time_slot_already_requested">Your request is pending</string>
     <string name="edit_adv_incoming_requests_header_text">Incoming Requests</string>
-    <string name="edit_adv_chat_card_text">Chat with $1s</string>
+    <string name="edit_adv_chat_card_text">Chat with %1$s</string>
 </resources>

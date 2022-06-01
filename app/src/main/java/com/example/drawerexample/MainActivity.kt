@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_show_profile, R.id.show_skills_list, R.id.nav_adv_myList, R.id.loginFragment
+                R.id.nav_show_profile, R.id.show_skills_list, R.id.nav_adv_myList, R.id.nav_adv_pending, R.id.nav_adv_accepted, R.id.loginFragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -66,11 +66,15 @@ class MainActivity : AppCompatActivity() {
                 binding.navView.menu.findItem(R.id.show_skills_list).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_show_profile).isVisible = false
+                binding.navView.menu.findItem(R.id.nav_adv_accepted).isVisible = false
+                binding.navView.menu.findItem(R.id.nav_adv_pending).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = true
             } else {
                 binding.navView.menu.findItem(R.id.nav_logout).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = true
                 binding.navView.menu.findItem(R.id.show_skills_list).isVisible = true
+                binding.navView.menu.findItem(R.id.nav_adv_accepted).isVisible = true
+                binding.navView.menu.findItem(R.id.nav_adv_pending).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_show_profile).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = false
             }
@@ -101,6 +105,26 @@ class MainActivity : AppCompatActivity() {
             .setOnMenuItemClickListener {
                 val bundle = Bundle().apply { putBoolean("allowEdit", false) }
                 navController.navigate(R.id.show_skills_list, bundle, smoothAnimations)
+                drawerLayout.close()
+                true
+            }
+
+        binding.navView.menu
+            .findItem(R.id.nav_adv_pending)
+            .setOnMenuItemClickListener {
+                val bundle = Bundle().apply { putBoolean("allowEdit", false) }
+                bundle.apply { putString("type", "pending") }
+                navController.navigate(R.id.nav_adv_list, bundle, smoothAnimations)
+                drawerLayout.close()
+                true
+            }
+
+        binding.navView.menu
+            .findItem(R.id.nav_adv_accepted)
+            .setOnMenuItemClickListener {
+                val bundle = Bundle().apply { putBoolean("allowEdit", false) }
+                bundle.apply { putString("type", "accepted") }
+                navController.navigate(R.id.nav_adv_list, bundle, smoothAnimations)
                 drawerLayout.close()
                 true
             }

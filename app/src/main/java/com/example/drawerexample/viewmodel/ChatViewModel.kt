@@ -153,6 +153,7 @@ class ChatViewModel : ViewModel() {
 
     fun sendRequestForAdvertisement( onFailure : () -> Unit = {}, onSuccess : () -> Unit = {}) {
         val junk = Bundle().apply { putString("junk", "junk") }
+
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
@@ -167,6 +168,16 @@ class ChatViewModel : ViewModel() {
                 Log.w("ChatViewModel", "Error sending request", err)
                 onFailure()
             }
+        db
+            .collection("advertisements")
+            .document("${advertisementID.value}")
+            .update(
+                hashMapOf(
+                    "buyerUID" to userID,
+                    "status" to "pending"
+                ) as Map<String, Any>
+            )
+
     }
 
     fun acceptRequestForAdvertisement(onSuccess : () -> Unit = {}, onFailure : () -> Unit = {}) {
@@ -184,6 +195,14 @@ class ChatViewModel : ViewModel() {
                 Log.w("ChatViewModel", "Error accepting request", err)
                 onFailure()
             }
+        db
+            .collection("advertisements")
+            .document("${advertisementID.value}")
+            .update(
+                hashMapOf(
+                    "status" to "accepted"
+                ) as Map<String, Any>
+            )
     }
 
     fun denyRequestForAdvertisement(onSuccess : () -> Unit = {}, onFailure : () -> Unit = {}) {
@@ -200,6 +219,15 @@ class ChatViewModel : ViewModel() {
                 onFailure()
                 Log.w("ChatViewModel", "Error denying request", it)
             }
+        db
+            .collection("advertisements")
+            .document("${advertisementID.value}")
+            .update(
+                hashMapOf(
+                    "buyerUID" to "",
+                    "status" to ""
+                ) as Map<String, Any>
+            )
     }
 
     fun didUserRequestTimeSlot(onTrue : () -> Unit = {}, onFalse : () -> Unit = {}) {

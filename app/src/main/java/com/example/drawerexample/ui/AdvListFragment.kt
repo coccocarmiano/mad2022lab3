@@ -4,6 +4,7 @@ import android.animation.LayoutTransition
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.DatePicker
 import androidx.appcompat.widget.Toolbar
@@ -11,6 +12,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drawerexample.R
@@ -19,6 +21,7 @@ import com.example.drawerexample.databinding.FragmentAdvListBinding
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.viewmodel.UserViewModel
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
@@ -43,6 +46,7 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     private var sortingMode = "Date" // Allowed: "Date", "Title"
     private var allowEdit : Boolean = false
+    private var type: String = ""
 
 
     override fun onCreateView(
@@ -53,6 +57,7 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         val root = binding.root
         binding.advListRvContainer.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         allowEdit = arguments?.getBoolean("allowEdit") ?: false
+        type = arguments?.getString("type") ?: ""
         selectedSkill = arguments?.getString("selectedSkill") ?: "NO_SKILL_SELECTED"
 
         advAdapter = AdvertisementsAdapter(this, allowEdit = allowEdit)
@@ -143,9 +148,12 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             refreshUI()
         }
 
-        binding.addAdvertisementFAB.visibility = if (allowEdit) View.VISIBLE else View.GONE
+        binding.addAdvertisementFAB.visibility = if (allowEdit&&type=="") View.VISIBLE else View.GONE
         val yourSkillsString = getString(R.string.drawer_menu_go_to_user_advertisements)
         if (allowEdit) { activity?.findViewById<Toolbar>(R.id.toolbar)?.title = yourSkillsString }
+        if( type=="accepted"){ activity?.findViewById<Toolbar>(R.id.toolbar)?.title = getString(R.string.drawer_menu_go_to_accepted) }
+        if( type=="pending"){ activity?.findViewById<Toolbar>(R.id.toolbar)?.title = getString(R.string.drawer_menu_go_to_pending) }
+
         return root
     }
 
@@ -165,16 +173,35 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             .filter { it.location.contains(locationFilter, ignoreCase = true) }
             .filter { it.date.contains(dateFilter, ignoreCase = true) }
             .filter {
+                if(type=="")
                 when (allowEdit)  {
                     true -> true
                     else -> it.skill == selectedSkill
                 }
+                else true
             }
             .filter {
+                if(type=="pending"||type=="accepted")
+                    true
+                else{
                 when (allowEdit) {
                     true -> it.creatorUID == currentUserUID
                     false -> it.creatorUID != currentUserUID
                 }
+                }
+            }
+            .filter{
+                when(type){
+                    "pending"  ->  it.status=="pending"
+                    "accepted" ->  it.status=="accepted"
+                    else -> true
+                }
+            }
+            .filter{
+                if(type=="pending")
+                    it.creatorUID!=currentUserUID
+                else
+                    true
             }
             .sortedBy {
                 when (sortingMode) {
@@ -206,6 +233,7 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         refreshUI()
         dateFiltered = true
     }
+
 }
 
 

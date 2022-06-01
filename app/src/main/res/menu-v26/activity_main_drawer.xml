@@ -22,6 +22,16 @@
         android:icon="@drawable/list"
         android:title="@string/drawer_menu_go_to_user_advertisements"
         app:showAsAction="withText" />
+    <item
+        android:id="@+id/nav_adv_pending"
+        android:icon="@drawable/list"
+        android:title="@string/drawer_menu_show_adv_pending"
+        app:showAsAction="withText" />
+    <item
+        android:id="@+id/nav_adv_accepted"
+        android:icon="@drawable/list"
+        android:title="@string/drawer_menu_show_adv_accepted"
+        app:showAsAction="withText" />
 
     <item
         android:id="@+id/nav_logout"

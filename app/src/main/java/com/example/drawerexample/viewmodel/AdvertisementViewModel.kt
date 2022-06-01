@@ -24,6 +24,7 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
                     else -> Log.w("Firebase", "Error receiving updates", err)
                 }
             }
+
     }
 
 
@@ -39,7 +40,9 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
                     "duration" to adv.duration,
                     "skill" to adv.skill,
                     "creatorMail" to adv.creatorMail,
-                    "creatorID" to adv.creatorUID
+                    "creatorID" to adv.creatorUID,
+                    "buyerUID" to adv.buyerUID,
+                    "status" to adv.status
                 )
             ).addOnFailureListener {
                 Log.d("Firebase", it.toString())
@@ -56,7 +59,9 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
                 "date" to adv.date,
                 "duration" to adv.duration,
                 "skill" to adv.skill,
-                "emailCreator" to adv.creatorMail
+                "emailCreator" to adv.creatorMail,
+                "buyerUID" to adv.buyerUID,
+                "status" to adv.status
             ) as MutableMap<String, Any>
         ).addOnFailureListener {
             Log.w("Firebase", "Could not upadte advertisement", it)
@@ -74,6 +79,8 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
             adv.skill = getString("skill") ?: "No Skill"
             adv.creatorMail = getString("emailCreator") ?: "No creator"
             adv.creatorUID = getString("creatorID") ?: "No creator UID"
+            adv.buyerUID = getString("buyerID")?: "No buyer UID"
+            adv.status= getString("status")?:"No status"
         }
     }
 

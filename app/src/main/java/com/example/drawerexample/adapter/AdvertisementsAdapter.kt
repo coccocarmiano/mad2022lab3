@@ -58,19 +58,36 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val a
                     editImageButton
                         .apply { setImageResource(R.drawable.user) }
                         .setOnClickListener {
-                            bundle.putString("UID", myAdapter.data[adapterPosition].creatorUID)
-                            parentFragment.findNavController().navigate(R.id.nav_adv_list_to_show_other_profile, bundle)
-                        }
+                            if(myAdapter.data[adapterPosition].creatorUID==Firebase.auth.currentUser?.uid){
+                                bundle.putString("UID", myAdapter.data[adapterPosition].buyerUID)
+                                //TODO togliere da on click listener
+                                editImageButton.visibility= View.GONE
+
+                            }
+                            else {
+                                bundle.putString("UID", myAdapter.data[adapterPosition].creatorUID)
+                                parentFragment.findNavController().navigate(R.id.nav_adv_list_to_show_other_profile, bundle)
+                                }
+                            }
                     startChatImageButton.setOnClickListener {
                         bundle.apply {
-                            putString("otherUserID", myAdapter.data[adapterPosition].creatorUID)
-                            putString("advertisementID", myAdapter.data[adapterPosition].id)
-                            putString("userID", Firebase.auth.currentUser?.uid)
+                            if(myAdapter.data[adapterPosition].creatorUID==Firebase.auth.currentUser?.uid) {
+                                //TODO qua si perde il nome, da sistemare
+                                putString("otherUserID", myAdapter.data[adapterPosition].buyerUID)
+                                putString("advertisementID", myAdapter.data[adapterPosition].id)
+                                putString("userID", Firebase.auth.currentUser?.uid)
+                            }
+                            else{
+                                putString("otherUserID", myAdapter.data[adapterPosition].creatorUID)
+                                putString("advertisementID", myAdapter.data[adapterPosition].id)
+                                putString("userID", Firebase.auth.currentUser?.uid)
+                            }
                             parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_chat, bundle)
                         }
                     }
                 }
             }
+
         }
     }
 

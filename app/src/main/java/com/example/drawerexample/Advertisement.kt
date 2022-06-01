@@ -10,4 +10,6 @@ class Advertisement (
     var skill :String = "",
     var creatorMail : String = "",
     var creatorUID : String = "",
+    var status: String = "",
+    var buyerUID: String= ""
 )

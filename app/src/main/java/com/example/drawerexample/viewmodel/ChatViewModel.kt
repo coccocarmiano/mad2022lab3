@@ -153,7 +153,7 @@ class ChatViewModel : ViewModel() {
 
     fun sendRequestForAdvertisement( onFailure : () -> Unit = {}, onSuccess : () -> Unit = {}) {
         val junk = Bundle().apply { putString("junk", "junk") }
-
+/*
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
@@ -168,20 +168,37 @@ class ChatViewModel : ViewModel() {
                 Log.w("ChatViewModel", "Error sending request", err)
                 onFailure()
             }
+
+ */
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
-            .update(
-                hashMapOf(
-                    "buyerUID" to userID,
-                    "status" to "pending"
-                ) as Map<String, Any>
-            )
-
+            .get()
+            .addOnSuccessListener {
+                val requests = it.get("requests") as? MutableList<String> ?: mutableListOf()
+                requests.add("$userID")
+                db
+                    .collection("advertisements")
+                    .document("${advertisementID.value}")
+                    .update(
+                        hashMapOf(
+                            "status" to "pending",
+                            "requests" to requests
+                        ) as Map<String, Any>
+                    ).addOnSuccessListener {
+                        onSuccess()
+                        Log.d("ChatViewModel", "Request sent")
+                    }
+                    .addOnFailureListener { err ->
+                        Log.w("ChatViewModel", "Error sending request", err)
+                        onFailure()
+                    }
+            }
     }
 
     fun acceptRequestForAdvertisement(onSuccess : () -> Unit = {}, onFailure : () -> Unit = {}) {
         val payload = mapOf("acceptedFor" to otherUserID.value)
+        /*
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
@@ -195,17 +212,73 @@ class ChatViewModel : ViewModel() {
                 Log.w("ChatViewModel", "Error accepting request", err)
                 onFailure()
             }
+            */
+
+        // TODO find atomic way
         db
-            .collection("advertisements")
-            .document("${advertisementID.value}")
-            .update(
-                hashMapOf(
-                    "status" to "accepted"
-                ) as Map<String, Any>
-            )
+            .collection("users")
+            .document("${otherUserID.value}")
+            .get()
+            .addOnSuccessListener { applicantDoc ->
+                var applicantCredits = applicantDoc.getLong("credits")
+                if (applicantCredits != null && applicantCredits > 0) {
+                    applicantCredits -= 1
+                    db
+                        .collection("users")
+                        .document("${otherUserID.value}")
+                        .update(
+                            hashMapOf(
+                                "credits" to applicantCredits
+                            ) as Map<String, Any>
+                        )
+
+                    db
+                        .collection("users")
+                        .document("$userID")
+                        .get()
+                        .addOnSuccessListener {
+                            var userCredits = it.getLong("credits")
+                            if (userCredits == null)
+                                userCredits = 0
+                            userCredits += 1
+                            db
+                                .collection("users")
+                                .document("$userID")
+                                .update(
+                                    hashMapOf(
+                                        "credits" to userCredits
+                                    ) as Map<String, Any>
+                                )
+                        }
+
+                    db
+                        .collection("advertisements")
+                        .document("${advertisementID.value}")
+                        .update(
+                            hashMapOf(
+                                "buyerUID" to otherUserID.value,
+                                "status" to "accepted"
+                            ) as Map<String, Any>
+                        ).addOnSuccessListener {
+                            onSuccess()
+                        }
+                        .addOnFailureListener { err ->
+                            Log.w("ChatViewModel", "Error accepting request", err)
+                            onFailure()
+                        }
+                } else {
+                    Log.w("ChatViewModel", "Error accepting request", null) // TODO custom exception
+                    onFailure()
+                }
+            }.addOnFailureListener { err ->
+                Log.w("ChatViewModel", "Error accepting request", err)
+                onFailure()
+            }
+
     }
 
     fun denyRequestForAdvertisement(onSuccess : () -> Unit = {}, onFailure : () -> Unit = {}) {
+        /*
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
@@ -228,6 +301,35 @@ class ChatViewModel : ViewModel() {
                     "status" to ""
                 ) as Map<String, Any>
             )
+
+         */
+
+        db
+            .collection("advertisements")
+            .document("${advertisementID.value}")
+            .get()
+            .addOnSuccessListener { doc ->
+                val requests = doc.get("requests") as? MutableList<String> ?: mutableListOf()
+                requests.remove("$userID")
+                var status = "pending"
+                if (requests.isEmpty())
+                    status = ""
+                db
+                    .collection("advertisements")
+                    .document("${advertisementID.value}")
+                    .update(
+                        hashMapOf(
+                            "status" to status,
+                            "requests" to requests
+                        ) as Map<String, Any>
+                    ).addOnSuccessListener {
+                        onSuccess()
+                    }
+                    .addOnFailureListener {
+                        onFailure()
+                        Log.w("ChatViewModel", "Error denying request", it)
+                    }
+            }
     }
 
     fun didUserRequestTimeSlot(onTrue : () -> Unit = {}, onFalse : () -> Unit = {}) {

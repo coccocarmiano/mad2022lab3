@@ -11,5 +11,6 @@ class Advertisement (
     var creatorMail : String = "",
     var creatorUID : String = "",
     var status: String = "",
-    var buyerUID: String= ""
+    var buyerUID: String= "",
+    var requests: List<String> = listOf()
 )

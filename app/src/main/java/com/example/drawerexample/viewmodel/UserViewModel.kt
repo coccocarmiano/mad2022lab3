@@ -30,6 +30,7 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
     val userID   = MutableLiveData<String?>(Firebase.auth.currentUser?.uid)
     val skills   = MutableLiveData<List<String>>()
     val propic   = MutableLiveData<Bitmap>()
+    val credits  = MutableLiveData<Long>()
     private val nullUID = "null"
 
     private val db = FirebaseFirestore.getInstance()
@@ -66,6 +67,7 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
             "email" to ( currentUser?.email ?: app.getString(R.string.email_placeholder_text) ),
             "location" to app.getString(R.string.location_placeholder_text),
             "skills" to listOf<String>(),
+            "credits" to 5
         )
 
         newUID?.also {
@@ -85,6 +87,7 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
             location.value = getString("location")
             email.value = getString("email")
             skills.value = get("skills") as? List<String> ?: listOf()
+            credits.value = getLong("credits")
             updateProfilePicture()
         }
     }

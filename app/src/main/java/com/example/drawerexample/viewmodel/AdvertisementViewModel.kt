@@ -42,7 +42,8 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
                     "creatorMail" to adv.creatorMail,
                     "creatorID" to adv.creatorUID,
                     "buyerUID" to adv.buyerUID,
-                    "status" to adv.status
+                    "status" to adv.status,
+                    "requests" to listOf<String>()
                 )
             ).addOnFailureListener {
                 Log.d("Firebase", it.toString())
@@ -79,8 +80,9 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
             adv.skill = getString("skill") ?: "No Skill"
             adv.creatorMail = getString("emailCreator") ?: "No creator"
             adv.creatorUID = getString("creatorID") ?: "No creator UID"
-            adv.buyerUID = getString("buyerID")?: "No buyer UID"
-            adv.status= getString("status")?:"No status"
+            adv.buyerUID = getString("buyerUID") ?: "No buyer UID"
+            adv.status = getString("status") ?: "No status"
+            adv.requests = get("requests") as? List<String> ?: listOf()
         }
     }
 

@@ -182,7 +182,7 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             }
             .filter {
                 if(type=="pending"||type=="accepted")
-                    true
+                    it.requests.contains("$currentUserUID")
                 else{
                 when (allowEdit) {
                     true -> it.creatorUID == currentUserUID
@@ -194,14 +194,8 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 when(type){
                     "pending"  ->  it.status=="pending"
                     "accepted" ->  it.status=="accepted"
-                    else -> true
+                    else -> it.status != "accepted"
                 }
-            }
-            .filter{
-                if(type=="pending")
-                    it.creatorUID!=currentUserUID
-                else
-                    true
             }
             .sortedBy {
                 when (sortingMode) {

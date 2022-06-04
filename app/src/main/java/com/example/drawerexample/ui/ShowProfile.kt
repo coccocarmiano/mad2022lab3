@@ -41,6 +41,7 @@ class ShowProfile : Fragment() {
         binding.showProfileSpinLoading.visibility = View.VISIBLE
         binding.profileImageShowProfile.visibility = View.GONE
         binding.emailTV.isSelected = true
+        binding.skillsTV.isSelected= true
 
         return root
     }
@@ -74,6 +75,23 @@ class ShowProfile : Fragment() {
             binding.showProfileSpinLoading.visibility = View.GONE
             binding.profileImageShowProfile.visibility = View.VISIBLE
         }
+
+        userViewModel.buyerTotScore.observe(viewLifecycleOwner){
+            if(userViewModel.numberOfBuy.value!!>=1){
+                val rating: Double = it.toDouble()/userViewModel.numberOfBuy.value!!.toDouble()
+                var sentence : String = "Your buyer rating is: "+ rating
+                binding.ratingBuyerTV.text= sentence
+            }
+        }
+
+        userViewModel.sellerTotScore.observe(viewLifecycleOwner){
+            if(userViewModel.numberOfSell.value!!>=1) {
+                val rating: Double = it.toDouble() / userViewModel.numberOfSell.value!!.toDouble()
+                var sentence: String = "Your seller rating is: " + rating
+                binding.ratingSellerTV.text = sentence
+            }
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

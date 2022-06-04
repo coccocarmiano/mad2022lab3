@@ -20,6 +20,8 @@
 
 
     <string name="location_placeholder_text">Location</string>
+    <string name="buyer_rating_text">No buyer rating yet</string>
+    <string name="seller_rating_text">No seller rating yet</string>
     <string name="username_placeholder_text">Username</string>
     <string name="fullname_placeholder_text">Full Name</string>
     <string name="email_placeholder_text">Email</string>

@@ -92,9 +92,28 @@
                 android:id="@+id/skillsTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
                 android:textColor="@color/primaryTextColor"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:text="@string/no_skills_placeholder_text"
+                android:textSize="32sp" />
+
+            <TextView
+                android:id="@+id/ratingBuyerTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/buyer_rating_text"
+                android:textColor="@color/secondaryTextColor"
+                android:textSize="32sp" />
+
+            <TextView
+                android:id="@+id/ratingSellerTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/seller_rating_text"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="32sp" />
 
 

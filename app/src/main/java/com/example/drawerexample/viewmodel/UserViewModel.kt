@@ -191,11 +191,13 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
     fun updateBuyerRating(ratingToAdd: Long){
         numberOfBuy.value = numberOfBuy.value!! + 1
         buyerTotScore.value = buyerTotScore.value!! + ratingToAdd
+        applyChangesToFirebase()
     }
 
     fun updateSellerRating(ratingToAdd: Long){
         numberOfSell.value = numberOfSell.value!! + 1
         sellerTotScore.value = sellerTotScore.value!! + ratingToAdd
+        applyChangesToFirebase()
     }
 }
 

@@ -41,6 +41,7 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
     private lateinit var skillsSpinnerAdapter: ArrayAdapter<String>
     private var allowEdit = false
     private lateinit var advID : String
+    private var oldAdv : Advertisement? = null
 
 
     override fun onCreateView(
@@ -57,15 +58,15 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
 
 
         if (advID.isNotEmpty()) {
-            val adv = advertisementViewModel.liveAdvList.value?.find { it.id == advID }
+            oldAdv = advertisementViewModel.liveAdvList.value?.find { it.id == advID }
 
-            adv.apply {
-                binding.textInputEditTitle.setText(adv?.title)
-                binding.textInputEditDescription.setText(adv?.description)
-                binding.textInputEditLocation.setText(adv?.location)
-                binding.textInputEditDuration.setText(adv?.duration)
-                binding.textInputEditDate.setText(adv?.date)
-                initialAdvSkill = adv?.skill
+            oldAdv.apply {
+                binding.textInputEditTitle.setText(this?.title)
+                binding.textInputEditDescription.setText(this?.description)
+                binding.textInputEditLocation.setText(this?.location)
+                binding.textInputEditDuration.setText(this?.duration)
+                binding.textInputEditDate.setText(this?.date)
+                initialAdvSkill = this?.skill
             }
         }
 
@@ -133,20 +134,23 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                 .show()
         else {
 
-            val adv = Advertisement()
+            var newAdv : Advertisement = if (oldAdv == null) {
+                Advertisement()
+            } else {
+                oldAdv!!
+            }
 
-            adv.title = binding.textInputEditTitle.text.toString()
-            adv.description = binding.textInputEditDescription.text.toString()
-            adv.location = binding.textInputEditLocation.text.toString()
-            adv.duration = binding.textInputEditDuration.text.toString()
-            adv.date = binding.textInputEditDate.text.toString()
-            adv.skill = binding.skillSpinner.selectedItem as? String ?: ""
-            adv.creatorMail = userViewModel.email.value ?: "No eMail"
-            adv.creatorUID = userViewModel.userID.value ?: "No UID"
-
+            newAdv.apply {
+                title = binding.textInputEditTitle.text.toString()
+                description = binding.textInputEditDescription.text.toString()
+                location = binding.textInputEditLocation.text.toString()
+                duration = binding.textInputEditDuration.text.toString()
+                date = binding.textInputEditDate.text.toString()
+                skill = binding.skillSpinner.selectedItem as? String ?: ""
+            }
 
             when {
-                adv.skill.isEmpty() -> {
+                newAdv.skill.isEmpty() -> {
                     Snackbar.make(
                         binding.root,
                         "You must select a skill in order to proceed",
@@ -154,8 +158,18 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                     ).show()
                     return
                 }
-                advID.isEmpty() -> advertisementViewModel.createAdvertisement(adv)
-                else -> advID.also { _ -> advertisementViewModel.updateAdvertisement(advID, adv) }
+                advID.isEmpty() -> {
+                    newAdv.apply {
+                        creatorMail = userViewModel.email.value ?: "_"
+                        creatorUID = userViewModel.userID.value ?: "_"
+                        status = "new"
+                    }
+
+                    advertisementViewModel.createAdvertisement(newAdv)
+                }
+                else -> advID.also { _ ->
+                    advertisementViewModel.updateAdvertisement(advID, newAdv)
+                }
             }
             findNavController().popBackStack()
         }

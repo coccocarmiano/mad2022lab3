@@ -19,6 +19,8 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.net.URL
+import com.example.drawerexample.NotEnoughCreditsException
+import java.lang.Exception
 
 class ChatViewModel : ViewModel() {
     var messages : MutableLiveData<ArrayList<Message>> = MutableLiveData()
@@ -152,24 +154,6 @@ class ChatViewModel : ViewModel() {
     }
 
     fun sendRequestForAdvertisement( onFailure : () -> Unit = {}, onSuccess : () -> Unit = {}) {
-        val junk = Bundle().apply { putString("junk", "junk") }
-/*
-        db
-            .collection("advertisements")
-            .document("${advertisementID.value}")
-            .collection("requests")
-            .document("$userID") // The existence of the document itself is the request flag
-            .set(junk)
-            .addOnSuccessListener {
-                onSuccess()
-                Log.d("ChatViewModel", "Request sent")
-            }
-            .addOnFailureListener { err ->
-                Log.w("ChatViewModel", "Error sending request", err)
-                onFailure()
-            }
-
- */
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
@@ -196,24 +180,7 @@ class ChatViewModel : ViewModel() {
             }
     }
 
-    fun acceptRequestForAdvertisement(onSuccess : () -> Unit = {}, onFailure : () -> Unit = {}) {
-        val payload = mapOf("acceptedFor" to otherUserID.value)
-        /*
-        db
-            .collection("advertisements")
-            .document("${advertisementID.value}")
-            .collection("requests")
-            .document("accepted")
-            .set(payload)
-            .addOnSuccessListener {
-                onSuccess()
-            }
-            .addOnFailureListener { err ->
-                Log.w("ChatViewModel", "Error accepting request", err)
-                onFailure()
-            }
-            */
-
+    fun acceptRequestForAdvertisement(onSuccess : () -> Unit = {}, onFailure : (ex:Exception) -> Unit = {}) {
         // TODO find atomic way
         db
             .collection("users")
@@ -264,47 +231,21 @@ class ChatViewModel : ViewModel() {
                         }
                         .addOnFailureListener { err ->
                             Log.w("ChatViewModel", "Error accepting request", err)
-                            onFailure()
+                            onFailure(err)
                         }
                 } else {
-                    Log.w("ChatViewModel", "Error accepting request", null) // TODO custom exception
-                    onFailure()
+                    val err = NotEnoughCreditsException("Buyer has 0 credits")
+                    Log.w("ChatViewModel", "Error accepting request", err)
+                    onFailure(err)
                 }
             }.addOnFailureListener { err ->
                 Log.w("ChatViewModel", "Error accepting request", err)
-                onFailure()
+                onFailure(err)
             }
 
     }
 
-    fun denyRequestForAdvertisement(onSuccess : () -> Unit = {}, onFailure : () -> Unit = {}) {
-        /*
-        db
-            .collection("advertisements")
-            .document("${advertisementID.value}")
-            .collection("requests")
-            .document("${otherUserID.value}")
-            .delete()
-            .addOnSuccessListener {
-                onSuccess()
-            }
-            .addOnFailureListener {
-                onFailure()
-                Log.w("ChatViewModel", "Error denying request", it)
-            }
-        db
-            .collection("advertisements")
-            .document("${advertisementID.value}")
-            .update(
-                hashMapOf(
-                    "buyerUID" to "",
-                    "status" to ""
-                ) as Map<String, Any>
-            )
-
-         */
-
-        db
+    fun denyRequestForAdvertisement(onSuccess : () -> Unit = {}, onFailure : () -> Unit = {}) {db
             .collection("advertisements")
             .document("${advertisementID.value}")
             .get()
@@ -313,7 +254,7 @@ class ChatViewModel : ViewModel() {
                 requests.remove("$userID")
                 var status = "pending"
                 if (requests.isEmpty())
-                    status = ""
+                    status = "new"
                 db
                     .collection("advertisements")
                     .document("${advertisementID.value}")

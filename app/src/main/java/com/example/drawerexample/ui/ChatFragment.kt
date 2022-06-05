@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.drawerexample.NotEnoughCreditsException
 import com.example.drawerexample.R
 import com.example.drawerexample.adapter.ChatMessagesAdapter
 import com.example.drawerexample.databinding.FragmentChatBinding
@@ -186,9 +187,16 @@ class ChatFragment : Fragment() {
             chatPopup.root.animation = AnimationUtils.loadAnimation(this.context, R.anim.slide_down_up)
             chatPopup.root.visibility = View.GONE
         }
+        val onFailedAcceptance : (ex : Exception) -> Unit = {
+            if (it is NotEnoughCreditsException) {
+                showSnackBarError("Acceptance failed, the buyer has 0 credits")
+            } else {
+                showSnackBarError("Acceptance failed, try again later")
+            }
+        }
 
         chatPopup.requestPendingTimeSlotAcceptButton.setOnClickListener {
-            chatViewModel.acceptRequestForAdvertisement(onSuccess = accept)
+            chatViewModel.acceptRequestForAdvertisement(onSuccess = accept, onFailure = onFailedAcceptance)
         }
 
         chatPopup.requestPendingTimeSlotDenyButton.setOnClickListener {

@@ -173,28 +173,15 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             .filter { it.location.contains(locationFilter, ignoreCase = true) }
             .filter { it.date.contains(dateFilter, ignoreCase = true) }
             .filter {
-                if(type=="")
-                when (allowEdit)  {
-                    true -> true
-                    else -> it.skill == selectedSkill
-                }
-                else true
-            }
-            .filter {
-                if(type=="pending"||type=="accepted")
-                    it.requests.contains("$currentUserUID")
-                else{
-                when (allowEdit) {
-                    true -> it.creatorUID == currentUserUID
-                    false -> it.creatorUID != currentUserUID
-                }
-                }
-            }
-            .filter{
-                when(type){
-                    "pending"  ->  it.status=="pending"
-                    "accepted" ->  it.status=="accepted"
-                    else -> it.status != "accepted"
+                when (type) {
+                    "pending"   -> it.status=="pending" && it.requests.contains("$currentUserUID")
+                    "accepted"  -> it.status=="accepted" && (it.creatorUID == currentUserUID || it.buyerUID == currentUserUID)
+                    else        -> {
+                        when (allowEdit) {
+                            true    -> (it.status == "new" || it.status == "pending") && it.creatorUID == currentUserUID
+                            false   -> (it.status == "new" || it.status == "pending") && it.creatorUID != currentUserUID && it.skill == selectedSkill
+                        }
+                    }
                 }
             }
             .sortedBy {

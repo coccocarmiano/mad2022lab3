@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -71,12 +72,12 @@
                 android:id="@+id/emailTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondaryTextColor"
-                android:singleLine="true"
                 android:ellipsize="marquee"
-                android:scrollHorizontally="true"
                 android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
                 android:text="@string/email_placeholder_text"
+                android:textColor="@color/secondaryTextColor"
                 android:textSize="32sp" />
 
             <TextView
@@ -91,7 +92,28 @@
                 android:id="@+id/skillsTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
                 android:text="@string/no_skills_placeholder_text"
+                android:textColor="@color/secondaryTextColor"
+                android:textSize="32sp"
+                 />
+
+            <TextView
+                android:id="@+id/ratingBuyerTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/buyer_rating_text"
+                android:textColor="@color/secondaryTextColor"
+                android:textSize="32sp" />
+
+            <TextView
+                android:id="@+id/ratingSellerTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/seller_rating_text"
                 android:textColor="@color/secondaryTextColor"
                 android:textSize="32sp" />
 

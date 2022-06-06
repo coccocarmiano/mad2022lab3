@@ -1,6 +1,7 @@
 package com.example.drawerexample.adapter
 
 import android.app.AlertDialog
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,7 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val t
         val advTitleTv : TextView = view.findViewById(R.id.adv_title)
         val advDateTv : TextView = view.findViewById(R.id.adv_date)
         val advLocationTv : TextView = view.findViewById(R.id.adv_location)
+        val requestsCounter : TextView = view.findViewById(R.id.requests_counter)
 
         init {
             val bundle = Bundle()
@@ -46,6 +48,8 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val t
 
             val primaryImageButton = view.findViewById<ImageButton>(R.id.adv_primary_btn)
             val secondaryImageButton = view.findViewById<ImageButton>(R.id.adv_secondary_btn)
+
+            requestsCounter.visibility = View.GONE
             when (myAdapter.type) {
                 "my"    -> {
                     primaryImageButton
@@ -208,6 +212,11 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val t
         holder.advTitleTv.text = data[position].title
         holder.advDateTv.text = data[position].date
         holder.advLocationTv.text = data[position].location
+
+        val requestsCount = data[position].requests.size
+        if (requestsCount > 0) {
+            holder.requestsCounter.text = requestsCount.toString() + " " + parentFragment.resources.getString(R.string.requests)
+        }
     }
 
     override fun getItemCount(): Int {

@@ -192,9 +192,10 @@
             android:layout_height="0dp"
             android:animateLayoutChanges="false"
             android:layoutAnimation="@anim/recycler_view_fall_down_animation"
-            app:layout_constraintTop_toTopOf="@id/adv_list_rv_container"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/adv_list_rv_container" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

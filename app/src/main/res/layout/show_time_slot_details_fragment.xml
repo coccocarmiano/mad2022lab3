@@ -110,19 +110,21 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/incoming_requests_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/edit_adv_incoming_requests_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="@string/edit_adv_incoming_requests_header_text"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="24sp"
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/edit_adv_incoming_requests_recycler_view"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/edit_adv_incoming_requests_recycler_view"
@@ -130,10 +132,7 @@
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/edit_adv_incoming_requests_header"
-                tools:listitem="@layout/edit_adv_chat_notification_card"
-                tools:itemCount="3"
-                android:paddingHorizontal="12dp"
-                />
+                tools:listitem="@layout/edit_adv_chat_notification_card" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </ScrollView>

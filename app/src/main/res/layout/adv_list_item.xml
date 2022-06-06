@@ -1,111 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:orientation="vertical"
-    app:cardCornerRadius="20dp"
-    app:cardElevation="10dp"
-    app:cardMaxElevation="12dp"
-    app:cardBackgroundColor="@color/primaryColor"
-    app:cardPreventCornerOverlap="true">
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/adv_card"
+    <TextView
+        android:id="@+id/requests_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="16dp"
+        android:layout_marginTop="-16dp"
+        android:layout_marginEnd="-16dp"
+        android:padding="5dp"
+        android:background="@drawable/box"
+        android:backgroundTint="@color/secondaryColor"
+        android:textColor="@color/primaryTextColor"
+        android:text="TextView"
+        app:layout_constraintTop_toTopOf="@+id/adv_card_view"
+        app:layout_constraintEnd_toEndOf="@+id/adv_card_view" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/adv_card_view"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp">
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:orientation="vertical"
+        app:cardBackgroundColor="@color/primaryColor"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="12dp"
+        app:cardMaxElevation="12dp"
+        app:cardPreventCornerOverlap="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/adv_details"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/adv_buttons">
-        <TextView
-            android:id="@+id/adv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
-            android:text="@string/genericTextViewPlaceholder"
-            android:textSize="20sp"
-            android:maxLines="1"
-            android:textColor="@color/primaryTextColor"
-            app:layout_constraintBottom_toTopOf="@+id/adv_date"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/adv_card"
+            android:layout_width="match_parent"
+            android:layout_height="64dp">
 
-        <TextView
-            android:id="@+id/adv_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:layout_marginVertical="5dp"
-            android:text="@string/genericTextViewPlaceholder"
-            android:textColor="@color/primaryTextColor"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/adv_location"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/adv_title" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/adv_details"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="5dp"
+                app:layout_constraintEnd_toStartOf="@id/adv_buttons"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/adv_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/genericTextViewPlaceholder"
-            app:layout_constraintBottom_toBottomOf="@+id/adv_date"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/adv_date"
-            app:layout_constraintTop_toTopOf="@+id/adv_date"
-            android:textColor="@color/primaryTextColor"
-            />
+                <TextView
+                    android:id="@+id/adv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:maxLines="1"
+                    android:text="@string/genericTextViewPlaceholder"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/adv_date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/adv_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|start"
+                    android:layout_marginVertical="5dp"
+                    android:text="@string/genericTextViewPlaceholder"
+                    android:textColor="@color/primaryTextColor"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/adv_location"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/adv_title" />
+
+                <TextView
+                    android:id="@+id/adv_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/genericTextViewPlaceholder"
+                    android:textColor="@color/primaryTextColor"
+                    app:layout_constraintBottom_toBottomOf="@+id/adv_date"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/adv_date"
+                    app:layout_constraintTop_toTopOf="@+id/adv_date" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/adv_buttons"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="5dp"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/adv_details"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/adv_primary_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@color/transparent"
+                    android:contentDescription="@string/content_description_show_or_edit_advertisement"
+                    android:minWidth="48dp"
+                    android:paddingHorizontal="10dp"
+                    android:scaleType="centerInside"
+                    app:srcCompat="@drawable/edit"
+                    app:tint="@color/primaryTextColor" />
+
+                <ImageButton
+                    android:id="@+id/adv_secondary_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="5dp"
+                    android:background="@color/transparent"
+                    android:contentDescription="@string/start_chat_button_content_description"
+                    android:minWidth="48dp"
+                    android:paddingHorizontal="10dp"
+                    app:srcCompat="@drawable/letter"
+                    app:tint="@color/primaryTextColor"
+                    tools:visibility="visible" />
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
-            android:id="@+id/adv_buttons"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="right|center_vertical"
-            android:orientation="horizontal"
-            android:paddingVertical="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/adv_details"
-            app:layout_constraintTop_toTopOf="parent">
+    </androidx.cardview.widget.CardView>
 
-            <ImageButton
-                android:id="@+id/adv_primary_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="5dp"
-                android:background="@color/transparent"
-                android:contentDescription="@string/content_description_show_or_edit_advertisement"
-                android:minWidth="48dp"
-                android:paddingHorizontal="10dp"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/edit"
-                app:tint="@color/primaryTextColor" />
-
-            <ImageButton
-                android:id="@+id/adv_secondary_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginHorizontal="5dp"
-                android:background="@color/transparent"
-                android:contentDescription="@string/start_chat_button_content_description"
-                android:minWidth="48dp"
-                android:paddingHorizontal="10dp"
-                app:srcCompat="@drawable/letter"
-                app:tint="@color/primaryTextColor"
-                tools:visibility="visible" />
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

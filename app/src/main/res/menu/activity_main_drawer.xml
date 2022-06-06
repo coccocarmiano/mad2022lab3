@@ -41,12 +41,12 @@
             app:showAsAction="withText" />
         <item
             android:id="@+id/nav_logout"
-            android:icon="@drawable/user"
+            android:icon="@drawable/logout"
             android:title="@string/drawer_menu_logout"
             app:showAsAction="withText" />
         <item
             android:id="@+id/nav_login"
-            android:icon="@drawable/user"
+            android:icon="@drawable/login"
             android:title="@string/drawer_menu_login"
             app:showAsAction="withText" />
     </group>

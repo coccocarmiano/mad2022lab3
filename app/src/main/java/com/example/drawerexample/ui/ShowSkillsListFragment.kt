@@ -7,16 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.drawerexample.adapter.ShowSkillListAdapter
 import com.example.drawerexample.databinding.FragmentShowSkillsListBinding
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
+import com.example.drawerexample.viewmodel.UserViewModel
 
 class ShowSkillsListFragment : Fragment() {
 
     private lateinit var binding : FragmentShowSkillsListBinding
     private val advViewModel: AdvertisementViewModel by viewModels()
+    private val userViewModel: UserViewModel by activityViewModels()
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
@@ -34,6 +37,10 @@ class ShowSkillsListFragment : Fragment() {
             layoutManager = LinearLayoutManager(container?.context)
         }
 
+        userViewModel.userID.observe(viewLifecycleOwner) {
+            advViewModel.liveAdvList.value = advViewModel.liveAdvList.value
+        }
+
         advViewModel.liveAdvList.observe(viewLifecycleOwner) { advList ->
             when {
                 advList.isNullOrEmpty() -> {
@@ -41,10 +48,18 @@ class ShowSkillsListFragment : Fragment() {
                     binding.offeredSkillsRv.visibility = View.GONE
                 }
                 else -> {
-                    binding.noSkills.visibility = View.GONE
-                    binding.offeredSkillsRv.visibility = View.VISIBLE
-                    skillsAdapter.data = advList.map { it.skill }.distinct()
-                    skillsAdapter.notifyDataSetChanged()
+                    val filteredAdv = advList.filter {
+                        it.creatorUID != userViewModel.userID.value
+                    }
+                    if (filteredAdv.isNotEmpty()) {
+                        binding.noSkills.visibility = View.GONE
+                        binding.offeredSkillsRv.visibility = View.VISIBLE
+                        skillsAdapter.data = filteredAdv.map { it.skill }.distinct()
+                        skillsAdapter.notifyDataSetChanged()
+                    } else {
+                        binding.noSkills.visibility = View.VISIBLE
+                        binding.offeredSkillsRv.visibility = View.GONE
+                    }
                 }
             }
         }

@@ -347,7 +347,6 @@ class ChatViewModel : ViewModel() {
         if ( advID == null ) return
 
         adapter.incomingMessages.clear()
-
         db
             .collection("chats")
             .document("$advID")
@@ -365,7 +364,7 @@ class ChatViewModel : ViewModel() {
                                             putString("userID", userID)
                                             putString("username", uname)
                                         }
-                                        adapter.incomingMessages.add(bundle)
+                                        adapter.addMessage(bundle)
                                         Log.d("ChatViewModelAdapter", "${adapter.incomingMessages.size}")
                                         adapter.notifyDataSetChanged()
                                     }
@@ -379,5 +378,39 @@ class ChatViewModel : ViewModel() {
             }
     }
 
+    fun listenRequestsUpdates(advID: String?, adapter : EditAdvIncomingMessagesAdapter) {
+        if ( advID == null ) return
+
+        adapter.incomingRequests.clear()
+        db
+            .collection("advertisements")
+            .document("$advID")
+            .addSnapshotListener { adv, error ->
+                when (error == null) {
+                    true -> {
+                        val requests = adv?.get("requests") as? List<String> ?: listOf()
+                        for (uid in requests) {
+                            db.collection("users")
+                                .document(uid)
+                                .get()
+                                .addOnSuccessListener {
+                                    it.getString("username")?.also { uname ->
+                                        val bundle = Bundle().apply {
+                                            putString("userID", uid)
+                                            putString("username", uname)
+                                        }
+                                        adapter.addRequest(bundle)
+                                        Log.d("ChatViewModelAdapter", "${adapter.incomingRequests.size}")
+                                        adapter.notifyDataSetChanged()
+                                    }
+                                }
+                        }
+                    }
+                    else -> {
+                        Log.w("ChatViewModel", "Error getting documents.", error)
+                    }
+                }
+            }
+    }
 
 }

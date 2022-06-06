@@ -24,6 +24,7 @@ class ShowAdvertisement : Fragment() {
     private var allowEdit = false
 
     private var advID : String? = null
+    private lateinit var adv : Advertisement
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,15 +46,18 @@ class ShowAdvertisement : Fragment() {
 
         advertisementViewModel.liveAdvList.observe(viewLifecycleOwner) {
             advID?.let { advID ->
-                advertisementViewModel.liveAdvList.value?.find { it.id == advID }?.let { refreshUI(it) }
+                advertisementViewModel.liveAdvList.value?.find { it.id == advID }?.let {
+                    refreshUI(it)
+                }
             }
         }
 
         return root
     }
 
-    private fun refreshUI(adv : Advertisement?) {
-        adv?.apply {
+    private fun refreshUI(incomingAdv : Advertisement) {
+        adv = incomingAdv
+        adv.apply {
             binding.textTitle.setText(title)
             binding.textDescription.setText(description)
             binding.textDuration.setText(duration)
@@ -91,16 +95,17 @@ class ShowAdvertisement : Fragment() {
         if ( allowEdit ) { // This is a user advertisement so we should show the incoming messages
             val messagesAdapter = EditAdvIncomingMessagesAdapter(this, advID ?: "",  userViewModel.userID.value ?: "")
 
-            binding.editAdvIncomingRequestsRecyclerView?.visibility = View.VISIBLE
-            binding.editAdvIncomingRequestsRecyclerView?.apply {
+            binding.incomingRequestsContainer.visibility = View.VISIBLE
+
+            binding.editAdvIncomingRequestsRecyclerView.apply {
                 layoutManager = LinearLayoutManager(this.context)
                 adapter = messagesAdapter
             }
 
             chatViewModel.listenChatsUpdates(advID, messagesAdapter)
+            chatViewModel.listenRequestsUpdates(advID, messagesAdapter)
         } else {
-            binding.editAdvIncomingRequestsHeader?.visibility = View.GONE
-            binding.editAdvIncomingRequestsRecyclerView?.visibility = View.GONE
+            binding.incomingRequestsContainer.visibility = View.GONE
         }
     }
 }

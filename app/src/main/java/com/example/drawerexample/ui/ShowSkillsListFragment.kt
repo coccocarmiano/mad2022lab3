@@ -72,6 +72,7 @@ class ShowSkillsListFragment : Fragment() {
                 }
             })
 
+
         return root
     }
 }

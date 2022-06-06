@@ -25,7 +25,7 @@
             app:showAsAction="withText" />
         <item
             android:id="@+id/nav_adv_accepted"
-            android:icon="@drawable/list"
+            android:icon="@drawable/double_done"
             android:title="@string/drawer_menu_show_adv_accepted"
             app:showAsAction="withText" />
     </group>

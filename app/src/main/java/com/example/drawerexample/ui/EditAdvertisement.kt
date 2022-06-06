@@ -154,36 +154,40 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
             val advDate = fmt.parse(newAdv.date)
             val currentDate = Calendar.getInstance().time
 
+            var dateInvalid = false
             if (currentDate.after(advDate)) {
+                dateInvalid = true
                 Snackbar
                     .make(binding.root, resources.getString(R.string.date_in_the_past), Snackbar.LENGTH_SHORT)
                     .setBackgroundTint(Color.RED)
                     .show()
             }
 
-            when {
-                newAdv.skill.isEmpty() -> {
-                    Snackbar.make(
-                        binding.root,
-                        "You must select a skill in order to proceed",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                    return
-                }
-                advID.isEmpty() -> {
-                    newAdv.apply {
-                        creatorMail = userViewModel.email.value ?: "_"
-                        creatorUID = userViewModel.userID.value ?: "_"
-                        status = "new"
+            if (!dateInvalid) {
+                when {
+                    newAdv.skill.isEmpty() -> {
+                        Snackbar.make(
+                            binding.root,
+                            "You must select a skill in order to proceed",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                        return
                     }
+                    advID.isEmpty() -> {
+                        newAdv.apply {
+                            creatorMail = userViewModel.email.value ?: "_"
+                            creatorUID = userViewModel.userID.value ?: "_"
+                            status = "new"
+                        }
 
-                    advertisementViewModel.createAdvertisement(newAdv)
+                        advertisementViewModel.createAdvertisement(newAdv)
+                    }
+                    else -> advID.also { _ ->
+                        advertisementViewModel.updateAdvertisement(advID, newAdv)
+                    }
                 }
-                else -> advID.also { _ ->
-                    advertisementViewModel.updateAdvertisement(advID, newAdv)
-                }
+                findNavController().popBackStack()
             }
-            findNavController().popBackStack()
         }
     }
 

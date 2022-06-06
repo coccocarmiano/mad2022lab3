@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import com.example.drawerexample.MainActivity
 import com.example.drawerexample.R
@@ -27,6 +28,14 @@ class LoginFragment : Fragment() {
         binding.googleLoginButton.setOnClickListener {
             signInWithGoogle()
         }
+
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    requireActivity().finishAndRemoveTask()
+                }
+            })
 
         return binding.root
     }

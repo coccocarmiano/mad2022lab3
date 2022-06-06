@@ -3,6 +3,7 @@
     <!-- Do not use these -->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="deep_red">#B71C1C</color>
 
     <!-- Use these -->
     <color name="transparent">#00000000</color>

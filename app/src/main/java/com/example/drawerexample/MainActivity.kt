@@ -13,6 +13,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.navOptions
 import com.example.drawerexample.databinding.ActivityMainBinding
 import com.example.drawerexample.viewmodel.UserViewModel
@@ -124,6 +125,16 @@ class MainActivity : AppCompatActivity() {
             .setOnMenuItemClickListener {
                 val bundle = Bundle().apply { putBoolean("allowEdit", false) }
                 bundle.apply { putString("type", "accepted") }
+                navController.navigate(R.id.nav_adv_list, bundle, smoothAnimations)
+                drawerLayout.close()
+                true
+            }
+
+        binding.navView.menu
+            .findItem(R.id.nav_adv_pending)
+            .setOnMenuItemClickListener {
+                val bundle = Bundle().apply { putBoolean("allowEdit", false) }
+                bundle.apply { putString("type", "done") }
                 navController.navigate(R.id.nav_adv_list, bundle, smoothAnimations)
                 drawerLayout.close()
                 true

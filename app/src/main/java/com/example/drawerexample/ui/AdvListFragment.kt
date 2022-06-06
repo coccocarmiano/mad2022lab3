@@ -60,7 +60,7 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         type = arguments?.getString("type") ?: ""
         selectedSkill = arguments?.getString("selectedSkill") ?: "NO_SKILL_SELECTED"
 
-        advAdapter = AdvertisementsAdapter(this, allowEdit = allowEdit)
+        advAdapter = AdvertisementsAdapter(this, allowEdit = allowEdit, type = type)
 
         binding.advListRv.apply {
             adapter = advAdapter
@@ -151,8 +151,11 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.addAdvertisementFAB.visibility = if (allowEdit&&type=="") View.VISIBLE else View.GONE
         val yourSkillsString = getString(R.string.drawer_menu_go_to_user_advertisements)
         if (allowEdit) { activity?.findViewById<Toolbar>(R.id.toolbar)?.title = yourSkillsString }
-        if( type=="accepted"){ activity?.findViewById<Toolbar>(R.id.toolbar)?.title = getString(R.string.drawer_menu_go_to_accepted) }
-        if( type=="pending"){ activity?.findViewById<Toolbar>(R.id.toolbar)?.title = getString(R.string.drawer_menu_go_to_pending) }
+        when (type) {
+            "accepted"  -> activity?.findViewById<Toolbar>(R.id.toolbar)?.title = getString(R.string.drawer_menu_go_to_accepted)
+            "pending"   -> activity?.findViewById<Toolbar>(R.id.toolbar)?.title = getString(R.string.drawer_menu_go_to_pending)
+            "done"      -> activity?.findViewById<Toolbar>(R.id.toolbar)?.title = getString(R.string.drawer_menu_show_adv_done)
+        }
 
         return root
     }
@@ -176,6 +179,7 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 when (type) {
                     "pending"   -> it.status=="pending" && it.requests.contains("$currentUserUID")
                     "accepted"  -> it.status=="accepted" && (it.creatorUID == currentUserUID || it.buyerUID == currentUserUID)
+                    "done"  -> it.status=="done" && (it.creatorUID == currentUserUID || it.buyerUID == currentUserUID)
                     else        -> {
                         when (allowEdit) {
                             true    -> (it.status == "new" || it.status == "pending") && it.creatorUID == currentUserUID

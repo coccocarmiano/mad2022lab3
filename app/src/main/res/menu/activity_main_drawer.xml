@@ -4,42 +4,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_menu"
     tools:showIn="navigation_view">
-    <item
-        android:id="@+id/nav_show_profile"
-        android:icon="@drawable/user"
-        android:title="@string/menu_show_profile"
-        app:showAsAction="withText" />
-    <item
-        android:id="@+id/show_skills_list"
-        android:icon="@drawable/list"
-        android:title="@string/drawer_menu_show_adv_list"
-        app:showAsAction="withText" />
+    <group
+        android:id="@+id/adv_group"
+        android:enabled="true"
+        android:visible="true">
+        <item
+            android:id="@+id/show_skills_list"
+            android:icon="@drawable/list"
+            android:title="@string/drawer_menu_show_adv_list"
+            app:showAsAction="withText" />
+        <item
+            android:id="@+id/nav_adv_myList"
+            android:icon="@drawable/list"
+            android:title="@string/drawer_menu_go_to_user_advertisements"
+            app:showAsAction="withText" />
+        <item
+            android:id="@+id/nav_adv_pending"
+            android:icon="@drawable/pending"
+            android:title="@string/drawer_menu_show_adv_pending"
+            app:showAsAction="withText" />
+        <item
+            android:id="@+id/nav_adv_accepted"
+            android:icon="@drawable/list"
+            android:title="@string/drawer_menu_show_adv_accepted"
+            app:showAsAction="withText" />
+        <item
+            android:id="@+id/nav_adv_done"
+            android:icon="@drawable/done"
+            android:title="@string/drawer_menu_show_adv_done"
+            app:showAsAction="withText" />
+    </group>
 
-    <item
-        android:id="@+id/nav_adv_myList"
-        android:icon="@drawable/list"
-        android:title="@string/drawer_menu_go_to_user_advertisements"
-        app:showAsAction="withText" />
+    <group
+        android:id="@+id/user_group"
+        android:enabled="true"
+        android:visible="true">
+        <item
+            android:id="@+id/nav_show_profile"
+            android:icon="@drawable/user"
+            android:title="@string/menu_show_profile"
+            app:showAsAction="withText" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/user"
+            android:title="@string/drawer_menu_logout"
+            app:showAsAction="withText" />
+        <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/user"
+            android:title="@string/drawer_menu_login"
+            app:showAsAction="withText" />
+    </group>
 
-    <item
-        android:id="@+id/nav_adv_pending"
-        android:icon="@drawable/list"
-        android:title="@string/drawer_menu_show_adv_pending"
-        app:showAsAction="withText" />
-    <item
-        android:id="@+id/nav_adv_accepted"
-        android:icon="@drawable/list"
-        android:title="@string/drawer_menu_show_adv_accepted"
-        app:showAsAction="withText" />
-
-    <item
-        android:id="@+id/nav_logout"
-        android:title="@string/drawer_menu_logout"
-        android:icon="@drawable/user"
-        app:showAsAction="withText"/>
-    <item
-        android:id="@+id/nav_login"
-        android:title="@string/drawer_menu_login"
-        android:icon="@drawable/user"
-        app:showAsAction="withText"/>
 </menu>

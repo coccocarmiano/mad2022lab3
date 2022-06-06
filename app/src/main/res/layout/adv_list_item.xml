@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -24,8 +25,7 @@
             android:layout_height="match_parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/adv_buttons"
-            app:layout_constraintHorizontal_weight="3">
+            app:layout_constraintEnd_toStartOf="@id/adv_buttons">
         <TextView
             android:id="@+id/adv_title"
             android:layout_width="wrap_content"
@@ -68,46 +68,43 @@
             />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+        <LinearLayout
             android:id="@+id/adv_buttons"
-            app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintStart_toEndOf="@id/adv_details"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:paddingVertical="8dp">
-        <ImageButton
-            android:id="@+id/adv_edit"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:srcCompat="@drawable/edit"
-            android:background="@color/transparent"
+            android:gravity="right|center_vertical"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/adv_details"
+            app:layout_constraintTop_toTopOf="parent">
 
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/adv_chat"
-            app:layout_constraintTop_toTopOf="parent"
-
-            android:scaleType="fitCenter"
-            android:maxWidth="32sp"
-
-            android:contentDescription="@string/content_description_show_or_edit_advertisement" />
-        <ImageButton
-                android:id="@+id/adv_chat"
-                android:layout_width="0dp"
+            <ImageButton
+                android:id="@+id/adv_primary_btn"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/letter"
+                android:layout_marginHorizontal="5dp"
                 android:background="@color/transparent"
+                android:contentDescription="@string/content_description_show_or_edit_advertisement"
+                android:minWidth="48dp"
+                android:paddingHorizontal="10dp"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/edit"
+                app:tint="@color/primaryTextColor" />
 
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/adv_edit"
-                app:layout_constraintEnd_toEndOf="parent"
-
-                android:scaleType="fitCenter"
-
-                android:contentDescription="@string/start_chat_button_content_description" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <ImageButton
+                android:id="@+id/adv_secondary_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="5dp"
+                android:background="@color/transparent"
+                android:contentDescription="@string/start_chat_button_content_description"
+                android:minWidth="48dp"
+                android:paddingHorizontal="10dp"
+                app:srcCompat="@drawable/letter"
+                app:tint="@color/primaryTextColor"
+                tools:visibility="visible" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

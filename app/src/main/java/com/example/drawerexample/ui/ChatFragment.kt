@@ -206,7 +206,7 @@ class ChatFragment : Fragment() {
 
 
     private fun showSnackBarError(text : String) {
-        Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG)
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG).show()
     }
 
 }

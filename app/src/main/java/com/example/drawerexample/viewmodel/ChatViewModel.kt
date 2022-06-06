@@ -251,7 +251,7 @@ class ChatViewModel : ViewModel() {
             .get()
             .addOnSuccessListener { doc ->
                 val requests = doc.get("requests") as? MutableList<String> ?: mutableListOf()
-                requests.remove("$userID")
+                requests.remove("${otherUserID.value}")
                 var status = "pending"
                 if (requests.isEmpty())
                     status = "new"
@@ -277,12 +277,13 @@ class ChatViewModel : ViewModel() {
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
-            .collection("requests")
-            .document("$userID")
             .get()
             .addOnSuccessListener {
-                if ( it.exists() ) onTrue()
-                else onFalse()
+                val requests = it.get("requests") as? List<String> ?: listOf()
+                if (requests.contains(userID))
+                    onTrue()
+                else
+                    onFalse()
             }
             .addOnFailureListener {
                 Log.w("ChatViewModel", "Error getting request", it)
@@ -293,14 +294,13 @@ class ChatViewModel : ViewModel() {
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
-            .collection("requests")
-            .document("${otherUserID.value}")
             .get()
             .addOnSuccessListener {
-                when ( it.exists() ) {
-                    true -> onTrue()
-                    false -> onFalse()
-                }
+                val requests = it.get("requests") as? List<String> ?: listOf()
+                if (requests.contains(otherUserID.value))
+                    onTrue()
+                else
+                    onFalse()
             }
             .addOnFailureListener {
                 Log.w("ChatViewModel", "Error getting request", it)
@@ -311,20 +311,18 @@ class ChatViewModel : ViewModel() {
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
-            .collection("requests")
-            .document("accepted")
             .get()
-            .addOnSuccessListener { doc ->
-                when ( doc.getString("acceptedFor") == userID || doc.getString("acceptedFor") == otherUserID.value ) {
-                    true -> onTrue()
-                    false -> onFalse()
-                }
+            .addOnSuccessListener {
+                if (it.getString("status") == "accepted" && it.getString("buyerUID") == otherUserID.value)
+                    onTrue()
+                else
+                    onFalse()
             }
             .addOnFailureListener {
                 Log.w("ChatViewModel", "Error getting request", it)
             }
     }
-
+/*
     fun hasAdvertisementAlreadyBeenAllocated(onTrue : () -> Unit = {}, onFalse : () -> Unit = {}) {
         db
             .collection("advertisements")
@@ -342,6 +340,7 @@ class ChatViewModel : ViewModel() {
                 Log.w("ChatViewModel", "Error getting request", it)
             }
     }
+    */
 
     fun listenChatsUpdates(advID: String?, adapter : EditAdvIncomingMessagesAdapter) {
         if ( advID == null ) return

@@ -215,7 +215,10 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val t
 
         val requestsCount = data[position].requests.size
         if (requestsCount > 0) {
+            holder.requestsCounter.visibility = View.VISIBLE
             holder.requestsCounter.text = requestsCount.toString() + " " + parentFragment.resources.getString(R.string.requests)
+        } else {
+            holder.requestsCounter.visibility = View.GONE
         }
     }
 

@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.drawerexample.Advertisement
+import com.example.drawerexample.R
 import com.example.drawerexample.databinding.EditTimeSlotDetailsFragmentBinding
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.viewmodel.UserViewModel
@@ -147,6 +148,17 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                 duration = binding.textInputEditDuration.text.toString()
                 date = binding.textInputEditDate.text.toString()
                 skill = binding.skillSpinner.selectedItem as? String ?: ""
+            }
+
+            val fmt = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+            val advDate = fmt.parse(newAdv.date)
+            val currentDate = Calendar.getInstance().time
+
+            if (currentDate.after(advDate)) {
+                Snackbar
+                    .make(binding.root, resources.getString(R.string.date_in_the_past), Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(Color.RED)
+                    .show()
             }
 
             when {

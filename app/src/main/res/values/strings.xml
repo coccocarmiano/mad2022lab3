@@ -84,4 +84,8 @@
     <string name="rate_him">Rate Him</string>
     <string name="comment">Optional Comment</string>
     <string name="requests">Requests</string>
+    <string name="request">Request</string>
+
+    <string name="no_edit_if_requests">You cannot edit an Advertisement with pending requests</string>
+    <string name="date_in_the_past">You cannot insert a date in the past</string>
 </resources>

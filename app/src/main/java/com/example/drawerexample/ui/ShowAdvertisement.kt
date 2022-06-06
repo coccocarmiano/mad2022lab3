@@ -14,6 +14,7 @@ import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.databinding.ShowTimeSlotDetailsFragmentBinding
 import com.example.drawerexample.viewmodel.ChatViewModel
 import com.example.drawerexample.viewmodel.UserViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class ShowAdvertisement : Fragment() {
 
@@ -75,12 +76,16 @@ class ShowAdvertisement : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_edit -> {
-                val bundle = Bundle().apply {
-                    putString("advertisementID", advID)
-                    putBoolean("allowEdit", allowEdit)
-                    putBoolean("userIsAdvertiser", true)
+                if (adv.requests.isNotEmpty()) {
+                    showSnackBarMessage(resources.getString(R.string.no_edit_if_requests))
+                } else {
+                    val bundle = Bundle().apply {
+                        putString("advertisementID", advID)
+                        putBoolean("allowEdit", allowEdit)
+                        putBoolean("userIsAdvertiser", true)
+                    }
+                    findNavController().navigate(R.id.action_nav_show_adv_to_nav_edit_adv, bundle)
                 }
-                findNavController().navigate(R.id.action_nav_show_adv_to_nav_edit_adv, bundle)
             }
             else -> {
 
@@ -107,5 +112,9 @@ class ShowAdvertisement : Fragment() {
         } else {
             binding.incomingRequestsContainer.visibility = View.GONE
         }
+    }
+
+    fun showSnackBarMessage(text : String) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG).show()
     }
 }

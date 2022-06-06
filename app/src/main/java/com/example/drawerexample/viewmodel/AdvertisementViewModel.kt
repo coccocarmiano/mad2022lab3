@@ -62,7 +62,12 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
                 "skill" to adv.skill,
                 "emailCreator" to adv.creatorMail,
                 "buyerUID" to adv.buyerUID,
-                "status" to adv.status
+                "status" to adv.status,
+
+                "rateForBuyer" to adv.rateForBuyer,
+                "rateForSeller" to adv.rateForSeller,
+                "commentForBuyer" to adv.commentForBuyer,
+                "commentForSeller" to adv.commentForSeller,
             ) as MutableMap<String, Any>
         ).addOnFailureListener {
             Log.w("Firebase", "Could not upadte advertisement", it)
@@ -83,6 +88,11 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
             adv.buyerUID = getString("buyerUID") ?: "No buyer UID"
             adv.status = getString("status") ?: "No status"
             adv.requests = get("requests") as? List<String> ?: listOf()
+
+            adv.rateForBuyer = get("rateForBuyer") as Float?
+            adv.rateForSeller = get("rateForSeller") as Float?
+            adv.commentForBuyer = getString("commentForBuyer")
+            adv.commentForSeller = getString("commentForSeller")
         }
     }
 

@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
 import com.example.drawerexample.adapter.AdvertisementsAdapter
 import com.example.drawerexample.databinding.FragmentAdvListBinding
@@ -45,7 +46,6 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private var dateFiltered:Boolean = false
 
     private var sortingMode = "Date" // Allowed: "Date", "Title"
-    private var allowEdit : Boolean = false
     private var type: String = ""
 
 
@@ -56,11 +56,10 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         binding = FragmentAdvListBinding.inflate(inflater, container, false)
         val root = binding.root
         binding.advListRvContainer.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
-        allowEdit = arguments?.getBoolean("allowEdit") ?: false
         type = arguments?.getString("type") ?: ""
         selectedSkill = arguments?.getString("selectedSkill") ?: "NO_SKILL_SELECTED"
 
-        advAdapter = AdvertisementsAdapter(this, allowEdit = allowEdit, type = type)
+        advAdapter = AdvertisementsAdapter(this, type = type)
 
         binding.advListRv.apply {
             adapter = advAdapter
@@ -148,13 +147,11 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             refreshUI()
         }
 
-        binding.addAdvertisementFAB.visibility = if (allowEdit&&type=="") View.VISIBLE else View.GONE
-        val yourSkillsString = getString(R.string.drawer_menu_go_to_user_advertisements)
-        if (allowEdit) { activity?.findViewById<Toolbar>(R.id.toolbar)?.title = yourSkillsString }
+        binding.addAdvertisementFAB.visibility = if (type=="my") View.VISIBLE else View.GONE
         when (type) {
             "accepted"  -> activity?.findViewById<Toolbar>(R.id.toolbar)?.title = getString(R.string.drawer_menu_go_to_accepted)
             "pending"   -> activity?.findViewById<Toolbar>(R.id.toolbar)?.title = getString(R.string.drawer_menu_go_to_pending)
-            "done"      -> activity?.findViewById<Toolbar>(R.id.toolbar)?.title = getString(R.string.drawer_menu_show_adv_done)
+            "my"        -> activity?.findViewById<Toolbar>(R.id.toolbar)?.title = getString(R.string.drawer_menu_go_to_user_advertisements)
         }
 
         return root
@@ -179,13 +176,8 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 when (type) {
                     "pending"   -> it.status=="pending" && it.requests.contains("$currentUserUID")
                     "accepted"  -> it.status=="accepted" && (it.creatorUID == currentUserUID || it.buyerUID == currentUserUID)
-                    "done"  -> it.status=="done" && (it.creatorUID == currentUserUID || it.buyerUID == currentUserUID)
-                    else        -> {
-                        when (allowEdit) {
-                            true    -> (it.status == "new" || it.status == "pending") && it.creatorUID == currentUserUID
-                            false   -> (it.status == "new" || it.status == "pending") && it.creatorUID != currentUserUID && it.skill == selectedSkill
-                        }
-                    }
+                    "my"        -> (it.status == "new" || it.status == "pending") && it.creatorUID == currentUserUID
+                    else        -> (it.status == "new" || it.status == "pending") && it.creatorUID != currentUserUID && it.skill == selectedSkill
                 }
             }
             .sortedBy {
@@ -217,6 +209,10 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         dateFilter = stringDate
         refreshUI()
         dateFiltered = true
+    }
+
+    public fun updateAdv(adv:Advertisement) {
+        advViewModel.updateAdvertisement(adv.id, adv)
     }
 
 }

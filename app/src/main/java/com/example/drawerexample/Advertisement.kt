@@ -12,5 +12,10 @@ class Advertisement (
     var creatorUID : String = "",
     var status: String = "",
     var buyerUID: String= "",
-    var requests: List<String> = listOf()
+    var requests: List<String> = listOf(),
+
+    var rateForBuyer: Float? = null,
+    var rateForSeller: Float? = null,
+    var commentForBuyer: String? = null,
+    var commentForSeller: String? = null
 )

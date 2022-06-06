@@ -14,11 +14,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
+import com.example.drawerexample.ui.AdvListFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
-class AdvertisementsAdapter(private val parentFragment : Fragment, private val allowEdit : Boolean = false, private val type : String) : RecyclerView.Adapter<AdvertisementsAdapter.AdvViewHolder>() {
+class AdvertisementsAdapter(private val parentFragment : Fragment, private val type : String = "") : RecyclerView.Adapter<AdvertisementsAdapter.AdvViewHolder>() {
 
     var data = mutableListOf<Advertisement>()
 
@@ -33,7 +38,8 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val a
             view.findViewById<ConstraintLayout>(R.id.adv_card).setOnClickListener {
                 bundle.apply {
                     putString("advertisementID", myAdapter.data[adapterPosition].id)
-                    putBoolean("allowEdit", myAdapter.allowEdit)
+                    var allowEdit = myAdapter.type == "my"
+                    putBoolean("allowEdit", allowEdit)
                 }
                 parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_nav_show_adv, bundle)
             }
@@ -41,101 +47,149 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val a
             val primaryImageButton = view.findViewById<ImageButton>(R.id.adv_primary_btn)
             val secondaryImageButton = view.findViewById<ImageButton>(R.id.adv_secondary_btn)
             when (myAdapter.type) {
-                "done" -> {
+                "my"    -> {
+                    primaryImageButton
+                        .apply { setImageResource(R.drawable.edit) }
+                        .setOnClickListener {
+                            bundle.putString("advertisementID", myAdapter.data[adapterPosition].id)
+                            bundle.putBoolean("allowEdit", true)
+                            parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_nav_edit_adv, bundle)
+                        }
+                    secondaryImageButton.visibility = View.GONE
+                }
+                "accepted"  -> {
                     primaryImageButton
                         .apply { setImageResource(R.drawable.user) }
                         .setOnClickListener {
-                            if(myAdapter.data[adapterPosition].creatorUID==Firebase.auth.currentUser?.uid){
-                                bundle.putString("UID", myAdapter.data[adapterPosition].buyerUID)
-                                //TODO togliere da on click listener
-                                primaryImageButton.visibility= View.GONE
-
-                            }
-                            else {
-                                bundle.putString("UID", myAdapter.data[adapterPosition].creatorUID)
-                                parentFragment.findNavController().navigate(R.id.nav_adv_list_to_show_other_profile, bundle)
-                            }
+                            bundle.putString("UID", myAdapter.data[adapterPosition].creatorUID)
+                            parentFragment.findNavController()
+                                .navigate(R.id.nav_adv_list_to_show_other_profile, bundle)
                         }
+
+                    val fmt = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+                    val advDate = fmt.parse(myAdapter.data[adapterPosition].date)
+                    val advDuration = myAdapter.data[adapterPosition].duration.toLongOrNull()
+                    val currentDate = Calendar.getInstance().time
+
+                    var canRateAdv = false
+                    if (advDate != null && advDuration != null) {
+                        var millisTime = advDate.time
+                        millisTime += 1000 * 60 * advDuration
+                        val advEndingDate = Date(millisTime)
+
+                        if (currentDate.after(advEndingDate)) {
+                            canRateAdv = true
+                        }
+                    }
+
                     secondaryImageButton
-                        .apply { setImageResource(R.drawable.star_rate) }
+                        .apply {
+                            if (canRateAdv)
+                                setImageResource(R.drawable.star_rate)
+                            else
+                                setImageResource(R.drawable.letter)
+                        }
                         .setOnClickListener {
-                            var UID : String = if(myAdapter.data[adapterPosition].creatorUID==Firebase.auth.currentUser?.uid){
-                                myAdapter.data[adapterPosition].buyerUID
+                            if (canRateAdv) {
+                                var roleToRate: String =
+                                    if (myAdapter.data[adapterPosition].creatorUID == Firebase.auth.currentUser?.uid) {
+                                        "buyer"
+                                    } else {
+                                        "seller"
+                                    }
+
+                                val dialogBuilder = AlertDialog.Builder(parentFragment.context)
+                                val dialogView = parentFragment.layoutInflater.inflate(
+                                    R.layout.dialog_box_user_rating,
+                                    null
+                                )
+                                val closeDialogButton =
+                                    dialogView.findViewById<ImageButton>(R.id.close_btn)
+                                val rateButton = dialogView.findViewById<ImageButton>(R.id.rate_btn)
+
+                                dialogBuilder.setView(dialogView)
+                                val dialog = dialogBuilder.create()
+                                dialog.setCanceledOnTouchOutside(true)
+
+                                closeDialogButton.setOnClickListener {
+                                    dialog.cancel()
+                                }
+                                rateButton.setOnClickListener {
+                                    val ratingBar =
+                                        dialogView.findViewById<RatingBar>(R.id.user_rating_bar)
+                                    val commentEditText =
+                                        dialogView.findViewById<TextInputEditText>(R.id.textInputEditComment)
+
+                                    val rating = ratingBar.rating
+                                    val comment = commentEditText.text.toString()
+
+                                    when (roleToRate) {
+                                        "buyer" -> {
+                                            myAdapter.data[adapterPosition].rateForBuyer = rating
+                                            myAdapter.data[adapterPosition].commentForBuyer = comment
+                                        }
+                                        "seller" -> {
+                                            myAdapter.data[adapterPosition].rateForSeller = rating
+                                            myAdapter.data[adapterPosition].commentForSeller = comment
+                                        }
+                                    }
+
+                                    (parentFragment as AdvListFragment).updateAdv(myAdapter.data[adapterPosition])
+                                }
+                                dialog.show()
+                            } else {
+                                bundle.apply {
+                                    if (myAdapter.data[adapterPosition].creatorUID == Firebase.auth.currentUser?.uid) {
+                                        //TODO qua si perde il nome, da sistemare
+                                        putString(
+                                            "otherUserID",
+                                            myAdapter.data[adapterPosition].buyerUID
+                                        )
+                                        putString(
+                                            "advertisementID",
+                                            myAdapter.data[adapterPosition].id
+                                        )
+                                        putString("userID", Firebase.auth.currentUser?.uid)
+                                    } else {
+                                        putString(
+                                            "otherUserID",
+                                            myAdapter.data[adapterPosition].creatorUID
+                                        )
+                                        putString(
+                                            "advertisementID",
+                                            myAdapter.data[adapterPosition].id
+                                        )
+                                        putString("userID", Firebase.auth.currentUser?.uid)
+                                    }
+                                }
+                                parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_chat, bundle)
                             }
-                            else {
-                                myAdapter.data[adapterPosition].creatorUID
-                            }
-
-                            val dialogBuilder = AlertDialog.Builder(parentFragment.context)
-                            val dialogView = parentFragment.layoutInflater.inflate(R.layout.dialog_box_user_rating, null)
-                            val closeDialogButton = dialogView.findViewById<ImageButton>(R.id.close_btn)
-                            val rateButton = dialogView.findViewById<ImageButton>(R.id.rate_btn)
-
-                            dialogBuilder.setView(dialogView)
-                            val dialog = dialogBuilder.create()
-                            dialog.setCanceledOnTouchOutside(true)
-
-                            closeDialogButton.setOnClickListener {
-                                dialog.cancel()
-                            }
-                            rateButton.setOnClickListener {
-                                val ratingBar = dialogView.findViewById<RatingBar>(R.id.user_rating_bar)
-                                val commentEditText = dialogView.findViewById<TextInputEditText>(R.id.textInputEditComment)
-
-                                val rating = ratingBar.rating
-                                val comment = commentEditText.text.toString()
-
-                                // todo save data on db
-                            }
-                            dialog.show()
                         }
                 }
                 else -> {
-                    when (myAdapter.allowEdit) {
-                        true -> { // In this case we should render the little pencil and bring to adv edit
-                            primaryImageButton
-                                .apply { setImageResource(R.drawable.edit) }
-                                .setOnClickListener {
-                                    bundle.putString("advertisementID", myAdapter.data[adapterPosition].id)
-                                    bundle.putBoolean("allowEdit", true)
-                                    parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_nav_edit_adv, bundle)
-                                }
-                            secondaryImageButton.visibility = View.GONE
-
+                    primaryImageButton
+                        .apply { setImageResource(R.drawable.user) }
+                        .setOnClickListener {
+                            bundle.putString("UID", myAdapter.data[adapterPosition].creatorUID)
+                            parentFragment.findNavController().navigate(R.id.nav_adv_list_to_show_other_profile, bundle)
                         }
-                        false -> { // In this case we should render the little user icon and go to show user profile
-                            primaryImageButton
-                                .apply { setImageResource(R.drawable.user) }
-                                .setOnClickListener {
-                                    if(myAdapter.data[adapterPosition].creatorUID==Firebase.auth.currentUser?.uid){
-                                        bundle.putString("UID", myAdapter.data[adapterPosition].buyerUID)
-                                        //TODO togliere da on click listener
-                                        primaryImageButton.visibility= View.GONE
-
-                                    }
-                                    else {
-                                        bundle.putString("UID", myAdapter.data[adapterPosition].creatorUID)
-                                        parentFragment.findNavController().navigate(R.id.nav_adv_list_to_show_other_profile, bundle)
-                                    }
-                                }
-                            secondaryImageButton.setOnClickListener {
-                                bundle.apply {
-                                    if(myAdapter.data[adapterPosition].creatorUID==Firebase.auth.currentUser?.uid) {
-                                        //TODO qua si perde il nome, da sistemare
-                                        putString("otherUserID", myAdapter.data[adapterPosition].buyerUID)
-                                        putString("advertisementID", myAdapter.data[adapterPosition].id)
-                                        putString("userID", Firebase.auth.currentUser?.uid)
-                                    }
-                                    else{
-                                        putString("otherUserID", myAdapter.data[adapterPosition].creatorUID)
-                                        putString("advertisementID", myAdapter.data[adapterPosition].id)
-                                        putString("userID", Firebase.auth.currentUser?.uid)
-                                    }
-                                    parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_chat, bundle)
+                    secondaryImageButton
+                        .apply { setImageResource(R.drawable.letter) }
+                        .setOnClickListener {
+                            bundle.apply {
+                                if (myAdapter.data[adapterPosition].creatorUID == Firebase.auth.currentUser?.uid) {
+                                    //TODO qua si perde il nome, da sistemare
+                                    putString("otherUserID", myAdapter.data[adapterPosition].buyerUID)
+                                    putString("advertisementID", myAdapter.data[adapterPosition].id)
+                                    putString("userID", Firebase.auth.currentUser?.uid)
+                                } else {
+                                    putString("otherUserID", myAdapter.data[adapterPosition].creatorUID)
+                                    putString("advertisementID", myAdapter.data[adapterPosition].id)
+                                    putString("userID", Firebase.auth.currentUser?.uid)
                                 }
                             }
+                            parentFragment.findNavController().navigate(R.id.action_nav_adv_list_to_chat, bundle)
                         }
-                    }
                 }
             }
         }

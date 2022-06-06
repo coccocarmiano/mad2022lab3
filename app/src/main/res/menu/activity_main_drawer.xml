@@ -28,11 +28,6 @@
             android:icon="@drawable/list"
             android:title="@string/drawer_menu_show_adv_accepted"
             app:showAsAction="withText" />
-        <item
-            android:id="@+id/nav_adv_done"
-            android:icon="@drawable/done"
-            android:title="@string/drawer_menu_show_adv_done"
-            app:showAsAction="withText" />
     </group>
 
     <group

@@ -95,17 +95,8 @@ class MainActivity : AppCompatActivity() {
         binding.navView.menu
             .findItem(R.id.nav_adv_myList)
             .setOnMenuItemClickListener {
-                val bundle = Bundle().apply { putBoolean("allowEdit", true) }
+                val bundle = Bundle().apply { putString("type", "my") }
                 navController.navigate(R.id.nav_adv_list, bundle, smoothAnimations)
-                drawerLayout.close()
-                true
-            }
-
-        binding.navView.menu
-            .findItem(R.id.show_skills_list)
-            .setOnMenuItemClickListener {
-                val bundle = Bundle().apply { putBoolean("allowEdit", false) }
-                navController.navigate(R.id.show_skills_list, bundle, smoothAnimations)
                 drawerLayout.close()
                 true
             }
@@ -113,8 +104,7 @@ class MainActivity : AppCompatActivity() {
         binding.navView.menu
             .findItem(R.id.nav_adv_pending)
             .setOnMenuItemClickListener {
-                val bundle = Bundle().apply { putBoolean("allowEdit", false) }
-                bundle.apply { putString("type", "pending") }
+                val bundle = Bundle().apply { putString("type", "pending") }
                 navController.navigate(R.id.nav_adv_list, bundle, smoothAnimations)
                 drawerLayout.close()
                 true
@@ -123,18 +113,7 @@ class MainActivity : AppCompatActivity() {
         binding.navView.menu
             .findItem(R.id.nav_adv_accepted)
             .setOnMenuItemClickListener {
-                val bundle = Bundle().apply { putBoolean("allowEdit", false) }
-                bundle.apply { putString("type", "accepted") }
-                navController.navigate(R.id.nav_adv_list, bundle, smoothAnimations)
-                drawerLayout.close()
-                true
-            }
-
-        binding.navView.menu
-            .findItem(R.id.nav_adv_pending)
-            .setOnMenuItemClickListener {
-                val bundle = Bundle().apply { putBoolean("allowEdit", false) }
-                bundle.apply { putString("type", "done") }
+                val bundle = Bundle().apply { putString("type", "accepted") }
                 navController.navigate(R.id.nav_adv_list, bundle, smoothAnimations)
                 drawerLayout.close()
                 true

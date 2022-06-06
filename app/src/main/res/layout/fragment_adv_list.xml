@@ -36,7 +36,7 @@
                 android:layout_weight="4"
                 android:gravity="center"
                 android:text="@string/genericTextViewPlaceholder"
-                android:textColor="@color/secondaryTextColor"
+                android:textColor="@color/primaryTextColor"
                 android:textSize="24sp" />
 
             <ImageButton
@@ -45,8 +45,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                app:tint="@color/secondaryTextColor"
                 android:contentDescription="@string/content_description_sort_btn"
+                app:tint="@color/primaryTextColor"
                 android:src="@drawable/sort" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -69,7 +69,7 @@
                 android:layout_weight="4"
                 android:gravity="center"
                 android:text="@string/filters"
-                android:textColor="@color/secondaryTextColor"
+                android:textColor="@color/primaryTextColor"
                 android:textSize="24sp" />
 
             <ImageButton
@@ -78,7 +78,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                app:tint="@color/secondaryTextColor"
+                app:tint="@color/primaryTextColor"
                 android:contentDescription="@string/content_description_filter_dropdown_btn"
                 android:src="@drawable/arrow_drop_down" />
         </LinearLayout>

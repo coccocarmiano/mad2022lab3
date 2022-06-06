@@ -7,14 +7,14 @@
 
     <!-- Use these -->
     <color name="transparent">#00000000</color>
-    <color name="primaryColor">#303f9f</color>
-    <color name="primaryLightColor">#666ad1</color>
-    <color name="primaryDarkColor">#001970</color>
-    <color name="secondaryColor">#29b6f6</color>
-    <color name="secondaryLightColor">#73e8ff</color>
-    <color name="secondaryDarkColor">#0086c3</color>
-    <color name="primaryTextColor">#ffffff</color>
-    <color name="secondaryTextColor">#000000</color>
+    <color name="primaryColor">#FFC107</color>
+    <color name="primaryLightColor">#FFECB3</color>
+    <color name="primaryDarkColor">#FFA000</color>
+    <color name="secondaryColor">#FF5722</color>
+    <color name="secondaryLightColor">#FFCCBC</color>
+    <color name="secondaryDarkColor">#E64A19</color>
+    <color name="primaryTextColor">#212121</color>
+    <color name="secondaryTextColor">#757575</color>
 
     <!-- Material Design overrides -->
     <color name="mtrl_btn_text_color_selector">@color/primaryTextColor</color>

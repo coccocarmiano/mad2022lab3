@@ -23,8 +23,9 @@ class ChatFragment : Fragment() {
     private var userID : String? = null
     private var advertisementID : String? = null
     private var otherUserID : String? = null
-    private lateinit var chatMessagesAdapter : ChatMessagesAdapter
+    private val chatMessagesAdapter = ChatMessagesAdapter(this)
     private var userIsAdvertiser = false
+    private var msgCnt = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +37,8 @@ class ChatFragment : Fragment() {
         otherUserID?.also { chatViewModel.setOtherUserID(it)}
         advertisementID?.also { chatViewModel.setAdvertisementID(it) }
 
-        chatMessagesAdapter = ChatMessagesAdapter(this)
         chatMessagesAdapter.messages = chatViewModel.messages.value ?: ArrayList()
+        msgCnt = savedInstanceState?.getInt("msg_count") ?: 0
     }
 
     override fun onCreateView(
@@ -55,6 +56,7 @@ class ChatFragment : Fragment() {
         binding.chatMessagesRecyclerViewContainer.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         binding.chatMessagesRecyclerView.adapter = chatMessagesAdapter
         binding.chatMessagesRecyclerView.layoutManager = LinearLayoutManager(context).apply { reverseLayout = true }
+        binding.chatWriteMessageTextInput.setText("")
 
         return root
     }
@@ -85,6 +87,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun smoothlyAnimateMessages() {
+        if ( chatMessagesAdapter.itemCount == msgCnt ) return;
         val layoutManager = binding.chatMessagesRecyclerView.layoutManager as LinearLayoutManager
         val firstVisible = layoutManager.findFirstVisibleItemPosition()
         val lastVisible = layoutManager.findLastVisibleItemPosition()
@@ -95,19 +98,17 @@ class ChatFragment : Fragment() {
             return
         }
 
-        chatMessagesAdapter.notifyItemRangeChanged(firstVisible, firstVisible)
+        chatMessagesAdapter.notifyItemRangeChanged(firstVisible, lastVisible)
         chatMessagesAdapter.notifyItemInserted(0)
-        layoutManager.scrollToPosition(0)
+        binding.chatMessagesRecyclerView.scrollToPosition(0)
     }
 
     private fun listenForMessages() {
-        chatViewModel.messages.observe(viewLifecycleOwner) {
-            chatMessagesAdapter.messages = it
-            when (chatMessagesAdapter.messages.size) {
-                1 -> chatMessagesAdapter.notifyItemInserted(0)
-                else -> smoothlyAnimateMessages()
+        chatViewModel.messages.observeForever {
+            if ( it.size != chatMessagesAdapter.itemCount ) {
+                chatMessagesAdapter.messages = it
+                smoothlyAnimateMessages()
             }
-
         }
     }
 
@@ -207,6 +208,11 @@ class ChatFragment : Fragment() {
 
     private fun showSnackBarError(text : String) {
         Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG).show()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("msg_count", chatMessagesAdapter.itemCount)
     }
 
 }

@@ -13,7 +13,7 @@ import com.example.drawerexample.viewmodel.UserViewModel
 class ShowProfile : Fragment() {
 
     private val userViewModel by viewModels<UserViewModel>()
-    private lateinit var binding : ShowProfileFragmentBinding
+    private lateinit var binding: ShowProfileFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +42,7 @@ class ShowProfile : Fragment() {
         binding.showProfileSpinLoading?.visibility = View.VISIBLE
         binding.showProfilePfpHeader.root.visibility = View.INVISIBLE
         binding.emailTV.isSelected = true
-        binding.skillsTV.isSelected= true
+        binding.skillsTV.isSelected = true
         binding.showProfilePfpHeader.profileHeaderCameraCard.visibility = View.GONE
 
 
@@ -80,33 +80,7 @@ class ShowProfile : Fragment() {
             binding.showProfilePfpHeader.root.visibility = View.VISIBLE
         }
 
-        userViewModel.numberOfBuy.observe(viewLifecycleOwner) {
-            val quantity = when (userViewModel.numberOfBuy.value) {
-                null -> 0
-                0L -> 1
-                else -> it
-            }.toFloat()
-            val total = when (userViewModel.buyerTotScore.value) {
-                null -> 0L
-                else -> it
-            }.toFloat()
-            val score = total / quantity
-            binding.showProfileStarRatingBuyer.showProfileStarRatingText.text = "%.01f".format(score)
-        }
-
-        userViewModel.numberOfSell.observe(viewLifecycleOwner) {
-            val quantity = when (userViewModel.numberOfSell.value) {
-                null -> 0
-                0L -> 1
-                else -> it
-            }.toFloat()
-            val total = when (userViewModel.sellerTotScore.value) {
-                null -> 0L
-                else -> it
-            }.toFloat()
-            val score = total / quantity
-            binding.showProfileStarRatingSeller.showProfileStarRatingText.text = "%.01f".format(score)
-        }
+        observeRatings()
 
         userViewModel.credits.observe(viewLifecycleOwner) {
             binding.creditsTV.text = (it ?: 0).toString()
@@ -131,5 +105,53 @@ class ShowProfile : Fragment() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun observeRatings() {
+        val update: () -> Unit = {
+            var quantity = 0f
+            var total = 0f
+            var score = 0f
+            quantity = userViewModel.numberOfBuy.value.let { number ->
+                when (number) {
+                    null -> 1f
+                    0L -> 1f
+                    else -> number.toFloat()
+                }
+            }
+            total = userViewModel.buyerTotScore.value.let { number ->
+                when (number) {
+                    null -> 0f
+                    else -> number.toFloat()
+                }
+            }
+            score = total / quantity
+            binding.showProfileStarRatingBuyer.showProfileStarRatingText.text =
+                "%.01f".format(score)
+
+
+            quantity = userViewModel.numberOfSell.value.let { number ->
+                when (number) {
+                    null -> 1f
+                    0L -> 1f
+                    else -> number.toFloat()
+                }
+            }
+            total = userViewModel.sellerTotScore.value.let { number ->
+                when (number) {
+                    null -> 0f
+                    else -> number.toFloat()
+                }
+            }
+            score = total / quantity
+            binding.showProfileStarRatingSeller.showProfileStarRatingText.text =
+                "%.01f".format(score)
+        }
+        userViewModel.numberOfBuy.observe(viewLifecycleOwner) { update() }
+        userViewModel.numberOfSell.observe(viewLifecycleOwner) { update() }
+        userViewModel.sellerTotScore.observe(viewLifecycleOwner) { update() }
+        userViewModel.buyerTotScore.observe(viewLifecycleOwner) { update() }
+    }
+
+
 
 }

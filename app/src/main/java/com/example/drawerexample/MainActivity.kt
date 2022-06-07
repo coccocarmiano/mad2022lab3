@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity() {
                             else -> null
                         }
 
-                        bmp?.also { userViewModel.uploadPhoto(it) }
+                        bmp?.also { userViewModel.uploadPhoto(it) }.also { userViewModel.propic.value = it}
                     }
                     RESULT_CANCELED -> {
                         Snackbar

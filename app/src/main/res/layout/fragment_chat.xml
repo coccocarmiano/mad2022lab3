@@ -144,6 +144,7 @@
             app:boxCornerRadiusTopEnd="10dp"
             app:boxCornerRadiusTopStart="10dp"
             app:boxCornerRadiusBottomEnd="10dp"
+            app:boxBackgroundColor="@color/secondaryLightColor"
             app:layout_constraintBottom_toBottomOf="parent"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             app:hintEnabled="false">
@@ -153,12 +154,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:elegantTextHeight="false"
-                android:text="@string/chat_input_text_placeholder"
-                android:paddingStart="10dp"
-                android:paddingEnd="8dp"
-                android:maxLines="1"
+                android:fadingEdge="horizontal"
+                android:hint="@string/chat_input_text_placeholder"
+                android:textColor="@color/primaryTextColor"
                 android:inputType="text"
-                android:fadingEdge="horizontal" />
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="8dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.cardview.widget.CardView

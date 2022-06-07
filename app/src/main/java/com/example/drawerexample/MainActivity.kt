@@ -70,6 +70,8 @@ class MainActivity : AppCompatActivity() {
                 binding.navView.menu.findItem(R.id.nav_adv_accepted).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_adv_pending).isVisible = false
                 binding.navView.menu.findItem(R.id.nav_login).isVisible = true
+                navController.navigate(R.id.loginFragment, null, smoothAnimations)
+                drawerLayout.close()
             } else {
                 binding.navView.menu.findItem(R.id.nav_logout).isVisible = true
                 binding.navView.menu.findItem(R.id.nav_adv_myList).isVisible = true

@@ -21,6 +21,7 @@ import com.example.drawerexample.adapter.AdvertisementsAdapter
 import com.example.drawerexample.databinding.FragmentAdvListBinding
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.viewmodel.UserViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -211,8 +212,12 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         dateFiltered = true
     }
 
-    public fun updateAdv(adv:Advertisement) {
+    fun updateAdv(adv:Advertisement) {
         advViewModel.updateAdvertisement(adv.id, adv)
+    }
+
+    fun showSnackBarMessage(text : String) {
+        Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG).show()
     }
 
 }

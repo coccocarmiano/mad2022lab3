@@ -354,20 +354,25 @@ class ChatViewModel : ViewModel() {
                     true -> {
                         // First we need to get all the users who sent a message into the chat
                         allChats?.data?.keys?.forEach { userID ->
-                            db.collection("users")
-                                .document(userID)
-                                .get()
-                                .addOnSuccessListener {
-                                    it.getString("username")?.also { uname ->
-                                        val bundle = Bundle().apply {
-                                            putString("userID", userID)
-                                            putString("username", uname)
+                            if (userID != this.userID) {
+                                db.collection("users")
+                                    .document(userID)
+                                    .get()
+                                    .addOnSuccessListener {
+                                        it.getString("username")?.also { uname ->
+                                            val bundle = Bundle().apply {
+                                                putString("userID", userID)
+                                                putString("username", uname)
+                                            }
+                                            adapter.addMessage(bundle)
+                                            Log.d(
+                                                "ChatViewModelAdapter",
+                                                "${adapter.incomingMessages.size}"
+                                            )
+                                            adapter.notifyDataSetChanged()
                                         }
-                                        adapter.addMessage(bundle)
-                                        Log.d("ChatViewModelAdapter", "${adapter.incomingMessages.size}")
-                                        adapter.notifyDataSetChanged()
                                     }
-                                }
+                            }
                         }
                     }
                     else -> {

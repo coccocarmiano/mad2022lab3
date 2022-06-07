@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.drawerexample.Advertisement
+import com.example.drawerexample.R
 import com.example.drawerexample.databinding.EditTimeSlotDetailsFragmentBinding
 import com.example.drawerexample.viewmodel.AdvertisementViewModel
 import com.example.drawerexample.viewmodel.UserViewModel
@@ -149,29 +150,44 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
                 skill = binding.skillSpinner.selectedItem as? String ?: ""
             }
 
-            when {
-                newAdv.skill.isEmpty() -> {
-                    Snackbar.make(
-                        binding.root,
-                        "You must select a skill in order to proceed",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
-                    return
-                }
-                advID.isEmpty() -> {
-                    newAdv.apply {
-                        creatorMail = userViewModel.email.value ?: "_"
-                        creatorUID = userViewModel.userID.value ?: "_"
-                        status = "new"
-                    }
+            val fmt = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+            val advDate = fmt.parse(newAdv.date)
+            val currentDate = Calendar.getInstance().time
 
-                    advertisementViewModel.createAdvertisement(newAdv)
-                }
-                else -> advID.also { _ ->
-                    advertisementViewModel.updateAdvertisement(advID, newAdv)
-                }
+            var dateInvalid = false
+            if (currentDate.after(advDate)) {
+                dateInvalid = true
+                Snackbar
+                    .make(binding.root, resources.getString(R.string.date_in_the_past), Snackbar.LENGTH_SHORT)
+                    .setBackgroundTint(Color.RED)
+                    .show()
             }
-            findNavController().popBackStack()
+
+            if (!dateInvalid) {
+                when {
+                    newAdv.skill.isEmpty() -> {
+                        Snackbar.make(
+                            binding.root,
+                            "You must select a skill in order to proceed",
+                            Snackbar.LENGTH_SHORT
+                        ).show()
+                        return
+                    }
+                    advID.isEmpty() -> {
+                        newAdv.apply {
+                            creatorMail = userViewModel.email.value ?: "_"
+                            creatorUID = userViewModel.userID.value ?: "_"
+                            status = "new"
+                        }
+
+                        advertisementViewModel.createAdvertisement(newAdv)
+                    }
+                    else -> advID.also { _ ->
+                        advertisementViewModel.updateAdvertisement(advID, newAdv)
+                    }
+                }
+                findNavController().popBackStack()
+            }
         }
     }
 

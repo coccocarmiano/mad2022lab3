@@ -15,9 +15,8 @@
     <string name="menu_show_adv">User Advertisement</string>
     <string name="menu_edit_adv">Edit Advertisement</string>
     <string name="drawer_menu_show_adv_list">Advertisement List</string>
-    <string name="drawer_menu_show_adv_pending">Advertisement Pending</string>
-    <string name="drawer_menu_show_adv_accepted">Advertisement Accepted</string>
-    <string name="drawer_menu_show_adv_done">Advertisement Done</string>
+    <string name="drawer_menu_show_adv_pending">Pending Requests</string>
+    <string name="drawer_menu_show_adv_accepted">Accepted Requests</string>
 
 
     <string name="location_placeholder_text">Location</string>
@@ -78,10 +77,14 @@
     <string name="edit_adv_chat_card_text">Chat with %1$s</string>
     <string name="time_slot_accepted">The advertiser has accepted your request</string>
     <string name="time_slot_accepted_for_advertiser">You accepted this request</string>
-    <string name="chat_input_text_placeholder">Quindi ci vediamo alle 19?</string>
+    <string name="chat_input_text_placeholder">Message</string>
 
     <string name="rating">Rating</string>
     <string name="rate_him">Rate Him</string>
     <string name="comment">Optional Comment</string>
     <string name="requests">Requests</string>
+    <string name="request">Request</string>
+
+    <string name="no_edit_if_requests">You cannot edit an Advertisement with pending requests</string>
+    <string name="date_in_the_past">You cannot insert a date in the past</string>
 </resources>

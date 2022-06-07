@@ -89,8 +89,8 @@ class AdvertisementViewModel(val app : Application): AndroidViewModel(app) {
             adv.status = getString("status") ?: "No status"
             adv.requests = get("requests") as? List<String> ?: listOf()
 
-            adv.rateForBuyer = get("rateForBuyer") as Float?
-            adv.rateForSeller = get("rateForSeller") as Float?
+            adv.rateForBuyer = getDouble("rateForBuyer")?.toFloat()
+            adv.rateForSeller = getDouble("rateForSeller")?.toFloat()
             adv.commentForBuyer = getString("commentForBuyer")
             adv.commentForSeller = getString("commentForSeller")
         }

@@ -171,7 +171,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="-12sp"
                 android:text="@string/skills_placeholder"
-                android:textColor="@color/secondaryTextColor"
                 android:textSize="16sp" />
 
             <TextView

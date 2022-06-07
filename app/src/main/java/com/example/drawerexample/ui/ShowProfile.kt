@@ -24,6 +24,7 @@ class ShowProfile : Fragment() {
         val root: View = binding.root
         val userIDToDisplay = arguments?.getString("UID")
         val allowEdit = arguments?.getBoolean("allowEdit") ?: true
+        userViewModel.updateProfilePicture()
         userIDToDisplay?.also { userViewModel.loadUser(it) }
         startListeningForChanges()
 
@@ -39,9 +40,12 @@ class ShowProfile : Fragment() {
 
         // Spinning Circle
         binding.showProfileSpinLoading.visibility = View.VISIBLE
-        binding.profileImageShowProfile.visibility = View.GONE
+        binding.showProfilePfpHeader?.root?.visibility = View.INVISIBLE
         binding.emailTV.isSelected = true
         binding.skillsTV.isSelected= true
+
+
+
 
         return root
     }
@@ -71,25 +75,10 @@ class ShowProfile : Fragment() {
         }
 
         userViewModel.propic.observe(viewLifecycleOwner) {
-            binding.profileImageShowProfile.setImageBitmap(it)
+            binding.showProfilePfpHeader?.profileHeaderSource?.setImageBitmap(it)
             binding.showProfileSpinLoading.visibility = View.GONE
-            binding.profileImageShowProfile.visibility = View.VISIBLE
-        }
-
-        userViewModel.buyerTotScore.observe(viewLifecycleOwner){
-            if(userViewModel.numberOfBuy.value!!>=1){
-                val rating: Double = it.toDouble()/userViewModel.numberOfBuy.value!!.toDouble()
-                var sentence : String = "Your buyer rating is: "+ rating
-                binding.ratingBuyerTV.text= sentence
-            }
-        }
-
-        userViewModel.sellerTotScore.observe(viewLifecycleOwner){
-            if(userViewModel.numberOfSell.value!!>=1) {
-                val rating: Double = it.toDouble() / userViewModel.numberOfSell.value!!.toDouble()
-                var sentence: String = "Your seller rating is: " + rating
-                binding.ratingSellerTV.text = sentence
-            }
+            binding.profileImageShowProfile?.visibility = View.VISIBLE
+            binding.showProfilePfpHeader?.root?.visibility = View.VISIBLE
         }
 
     }

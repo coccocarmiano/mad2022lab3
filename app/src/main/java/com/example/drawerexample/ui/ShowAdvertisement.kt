@@ -1,5 +1,6 @@
 package com.example.drawerexample.ui
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -77,7 +78,7 @@ class ShowAdvertisement : Fragment() {
         when (item.itemId) {
             R.id.menu_edit -> {
                 if (adv.requests.isNotEmpty()) {
-                    showSnackBarMessage(resources.getString(R.string.no_edit_if_requests))
+                    showSnackBarMessage(resources.getString(R.string.no_edit_if_requests), err= true)
                 } else {
                     val bundle = Bundle().apply {
                         putString("advertisementID", advID)
@@ -114,7 +115,11 @@ class ShowAdvertisement : Fragment() {
         }
     }
 
-    fun showSnackBarMessage(text : String) {
-        Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG).show()
+    fun showSnackBarMessage(text : String, err:Boolean = false) {
+        val msg = Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG)
+        if (err)
+            msg.setBackgroundTint(Color.RED)
+
+        msg.show()
     }
 }

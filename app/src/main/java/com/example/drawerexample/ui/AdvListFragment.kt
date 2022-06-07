@@ -3,6 +3,7 @@ package com.example.drawerexample.ui
 import android.animation.LayoutTransition
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -181,6 +182,13 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                     else        -> (it.status == "new" || it.status == "pending") && it.creatorUID != currentUserUID && it.skill == selectedSkill
                 }
             }
+            .filter {
+                when (type) {
+                    "accepted"  -> true
+                    "my"        -> true
+                    else        -> !isAdvExpired(it)
+                }
+            }
             .sortedBy {
                 when (sortingMode) {
                     "Date" -> it.date
@@ -202,6 +210,14 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         }
     }
 
+    private fun isAdvExpired(adv:Advertisement): Boolean {
+        val fmt = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        val advDate = fmt.parse(adv.date)
+        val currentDate = Calendar.getInstance().time
+
+        return currentDate.after(advDate)
+    }
+
     override fun onDateSet(p0: DatePicker?, p1: Int, p2: Int, p3: Int) {
         // TODO: Add resource for this
         val stringDate = dateToString(p3, p2, p1)
@@ -216,8 +232,12 @@ class AdvListFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         advViewModel.updateAdvertisement(adv.id, adv)
     }
 
-    fun showSnackBarMessage(text : String) {
-        Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG).show()
+    fun showSnackBarMessage(text : String, err:Boolean = false) {
+        val msg = Snackbar.make(binding.root, text, Snackbar.LENGTH_LONG)
+        if (err)
+            msg.setBackgroundTint(Color.RED)
+
+        msg.show()
     }
 
 }

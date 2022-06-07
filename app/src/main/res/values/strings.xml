@@ -94,4 +94,6 @@
     <string name="skills_placeholder">Skills</string>
 
     <string name="na_rating">-</string>
+    <string name="rate_your">Rate your</string>
+    <string name="rating_invalid">Set a rating to proceed</string>
 </resources>

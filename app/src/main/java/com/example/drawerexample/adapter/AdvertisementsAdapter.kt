@@ -1,6 +1,7 @@
 package com.example.drawerexample.adapter
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.drawerexample.Advertisement
 import com.example.drawerexample.R
 import com.example.drawerexample.ui.AdvListFragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -56,7 +58,7 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val t
                         .apply { setImageResource(R.drawable.edit) }
                         .setOnClickListener {
                             if (myAdapter.data[adapterPosition].requests.isNotEmpty()) {
-                                (parentFragment as AdvListFragment).showSnackBarMessage(parentFragment.resources.getString(R.string.no_edit_if_requests))
+                                (parentFragment as AdvListFragment).showSnackBarMessage(parentFragment.resources.getString(R.string.no_edit_if_requests), err = true)
                             } else {
                                 val bundle = Bundle()
                                 bundle.putString(
@@ -205,7 +207,9 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val t
                         val dialog = dialogBuilder.create()
                         dialog.setCanceledOnTouchOutside(true)
 
-                        ratingBoxHeader.visibility = View.GONE
+                        //ratingBoxHeader.visibility = View.GONE
+                        val roleToRateCapital = roleToRate.replaceFirst(roleToRate.toCharArray()[0], roleToRate.toCharArray()[0].uppercaseChar())
+                        ratingBoxHeader.text = parentFragment.resources.getString(R.string.rate_your) + " " + roleToRateCapital
 
                         closeDialogButton.setOnClickListener {
                             dialog.cancel()
@@ -219,18 +223,25 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val t
                             val rating = ratingBar.rating
                             val comment = commentEditText.text.toString()
 
-                            when (roleToRate) {
-                                "buyer" -> {
-                                    data[position].rateForBuyer = rating
-                                    data[position].commentForBuyer = comment
+                            if (rating == 0f) {
+                                Snackbar.make(dialogView, parentFragment.resources.getString(R.string.rating_invalid), Snackbar.LENGTH_LONG)
+                                    .setBackgroundTint(Color.RED)
+                                    .show()
+                            } else {
+                                when (roleToRate) {
+                                    "buyer" -> {
+                                        data[position].rateForBuyer = rating
+                                        data[position].commentForBuyer = comment
+                                    }
+                                    "seller" -> {
+                                        data[position].rateForSeller = rating
+                                        data[position].commentForSeller = comment
+                                    }
                                 }
-                                "seller" -> {
-                                    data[position].rateForSeller = rating
-                                    data[position].commentForSeller = comment
-                                }
-                            }
 
-                            (parentFragment as AdvListFragment).updateAdv(data[position])
+                                (parentFragment as AdvListFragment).updateAdv(data[position])
+                                dialog.cancel()
+                            }
                         }
                         dialog.show()
                     } else {

@@ -108,48 +108,34 @@ class ShowProfile : Fragment() {
 
     private fun observeRatings() {
         val update: () -> Unit = {
-            var quantity = 0f
-            var total = 0f
-            var score = 0f
-            quantity = userViewModel.numberOfBuy.value.let { number ->
-                when (number) {
-                    null -> 1f
-                    0L -> 1f
-                    else -> number.toFloat()
+
+            userViewModel.scoresAsBuyer.value.let {
+                if (!it.isNullOrEmpty()) {
+                    val count = it.size
+                    val sum = it.sum()
+                    val score = sum / count
+                    binding.showProfileStarRatingBuyer.showProfileStarRatingText.text = "%.01f".format(score)
+                } else {
+                    binding.showProfileStarRatingBuyer.showProfileStarRatingText.text = resources.getString(R.string.na_rating)
                 }
-            }
-            total = userViewModel.buyerTotScore.value.let { number ->
-                when (number) {
-                    null -> 0f
-                    else -> number.toFloat()
-                }
-            }
-            score = total / quantity
-            binding.showProfileStarRatingBuyer.showProfileStarRatingText.text =
-                "%.01f".format(score)
 
 
-            quantity = userViewModel.numberOfSell.value.let { number ->
-                when (number) {
-                    null -> 1f
-                    0L -> 1f
-                    else -> number.toFloat()
-                }
             }
-            total = userViewModel.sellerTotScore.value.let { number ->
-                when (number) {
-                    null -> 0f
-                    else -> number.toFloat()
+
+            userViewModel.scoresAsSeller.value.let {
+                if (!it.isNullOrEmpty()) {
+                    val count = it.size
+                    val sum = it.sum()
+                    val score = sum / count
+                    binding.showProfileStarRatingSeller.showProfileStarRatingText.text = "%.01f".format(score)
+                } else {
+                    binding.showProfileStarRatingSeller.showProfileStarRatingText.text = resources.getString(R.string.na_rating)
                 }
+
             }
-            score = total / quantity
-            binding.showProfileStarRatingSeller.showProfileStarRatingText.text =
-                "%.01f".format(score)
         }
-        userViewModel.numberOfBuy.observe(viewLifecycleOwner) { update() }
-        userViewModel.numberOfSell.observe(viewLifecycleOwner) { update() }
-        userViewModel.sellerTotScore.observe(viewLifecycleOwner) { update() }
-        userViewModel.buyerTotScore.observe(viewLifecycleOwner) { update() }
+        userViewModel.scoresAsBuyer.observe(viewLifecycleOwner) { update() }
+        userViewModel.scoresAsSeller.observe(viewLifecycleOwner) { update() }
     }
 
 

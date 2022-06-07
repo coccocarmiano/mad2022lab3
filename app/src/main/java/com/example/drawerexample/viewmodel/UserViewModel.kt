@@ -31,10 +31,10 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
     val skills   = MutableLiveData<List<String>>()
     val propic   = MutableLiveData<Bitmap>()
     val credits  = MutableLiveData<Long>()
-    val buyerTotScore = MutableLiveData<Long>()
-    val numberOfBuy = MutableLiveData<Long>()
-    val sellerTotScore = MutableLiveData<Long>()
-    val numberOfSell = MutableLiveData<Long>()
+
+    val scoresAsBuyer = MutableLiveData<List<Float>>()
+    val scoresAsSeller = MutableLiveData<List<Float>>()
+
     private val nullUID = "null"
 
     private val db = FirebaseFirestore.getInstance()
@@ -43,13 +43,34 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
     init {
         userDocumentReference.get().addOnFailureListener { createDefaultUserDocument() }
         userID.observeForever { uid ->
-            uid?.also {
-                userDocumentReference = db.collection("users").document(it)
+            uid?.also { id ->
+                userDocumentReference = db.collection("users").document(id)
                 userDocumentReference.addSnapshotListener { doc, err ->
                     when {
                         err != null -> Log.w("UserViewModel", "Listen failed.", err)
                         doc != null -> {
                             updateUserFromDocument(doc)
+                            db
+                                .collection("advertisements")
+                                .get()
+                                .addOnSuccessListener { collection ->
+                                    var scoresSeller = mutableListOf<Float>()
+                                    var scoresBuyer = mutableListOf<Float>()
+                                    collection.forEach {
+                                        if (it.getString("creatorID") == doc.id) {
+                                            val rateForSeller = it.getDouble("rateForSeller")?.toFloat()
+                                            if (rateForSeller != null)
+                                                scoresSeller.add(rateForSeller)
+                                        }
+                                        if (it.getString("buyerUID") == doc.id) {
+                                            val rateForBuyer = it.getDouble("rateForBuyer")?.toFloat()
+                                            if (rateForBuyer != null)
+                                                scoresBuyer.add(rateForBuyer)
+                                        }
+                                    }
+                                    scoresAsBuyer.value = scoresBuyer.toList()
+                                    scoresAsSeller.value = scoresSeller.toList()
+                                }
                         }
                     }
                 }
@@ -71,11 +92,7 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
             "email" to ( currentUser?.email ?: app.getString(R.string.email_placeholder_text) ),
             "location" to app.getString(R.string.location_placeholder_text),
             "skills" to listOf<String>(),
-            "credits" to 5,
-            "buyerTotScore" to 0,
-            "sellerTotScore" to 0,
-            "numberOfBuy" to 0,
-            "numberOfSell" to 0
+            "credits" to 5
 
         )
 
@@ -97,10 +114,6 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
             email.value = getString("email")
             skills.value = get("skills") as? List<String> ?: listOf()
             credits.value = getLong("credits")
-            numberOfBuy.value = getLong("numberOfBuy")
-            numberOfSell.value = getLong("numberOfSell")
-            buyerTotScore.value = getLong("buyerTotScore")
-            sellerTotScore.value = getLong("sellerTotScore")
             updateProfilePicture()
         }
     }
@@ -111,11 +124,7 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
             "username" to (username.value ?: app.getString(R.string.username_placeholder_text)),
             "email" to (email.value ?: Firebase.auth.currentUser?.email ?: app.getString(R.string.email_placeholder_text)),
             "location" to (location.value ?: app.getString(R.string.location_placeholder_text)),
-            "skills" to (skills.value ?: listOf()),
-            "buyerTotScore" to (buyerTotScore.value?:0),
-            "sellerTotScore" to (sellerTotScore.value?:0),
-            "numberOfSell" to (numberOfSell.value?:0),
-            "numberOfBuy" to (numberOfBuy.value?:0)
+            "skills" to (skills.value ?: listOf())
         )
         userDocumentReference.update(userHashMap).addOnFailureListener {
             userDocumentReference.set(userHashMap)
@@ -187,7 +196,7 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
                 .also { viewModelScope.launch { propic.value = it } }
         }
     }
-
+/*
     fun updateBuyerRating(ratingToAdd: Long){
         numberOfBuy.value = numberOfBuy.value!! + 1
         buyerTotScore.value = buyerTotScore.value!! + ratingToAdd
@@ -199,5 +208,7 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
         sellerTotScore.value = sellerTotScore.value!! + ratingToAdd
         applyChangesToFirebase()
     }
+
+ */
 }
 

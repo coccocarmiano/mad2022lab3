@@ -92,4 +92,6 @@
     <string name="show_profile_seller_rating">Seller Rating</string>
     <string name="credits_placeholder">5</string>
     <string name="skills_placeholder">Skills</string>
+
+    <string name="na_rating">-</string>
 </resources>

@@ -15,7 +15,9 @@
         android:animateLayoutChanges="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/box"
+        android:backgroundTint="@color/primaryDarkColor">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/sort_header"
@@ -89,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
             android:visibility="gone"
+            android:layout_marginHorizontal="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -107,11 +110,13 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:boxBackgroundColor="@color/primaryLightColor"
                 app:startIconDrawable="@drawable/search">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditTitle"
                     android:layout_width="match_parent"
+                    android:textColor="@color/primaryTextColor"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,12 +132,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutTitle"
+                app:boxBackgroundColor="@color/primaryLightColor"
                 app:startIconDrawable="@drawable/location">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditLocation"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primaryTextColor"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -148,12 +155,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayoutLocation"
+                app:boxBackgroundColor="@color/primaryLightColor"
                 app:startIconDrawable="@drawable/calendar">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/textInputEditDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/primaryTextColor"
                     android:focusable="false" />
             </com.google.android.material.textfield.TextInputLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="64sp"
-    android:layout_height="64sp"
+    android:layout_width="200sp"
+    android:layout_height="200sp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
         <ImageView
             android:layout_width="match_parent"
@@ -13,12 +13,18 @@
 
         <TextView
             android:id="@+id/show_profile_star_rating_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent="0.4"
+            app:layout_constraintHeight_percent="0.4"
             android:text="5.0"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="22sp"
+            android:autoSizeTextType="uniform"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             />
 </androidx.constraintlayout.widget.ConstraintLayout>

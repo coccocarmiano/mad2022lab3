@@ -81,7 +81,35 @@ class ShowProfile : Fragment() {
         }
 
         userViewModel.numberOfBuy.observe(viewLifecycleOwner) {
-            val score = userViewModel.buyerTotScore.value?.div(userViewModel.numberOfBuy.value ?: 1)
+            val quantity = when (userViewModel.numberOfBuy.value) {
+                null -> 0
+                0L -> 1
+                else -> it
+            }.toFloat()
+            val total = when (userViewModel.buyerTotScore.value) {
+                null -> 0L
+                else -> it
+            }.toFloat()
+            val score = total / quantity
+            binding.showProfileStarRatingBuyer.showProfileStarRatingText.text = "%.01f".format(score)
+        }
+
+        userViewModel.numberOfSell.observe(viewLifecycleOwner) {
+            val quantity = when (userViewModel.numberOfSell.value) {
+                null -> 0
+                0L -> 1
+                else -> it
+            }.toFloat()
+            val total = when (userViewModel.sellerTotScore.value) {
+                null -> 0L
+                else -> it
+            }.toFloat()
+            val score = total / quantity
+            binding.showProfileStarRatingSeller.showProfileStarRatingText.text = "%.01f".format(score)
+        }
+
+        userViewModel.credits.observe(viewLifecycleOwner) {
+            binding.creditsTV.text = (it ?: 0).toString()
         }
     }
 

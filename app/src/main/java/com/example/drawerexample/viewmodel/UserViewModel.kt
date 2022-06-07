@@ -129,11 +129,11 @@ class UserViewModel(val app : Application) : AndroidViewModel(app) {
 
     private fun compressBitmap(bmp: Bitmap): ByteArray{
         val baos = ByteArrayOutputStream()
-        bmp.compress(Bitmap.CompressFormat.PNG, 70, baos)
+        bmp.compress(Bitmap.CompressFormat.PNG, 85, baos)
         return baos.toByteArray()
     }
 
-    private fun updateProfilePicture() {
+    fun updateProfilePicture() {
         // First we should try getting it from the Firebase Storage
         val storageRef = Firebase.storage.reference
         storageRef.child("users_profile_pictures/${userID.value}").downloadUrl

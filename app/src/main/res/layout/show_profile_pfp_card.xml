@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
-
+    android:layout_height="192sp"
+    android:layout_width="192sp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="500dp"
+        android:backgroundTint="@color/secondaryColor"
+        app:strokeColor="@color/primaryDarkColor"
+        app:strokeWidth="6dp"
+       >
+       <ImageView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:src="@drawable/default_pfp"
+           android:id="@+id/profile_header_source"
+           android:scaleType="fitXY"
+           />
+    </com.google.android.material.card.MaterialCardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="64sp"
+        android:layout_height="64sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardBackgroundColor="@color/primaryDarkColor"
+        app:cardCornerRadius="500dp"
+        android:layout_marginEnd="6sp"
+        android:layout_marginBottom="6sp"
+        android:id="@+id/profile_header_camera_card"
+        >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/camera_svg_icon"
+        android:scaleType="fitXY"
+        android:layout_margin="12sp"
+        android:id="@+id/profile_header_camera_source"
+        android:contentDescription="" />
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

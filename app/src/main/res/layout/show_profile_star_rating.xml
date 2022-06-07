@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    android:layout_width="64sp"
+    android:layout_height="64sp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/rating_star_icon"
+            android:id="@+id/show_profile_star_rating_source"
+            android:scaleType="fitXY"
+            />
 
+        <TextView
+            android:id="@+id/show_profile_star_rating_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="5.0"
+            android:textAlignment="center"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="22sp"
+            />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,69 +4,130 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingStart="18dp"
+    android:paddingEnd="18dp"
+    android:paddingTop="32dp"
+    >
+
+    <include
+        layout="@layout/show_profile_pfp_card"
+        android:id="@+id/show_profile_pfp_header"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/showProfileSpinLoading"
+        style="@style/SpinKitView.Small.ThreeBounce"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="24dp"
+        android:contentDescription="@string/content_description_profile_picture"
+        app:layout_constraintEnd_toStartOf="@id/ratingBuyerTV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/show_profile_linear_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:text="Buyer Rating"
+        android:id="@+id/ratingBuyerTV"
+        android:textColor="@color/primaryTextColor"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/show_profile_pfp_header"
+        />
+
+    <include
+        android:id="@+id/show_profile_star_rating_buyer"
+        layout="@layout/show_profile_star_rating"
+        android:layout_width="64sp"
+        android:layout_height="64sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBuyerTV"
+        app:layout_constraintStart_toEndOf="@id/show_profile_pfp_header"
+        />
+
+    <TextView
+        android:id="@+id/ratingSellerTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="24sp"
+        android:text="Seller Rating"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@id/show_profile_pfp_header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/show_profile_star_rating_buyer"
+        />
+
+    <include
+        layout="@layout/show_profile_star_rating"
+        android:layout_width="64sp"
+        android:layout_height="64sp"
+        app:layout_constraintTop_toBottomOf="@id/ratingSellerTV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/show_profile_pfp_header"
+        />
 
     <LinearLayout
+        android:id="@+id/show_profile_linear_layout"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="0dp"
         android:orientation="vertical"
+        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/profileImageShowProfile"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="2"
-            android:src="@drawable/default_pfp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/default_pfp"
-            android:contentDescription="@string/content_description_profile_picture" />
-
-        <com.github.ybq.android.spinkit.SpinKitView
-            android:padding="60dp"
-            style="@style/SpinKitView.Small.ThreeBounce"
-            android:id="@+id/showProfileSpinLoading"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="2"
-            app:layout_constraintStart_toStartOf="parent"
-            android:src="@drawable/default_pfp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/default_pfp"
-            android:contentDescription="@string/content_description_profile_picture" />
+        app:layout_constraintTop_toBottomOf="@id/show_profile_pfp_header"
+        >
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Fullname"
+            android:layout_marginBottom="-12sp"
+
+            />
 
             <TextView
                 android:id="@+id/fullNameTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/fullname_placeholder_text"
-                android:textColor="@color/secondaryTextColor"
+                android:textColor="@color/primaryTextColor"
                 android:textSize="32sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username"
+                android:textSize="16sp"
+                android:layout_marginBottom="-12sp"
+                />
 
             <TextView
                 android:id="@+id/usernameTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/secondaryTextColor"
+                android:textColor="@color/primaryTextColor"
                 android:text="@string/username_placeholder_text"
                 android:textSize="32sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/email_placeholder_text"
+                android:textSize="16sp"
+                android:layout_marginBottom="-12sp"
+                />
 
             <TextView
                 android:id="@+id/emailTV"
@@ -77,16 +138,33 @@
                 android:scrollHorizontally="true"
                 android:singleLine="true"
                 android:text="@string/email_placeholder_text"
-                android:textColor="@color/secondaryTextColor"
+                android:textColor="@color/primaryTextColor"
                 android:textSize="32sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/location_placeholder_text"
+                android:textSize="16sp"
+                android:layout_marginBottom="-12sp"
+                />
 
             <TextView
                 android:id="@+id/locationTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/location_placeholder_text"
-                android:textColor="@color/secondaryTextColor"
+                android:textColor="@color/primaryTextColor"
                 android:textSize="32sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Skills"
+                android:textSize="16sp"
+                android:layout_marginBottom="-12sp"
+                android:textColor="@color/secondaryTextColor"
+                />
 
             <TextView
                 android:id="@+id/skillsTV"
@@ -97,29 +175,9 @@
                 android:scrollHorizontally="true"
                 android:singleLine="true"
                 android:text="@string/no_skills_placeholder_text"
-                android:textColor="@color/secondaryTextColor"
+                android:textColor="@color/primaryTextColor"
                 android:textSize="32sp"
                  />
 
-            <TextView
-                android:id="@+id/ratingBuyerTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/buyer_rating_text"
-                android:textColor="@color/secondaryTextColor"
-                android:textSize="32sp" />
-
-            <TextView
-                android:id="@+id/ratingSellerTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/seller_rating_text"
-                android:textColor="@color/secondaryTextColor"
-                android:textSize="32sp" />
-
-
         </LinearLayout>
-    </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

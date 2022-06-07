@@ -57,17 +57,18 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
 
         setHasOptionsMenu(allowEdit)
 
+        advertisementViewModel.liveAdvList.observe(viewLifecycleOwner) { list ->
+            if (advID.isNotEmpty()) {
+                oldAdv = list.find { it.id == advID }
 
-        if (advID.isNotEmpty()) {
-            oldAdv = advertisementViewModel.liveAdvList.value?.find { it.id == advID }
-
-            oldAdv.apply {
-                binding.textInputEditTitle.setText(this?.title)
-                binding.textInputEditDescription.setText(this?.description)
-                binding.textInputEditLocation.setText(this?.location)
-                binding.textInputEditDuration.setText(this?.duration)
-                binding.textInputEditDate.setText(this?.date)
-                initialAdvSkill = this?.skill
+                oldAdv.apply {
+                    binding.textInputEditTitle.setText(this?.title)
+                    binding.textInputEditDescription.setText(this?.description)
+                    binding.textInputEditLocation.setText(this?.location)
+                    binding.textInputEditDuration.setText(this?.duration)
+                    binding.textInputEditDate.setText(this?.date)
+                    initialAdvSkill = this?.skill
+                }
             }
         }
 
@@ -81,6 +82,9 @@ class EditAdvertisement : Fragment(), DatePickerDialog.OnDateSetListener, TimePi
             val initialPos = userSkillList.indexOf(initialAdvSkill)
             if (initialPos != -1)
                 binding.skillSpinner.setSelection(initialPos, true)
+            else {
+
+            }
         }
 
         requireActivity()

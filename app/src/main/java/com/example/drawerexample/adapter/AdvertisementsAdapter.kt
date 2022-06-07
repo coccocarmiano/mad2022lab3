@@ -248,7 +248,10 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val t
                         val bundle = Bundle()
                         bundle.apply {
                             if (data[position].creatorUID == Firebase.auth.currentUser?.uid) {
-                                //TODO qua si perde il nome, da sistemare
+                                putBoolean(
+                                    "userIsAdvertiser",
+                                    true
+                                )
                                 putString(
                                     "otherUserID",
                                     data[position].buyerUID
@@ -259,6 +262,10 @@ class AdvertisementsAdapter(private val parentFragment : Fragment, private val t
                                 )
                                 putString("userID", Firebase.auth.currentUser?.uid)
                             } else {
+                                putBoolean(
+                                    "userIsAdvertiser",
+                                    false
+                                )
                                 putString(
                                     "otherUserID",
                                     data[position].creatorUID

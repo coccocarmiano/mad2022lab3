@@ -307,13 +307,13 @@ class ChatViewModel : ViewModel() {
             }
     }
 
-    fun didAdvertiserAcceptRequestForUser(onTrue : () -> Unit = {}, onFalse : () -> Unit = {}) {
+    fun isRequestAcceptedForUser(onTrue : () -> Unit = {}, onFalse : () -> Unit = {}) {
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
             .get()
             .addOnSuccessListener {
-                if (it.getString("status") == "accepted" && it.getString("buyerUID") == otherUserID.value)
+                if (it.getString("status") == "accepted" && it.getString("creatorID") == userID && it.getString("buyerUID") == otherUserID.value)
                     onTrue()
                 else
                     onFalse()
@@ -322,25 +322,21 @@ class ChatViewModel : ViewModel() {
                 Log.w("ChatViewModel", "Error getting request", it)
             }
     }
-/*
-    fun hasAdvertisementAlreadyBeenAllocated(onTrue : () -> Unit = {}, onFalse : () -> Unit = {}) {
+    fun isRequestAcceptedForMe(onTrue : () -> Unit = {}, onFalse : () -> Unit = {}) {
         db
             .collection("advertisements")
             .document("${advertisementID.value}")
-            .collection("requests")
-            .document("accepted")
             .get()
             .addOnSuccessListener {
-                when ( it.exists() ) {
-                    true -> onTrue()
-                    false -> onFalse()
-                }
+                if (it.getString("status") == "accepted" && it.getString("buyerUID") == userID)
+                    onTrue()
+                else
+                    onFalse()
             }
             .addOnFailureListener {
                 Log.w("ChatViewModel", "Error getting request", it)
             }
     }
-    */
 
     fun listenChatsUpdates(advID: String?, adapter : EditAdvIncomingMessagesAdapter) {
         if ( advID == null ) return

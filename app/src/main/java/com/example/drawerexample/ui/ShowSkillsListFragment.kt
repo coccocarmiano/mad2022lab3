@@ -49,7 +49,10 @@ class ShowSkillsListFragment : Fragment() {
                 }
                 else -> {
                     val filteredAdv = advList.filter {
-                        it.creatorUID != userViewModel.userID.value
+                        if (userViewModel.userID.value != null)
+                            (it.status == "new" || it.status == "pending") && it.creatorUID != userViewModel.userID.value
+                        else
+                            false
                     }
                     if (filteredAdv.isNotEmpty()) {
                         binding.noSkills.visibility = View.GONE

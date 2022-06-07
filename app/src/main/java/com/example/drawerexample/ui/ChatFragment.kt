@@ -139,14 +139,13 @@ class ChatFragment : Fragment() {
             chatPopup.requestTimeSlotButton.visibility = View.GONE
             chatPopup.requestTimeSlotTextView.text = text
         }
-
         val errRequestingTimeslot = {
             chatPopup.requestTimeSlotButton.isClickable = true
             showSnackBarError("Error requesting the timeslot")
         }
 
         chatViewModel.didUserRequestTimeSlot(onTrue = disableSendRequestPopup, onFalse = showSendRequestPopup)
-        chatViewModel.didAdvertiserAcceptRequestForUser(onTrue = setAcceptedRequestPopup)
+        chatViewModel.isRequestAcceptedForMe(onTrue = setAcceptedRequestPopup)
 
         chatPopup.requestTimeSlotButton.setOnClickListener {
             chatPopup.requestTimeSlotButton.isClickable = false
@@ -178,7 +177,7 @@ class ChatFragment : Fragment() {
         val accept : () -> Unit = { showRequestAcceptedPopup() }
 
         chatViewModel.didOtherUserRequestTimeSlot(onTrue = showRequestPendingPopup)
-        chatViewModel.didAdvertiserAcceptRequestForUser(onTrue = accept)
+        chatViewModel.isRequestAcceptedForUser(onTrue = accept)
     }
 
     private fun activateAcceptDenyButtons() {

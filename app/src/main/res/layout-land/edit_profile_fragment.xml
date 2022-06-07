@@ -22,24 +22,14 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
-            <ImageView
-                android:id="@+id/profileImageEditProfile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/default_pfp"
-                android:scaleType="centerInside"
-                android:contentDescription="@string/content_description_profile_picture" />
 
-            <ImageButton
-                android:id="@+id/editProfileImageButton"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#00FFFFFF"
-                android:scaleType="centerInside"
-                android:scaleX="0.5"
-                android:scaleY="0.5"
-                android:src="@drawable/camera"
-                android:contentDescription="@string/content_description_edit_profile_picture"/>
+            <include
+                android:id="@+id/edit_profile_pfp_header"
+                layout="@layout/show_profile_pfp_card"
+                android:layout_width="192sp"
+                android:layout_height="192sp"
+                android:layout_centerInParent="true"
+                />
         </RelativeLayout>
 
 
@@ -60,6 +50,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/fullname_placeholder_text"
+                    app:hintTextColor="@color/secondaryDarkColor"
+                    app:boxStrokeColor="@color/primaryDarkColor"
                     android:textSize="32sp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_marginVertical="5dp">
@@ -80,6 +72,8 @@
                     android:hint="@string/username_placeholder_text"
                     android:textSize="32sp"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    app:hintTextColor="@color/secondaryDarkColor"
+                    app:boxStrokeColor="@color/primaryDarkColor"
                     android:layout_marginVertical="5dp">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -97,6 +91,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/email_placeholder_text"
                     android:textSize="32sp"
+                    app:boxStrokeColor="@color/primaryDarkColor"
+                    app:hintTextColor="@color/secondaryDarkColor"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_marginVertical="5dp">
 
@@ -115,6 +111,8 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/location_placeholder_text"
                     android:textSize="32sp"
+                    app:hintTextColor="@color/secondaryDarkColor"
+                    app:boxStrokeColor="@color/primaryDarkColor"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_marginVertical="5dp">
 
@@ -132,14 +130,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/menu_edit_skills"
-                    android:backgroundTint="@color/primaryLightColor"
+                    android:backgroundTint="@color/primaryColor"
                     android:layout_marginVertical="5dp"/>
 
                 <Button
                     android:id="@+id/editProfileSaveButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="@color/primaryLightColor"
+                    android:backgroundTint="@color/primaryColor"
                     android:text="@string/save_changes"
                     android:layout_marginVertical="5dp"/>
             </LinearLayout>

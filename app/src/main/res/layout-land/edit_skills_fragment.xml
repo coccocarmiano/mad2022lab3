@@ -24,7 +24,7 @@
         android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="20dp"
         android:layout_weight="5"
-        android:backgroundTint="@color/primaryLightColor"
+        android:backgroundTint="@color/primaryColor"
         android:text="@string/editSkillsFragmentSaveButton"/>
     </LinearLayout>
 

@@ -39,12 +39,11 @@ class ShowProfile : Fragment() {
         setHasOptionsMenu(allowEdit)
 
         // Spinning Circle
-        binding.showProfileSpinLoading.visibility = View.VISIBLE
-        binding.showProfilePfpHeader?.root?.visibility = View.INVISIBLE
+        binding.showProfileSpinLoading?.visibility = View.VISIBLE
+        binding.showProfilePfpHeader.root.visibility = View.INVISIBLE
         binding.emailTV.isSelected = true
         binding.skillsTV.isSelected= true
-
-
+        binding.showProfilePfpHeader.profileHeaderCameraCard.visibility = View.GONE
 
 
         return root
@@ -75,12 +74,15 @@ class ShowProfile : Fragment() {
         }
 
         userViewModel.propic.observe(viewLifecycleOwner) {
-            binding.showProfilePfpHeader?.profileHeaderSource?.setImageBitmap(it)
-            binding.showProfileSpinLoading.visibility = View.GONE
-            binding.profileImageShowProfile?.visibility = View.VISIBLE
-            binding.showProfilePfpHeader?.root?.visibility = View.VISIBLE
+            binding.showProfilePfpHeader.profileHeaderSource.setImageBitmap(it)
+            binding.showProfileSpinLoading?.visibility = View.GONE
+            binding.showProfilePfpHeader.root.visibility = View.VISIBLE
+            binding.showProfilePfpHeader.root.visibility = View.VISIBLE
         }
 
+        userViewModel.numberOfBuy.observe(viewLifecycleOwner) {
+            val score = userViewModel.buyerTotScore.value?.div(userViewModel.numberOfBuy.value ?: 1)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

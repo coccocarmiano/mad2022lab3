@@ -24,8 +24,8 @@ class ShowProfile : Fragment() {
         val root: View = binding.root
         val userIDToDisplay = arguments?.getString("UID")
         val allowEdit = arguments?.getBoolean("allowEdit") ?: true
-        userViewModel.updateProfilePicture()
         userIDToDisplay?.also { userViewModel.loadUser(it) }
+        userViewModel.updateProfilePicture()
         startListeningForChanges()
 
         requireActivity()

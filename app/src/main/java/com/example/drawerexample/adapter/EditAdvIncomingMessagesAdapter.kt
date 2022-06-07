@@ -13,8 +13,7 @@ import androidx.navigation.fragment.findNavController
 class EditAdvIncomingMessagesAdapter(private val parentFragment : Fragment, private val advertisementID : String, private val userID : String) : RecyclerView.Adapter<EditAdvIncomingMessagesAdapter.IncomingAdvMessageViewHolder>() {
     var incomingMessages = ArrayList<Bundle>()
     var incomingRequests = ArrayList<Bundle>()
-
-    var allItems : HashMap<String, String>? = null
+    var allItems : HashMap<String, String> = HashMap()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IncomingAdvMessageViewHolder {
         val view = parentFragment.layoutInflater.inflate(R.layout.edit_adv_chat_notification_card, parent, false)
@@ -22,15 +21,12 @@ class EditAdvIncomingMessagesAdapter(private val parentFragment : Fragment, priv
     }
 
     override fun getItemCount(): Int {
-        if (allItems == null)
-            return 0
-        return allItems!!.size
+        return allItems?.size ?: 0
     }
 
     override fun onBindViewHolder(holder: IncomingAdvMessageViewHolder, position: Int) {
-        val element = allItems?.toList()?.get(position)
+        val element = allItems.toList()[position]
 
-        if (element != null) {
             val requestingUser = element.second
             val otherUserID = element.first
             val text = parentFragment.resources.getString(R.string.edit_adv_chat_card_text)
@@ -46,7 +42,6 @@ class EditAdvIncomingMessagesAdapter(private val parentFragment : Fragment, priv
                 parentFragment.findNavController()
                     .navigate(R.id.action_nav_show_adv_to_nav_chat, args)
             }
-        }
     }
 
     class IncomingAdvMessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -60,9 +55,9 @@ class EditAdvIncomingMessagesAdapter(private val parentFragment : Fragment, priv
         allItems = HashMap()
 
         for (incomingMessage in incomingMessages)
-            allItems!![incomingMessage.getString("userID")!!] = incomingMessage.getString("username")!!
+            allItems[incomingMessage.getString("userID")!!] = incomingMessage.getString("username")!!
         for (incomingRequest in incomingRequests)
-            allItems!![incomingRequest.getString("userID")!!] = incomingRequest.getString("username")!!
+            allItems[incomingRequest.getString("userID")!!] = incomingRequest.getString("username")!!
     }
 
     fun addMessage(message : Bundle) {
@@ -71,8 +66,8 @@ class EditAdvIncomingMessagesAdapter(private val parentFragment : Fragment, priv
         allItems = HashMap()
 
         for (incomingMessage in incomingMessages)
-            allItems!![incomingMessage.getString("userID")!!] = incomingMessage.getString("username")!!
+            allItems[incomingMessage.getString("userID")!!] = incomingMessage.getString("username")!!
         for (incomingRequest in incomingRequests)
-            allItems!![incomingRequest.getString("userID")!!] = incomingRequest.getString("username")!!
+            allItems[incomingRequest.getString("userID")!!] = incomingRequest.getString("username")!!
     }
 }

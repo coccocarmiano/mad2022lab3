@@ -50,7 +50,7 @@ class EditProfile : Fragment() {
             }
         }
 
-        binding.editProfileImageButton.setOnClickListener {
+        binding.editProfilePfpHeader.profileHeaderCameraCard.setOnClickListener {
             val galleryIntent = Intent().setType("image/*").setAction(Intent.ACTION_GET_CONTENT)
             val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             val chooserIntent = Intent.createChooser(galleryIntent, "Upload an Image").run { putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(cameraIntent)) }
@@ -58,13 +58,9 @@ class EditProfile : Fragment() {
             activity?.startActivityForResult(chooserIntent, (activity as MainActivity).requestPhotoForProfileEdit)
         }
 
-        requireActivity()
-            .onBackPressedDispatcher
-            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().popBackStack()
-                }
-            })
+        userViewModel.propic.observe(viewLifecycleOwner) {
+            binding.editProfilePfpHeader.profileHeaderSource.setImageBitmap(it)
+        }
 
         requireActivity()
             .onBackPressedDispatcher
@@ -115,7 +111,7 @@ class EditProfile : Fragment() {
         }
 
         userViewModel.propic.observe(viewLifecycleOwner) {
-            binding.profileImageEditProfile.setImageBitmap(it)
+            binding.editProfilePfpHeader?.profileHeaderSource?.setImageBitmap(it)
         }
     }
 
